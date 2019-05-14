@@ -10,12 +10,15 @@
               </v-toolbar>
               <v-card-text>
                 <form @submit.prevent="submit">
-                  <v-text-field prepend-icon="person" name="login" label="Login" type="text"/>
                   <v-text-field
+                    v-model="email"
+                    prepend-icon="person"
+                    label="Email"
+                    type="email"/>
+                  <v-text-field
+                    v-model="password"
                     prepend-icon="lock"
-                    name="password"
                     label="Password"
-                    id="password"
                     type="password"
                   />
                   <v-card-actions>
@@ -36,9 +39,18 @@
 <script>
 export default {
   name: 'Login',
+  data() {
+    return {
+      email: null,
+      password: null
+    }
+  },
   methods: {
     submit() {
-      this.$store.dispatch('user/obtainToken')
+      this.$store.dispatch('user/obtainToken', {
+        email: this.email,
+        password: this.password
+      })
     }
   }
 }

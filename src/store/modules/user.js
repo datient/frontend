@@ -9,8 +9,8 @@ const mutations = {
 }
 
 const actions = {
-  obtainToken() {
-    console.log('hola')
+  obtainToken({ commit }, { email, password }) {
+    console.log(email, password)
   }
 }
 
