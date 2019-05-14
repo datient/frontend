@@ -38,7 +38,7 @@ export default {
   name: 'Login',
   methods: {
     submit() {
-      console.log('submit');
+      this.$store.dispatch('user/obtainToken')
     }
   }
 }
