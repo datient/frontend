@@ -1,8 +1,12 @@
 <template>
   <div id="home">
-    <h2>Home</h2>
+    <h1>Salas</h1>
     <div v-for="room in rooms" :key="room.id">
-      {{ room.name }}
+      <v-btn
+        color="info"
+        :to="{name: 'room', params: {id: room.id}}">
+        {{ room.name }}
+      </v-btn>
     </div>
   </div>
 </template>
