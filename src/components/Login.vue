@@ -27,7 +27,6 @@
                   </v-card-actions>
                 </form>
               </v-card-text>
-              
             </v-card>
           </v-flex>
         </v-layout>
@@ -37,6 +36,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Login',
   data() {
@@ -45,12 +46,18 @@ export default {
       password: null
     }
   },
+  computed: {
+    ...mapState(['user/token'])
+  },
   methods: {
     submit() {
       this.$store.dispatch('user/obtainToken', {
         email: this.email,
         password: this.password
       })
+      if (this.$store.state.user.token !== null) {
+        this.$router.push({ name: 'home', })
+      }
     }
   }
 }
