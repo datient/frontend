@@ -2,7 +2,11 @@
   <div id="toolbar">
     <v-toolbar color="primary">
       <v-toolbar-title>
-        Datient
+        <router-link
+          :to="{name: 'home'}"
+          tag="button">
+          Datient
+        </router-link>
       </v-toolbar-title>
     </v-toolbar>
   </div>
