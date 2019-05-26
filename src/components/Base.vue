@@ -1,8 +1,11 @@
 <template>
   <div id="base">
     <Toolbar/>
-    <h1>Base</h1>
-    <router-view/>
+    <v-content>
+      <v-container>
+        <router-view/>
+      </v-container>
+    </v-content>
   </div>
 </template>
 
