@@ -13,7 +13,7 @@
         <v-menu transition="slide-x-transition">
           <template v-slot:activator="{ on }">
             <v-btn dark flat v-on="on">
-              Username
+              {{ user.email }}
             </v-btn>
           </template>
           <v-list>
@@ -31,6 +31,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Toolbar',
   data() {
@@ -40,10 +42,13 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState(['user'])
+  },
   methods: {
     logOut() {
       this.$router.push({ name: 'login' })
-    }
+    },
   },
 }
 </script>

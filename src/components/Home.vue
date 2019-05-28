@@ -1,7 +1,7 @@
 <template>
   <div id="home">
     <h1>Salas</h1>
-    <div v-for="room in rooms" :key="room.id">
+    <div v-for="room in rooms.rooms" :key="room.id">
       <v-btn
         color="info"
         :to="{name: 'room', params: {id: room.id}}">
@@ -16,16 +16,11 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'Home',
-  data() {
-    return {
-      rooms: this.$store.state.rooms.rooms,
-    }
-  },
   computed: {
-    ...mapState(['rooms/rooms', 'user/token'])
+    ...mapState(['rooms', 'user'])
   },
   mounted() {
-    let token = this.$store.state.user.token
+    let token = this.user.token
     if (this.rooms === null) {
       this.$store.dispatch('rooms/obtainRooms', token)
     }
