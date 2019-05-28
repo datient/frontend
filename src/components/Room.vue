@@ -14,7 +14,7 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'room',
+  name: 'Room',
   data() {
     let roomId = this.$route.params.id
     let rooms = this.$store.state.rooms.rooms
@@ -27,7 +27,6 @@ export default {
     ...mapState(['rooms/rooms'])
   },
   mounted() {
-    console.log(this.$store.state.rooms.rooms[this.roomId-1].beds)
   },
 }
 </script>

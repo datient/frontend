@@ -21,7 +21,7 @@ export default {
   },
   mounted() {
     let token = this.user.token
-    if (this.rooms === null) {
+    if (this.rooms.rooms === null) {
       this.$store.dispatch('rooms/obtainRooms', token)
     }
   },
