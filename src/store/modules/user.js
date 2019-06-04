@@ -10,6 +10,14 @@ const state = {
 }
 
 const mutations = {
+  setNull(state) {
+    state.token = null
+    state.id = null
+    state.email = null
+    state.first_name = null
+    state.last_name = null
+    state.hierarchy = null
+  },
   setToken(state, token) {
     state.token = token
   },
@@ -23,19 +31,28 @@ const mutations = {
 }
 
 const actions = {
+  logOut({ commit }) {
+    commit('setNull')
+  },
   obtainToken({ commit }, { email, password }) {
-    axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/token/',
-      headers: { 'Content-Type': 'application/json' },
-      data: {
-        'email': email,
-        'password': password
-      }
-    })
-    .then(res => {
-      commit('setToken', res.data.token)
-      commit('setUser', res.data.user)
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/token/',
+        headers: { 'Content-Type': 'application/json' },
+        data: {
+          'email': email,
+          'password': password
+        }
+      })
+      .then(res => {
+        commit('setToken', res.data.token)
+        commit('setUser', res.data.user)
+        resolve()
+      })
+      .catch(() => {
+        reject()
+      })
     })
   }
 }
