@@ -17,6 +17,7 @@ router.beforeEach((to, from, next) => {
       next(from.path)
     }
   }
+  document.title = to.meta.title
   next()
 })
 

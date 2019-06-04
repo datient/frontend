@@ -12,11 +12,11 @@ const routes = [
     path: '',
     component: Base,
     children: [
-      { path: '', name: 'home', component: Home },
-      { path: '/room/:id', name: 'room', component: Room },
+      { path: '', name: 'home', component: Home, meta: { title: 'Home' } },
+      { path: '/room/:id', name: 'room', component: Room, meta: { title: 'Sala' } },
     ]
   },
-  { path: '/login', name: 'login', component: Login },
+  { path: '/login', name: 'login', component: Login, meta: { title: 'Login' } },
 ]
 
 export default new VueRouter({
