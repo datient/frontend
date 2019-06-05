@@ -1,13 +1,20 @@
 <template>
   <div id="home">
     <h1>Salas</h1>
-    <div v-for="room in rooms.rooms" :key="room.id">
-      <v-btn
-        color="info"
-        :to="{name: 'room', params: {id: room.id}}">
-        {{ room.name }}
-      </v-btn>
-    </div>
+    <v-expansion-panel popout focusable>
+      <v-expansion-panel-content
+        v-for="(room, index) in rooms.rooms"
+        :key="index">
+        <template v-slot:header>
+          <div>{{ room.name }}</div>
+        </template>
+        <v-card>
+          <v-card-text v-for="(bed, i) in room.beds" :key="i">
+            {{ bed.name }}
+          </v-card-text>
+        </v-card>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
   </div>
 </template>
 
@@ -27,3 +34,9 @@ export default {
   },
 }
 </script>
+
+<style>
+h1 {
+  text-align: center;
+}
+</style>
