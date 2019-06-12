@@ -6,11 +6,18 @@
         v-for="(room, index) in rooms.rooms"
         :key="index">
         <template v-slot:header>
-          <div>{{ room.name }}</div>
+          <div>
+            <h3>{{ room.name }}</h3>
+          </div>
         </template>
         <v-card>
           <v-card-text v-for="(bed, i) in room.beds" :key="i">
-            {{ bed.name }}
+            <v-btn
+              color="primary"
+              flat
+              :to="{ name: 'bed', params: { id: bed.id } }">
+              {{ bed.name }}
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-expansion-panel-content>
@@ -28,9 +35,7 @@ export default {
   },
   mounted() {
     let token = this.user.token
-    if (this.rooms.rooms === null) {
-      this.$store.dispatch('rooms/obtainRooms', token)
-    }
+    this.$store.dispatch('rooms/obtainRooms', token)
   },
 }
 </script>
