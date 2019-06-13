@@ -30,6 +30,18 @@
             </v-card>
           </v-flex>
         </v-layout>
+        <v-snackbar
+          v-model="snackbar"
+          :right="true"
+          :timeout="timeout">
+          {{ error }}
+          <v-btn
+            color="pink"
+            flat
+            @click="snackbar = false">
+            Close
+          </v-btn>
+        </v-snackbar>
       </v-container>
     </v-app>
   </div>
@@ -43,7 +55,10 @@ export default {
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+      snackbar: false,
+      timeout: 6000,
+      error: null
     }
   },
   computed: {
@@ -54,8 +69,15 @@ export default {
       this.$store.dispatch('user/obtainToken', {
         email: this.email,
         password: this.password
-      }).then(res => {
+      })
+      .then(res => {
         this.$router.push({ name: 'home' })
+      })
+      .catch(err => {
+        if (err !== undefined) {
+          this.error = err
+          this.snackbar = true
+        }
       })
     }
   }

@@ -50,8 +50,9 @@ const actions = {
         commit('setUser', res.data.user)
         resolve()
       })
-      .catch(() => {
-        reject()
+      .catch((err) => {
+        let reason = err.response.data['non_field_errors']
+        reject(reason)
       })
     })
   }
