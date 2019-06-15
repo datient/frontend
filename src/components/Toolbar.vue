@@ -1,9 +1,31 @@
 <template>
   <div id="toolbar">
-    <v-toolbar color="primary">
+    <v-navigation-drawer
+      absolute
+      temporary
+      v-model="drawer">
+      <v-list>
+        <v-list-tile
+          v-for="(item, index) in drawerItems"
+          :key="index">
+          <v-list-tile-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              <router-link :to="{ 'name': 'patients' }">
+              {{ item.title }}
+              </router-link>
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+    </v-navigation-drawer>
+    <v-toolbar color="primary" dark>
+      <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-toolbar-title>
         <v-btn
-          dark flat large
+          flat large
           :to="{ name: 'home' }">
           Datient
         </v-btn>
@@ -18,7 +40,7 @@
           </template>
           <v-list>
             <v-list-tile
-              v-for="(item, index) in items"
+              v-for="(item, index) in toolItems"
               :key="index"
               @click="logOut()">
             <v-list-tile-title>{{ item.title }}</v-list-tile-title>
@@ -37,9 +59,13 @@ export default {
   name: 'Toolbar',
   data() {
     return {
-      items: [
+      drawer: null,
+      drawerItems: [
+        { title: 'Pacientes', icon: 'person' },
+      ],
+      toolItems: [
         { title: 'Cerrar sesión' },
-      ]
+      ],
     }
   },
   computed: {
@@ -53,10 +79,3 @@ export default {
   },
 }
 </script>
-
-
-<style>
-.v-toolbar__title {
-  color: white;
-}
-</style>
