@@ -16,8 +16,8 @@ const routes = [
     children: [
       { path: '', name: 'home', component: Home, meta: { title: 'Home' } },
       { path: '/room/:id', name: 'room', component: Room, meta: { title: 'Sala' } },
-      { path: '/bed/:id', name: 'bed', component: Bed, meta: { title: 'Bed' } },
-      { path: '/patients', name: 'patients', component: Patients },
+      { path: '/bed/:id', name: 'bed', component: Bed, meta: { title: 'Cama' } },
+      { path: '/patients', name: 'patients', component: Patients, meta: { title: 'Pacientes' } },
     ]
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login' } },
