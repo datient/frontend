@@ -1,6 +1,99 @@
 <template>
   <div id="patients">
-    <h1>Pacientes</h1>
+    <v-toolbar color="white" flat>
+      <v-toolbar-title>Pacientes</v-toolbar-title>
+      <v-divider
+        class="mx-2"
+        inset
+        vertical/>
+      <v-spacer/>
+      <v-dialog v-model="createDialog" width="800">
+        <template v-slot:activator="{ on }">
+          <v-btn color="primary" v-on="on">
+            Nuevo Paciente
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-title
+            class="headline"
+            primary-title>
+            Agregar nuevo paciente
+          </v-card-title>
+          <v-card-text>
+            <v-container grid-list-md>
+              <v-layout wrap>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="patientForm.first_name"
+                    label="Nombre"
+                    prepend-icon="person"
+                    type="text"/>
+                </v-flex>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    v-model="patientForm.last_name"
+                    label="Apellido"
+                    type="text"/>
+                </v-flex>
+                <v-flex xs12 md7>
+                  <v-menu
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    lazy
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290">
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="patientForm.birth_date"
+                        label="Fecha de nacimiento"
+                        prepend-icon="calendar_today"
+                        readonly
+                        v-on="on"/>
+                    </template>
+                    <v-date-picker v-model="patientForm.birth_date" @input="menu = false"/>
+                  </v-menu>
+                </v-flex>
+                <v-flex xs12 md5>
+                  <v-text-field
+                    v-model="patientForm.dni"
+                    label="DNI"
+                    prepend-icon="crop_landscape"
+                    type="number"/>
+                </v-flex>
+                <v-flex xs12 md6>
+                  <v-text-field
+                    label="Numero de historia"
+                    prepend-icon="edit"
+                    type="number"/>
+                </v-flex>
+                <v-flex xs12 md6>
+                  <v-select
+                    :items="['Masculino', 'Femenino']"
+                    label="Genero"
+                    prepend-icon="wc"/>
+                </v-flex>
+                <v-flex>
+                  <v-textarea
+                    v-model="patientForm.income_diagnosis"
+                    label="Diagnostico"/>
+                </v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn
+              color="primary" flat
+              @click="createPatient">
+              Agregar
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-toolbar>
     <v-data-table
       hide-actions
       :headers="headers"
@@ -13,35 +106,7 @@
         <td>{{ props.item.age }}</td>
         <td>{{ props.item.gender }}</td>
         <td>
-          <v-dialog width="500" v-model="dialog">
-            <template v-slot:activator="{ on }">
-              <v-icon v-on="on">delete</v-icon>
-            </template>
-            <v-card>
-              <v-card-title
-                class="headline"
-                primary-title>
-                Eliminar paciente
-              </v-card-title>
-              <v-card-text>
-                Esta seguro/a que desea eliminar al paciente {{ props.item.dni }}?
-              </v-card-text>
-              <v-divider/>
-              <v-card-actions>
-                <v-spacer/>
-                <v-btn
-                  color="primary" flat
-                  @click="deletePatient(props.item.dni)">
-                  Si
-                </v-btn>
-                <v-btn
-                  color="primary" flat
-                  @click="dialog = false">
-                  No
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
         </td>
       </template>
     </v-data-table>
@@ -55,6 +120,7 @@ export default {
   name: 'Patients',
   data() {
     return {
+      createDialog: false,
       dialog: false,
       headers: [
         { text: 'DNI', value: 'dni' },
@@ -64,7 +130,17 @@ export default {
         { text: 'Edad', value: 'age' },
         { text: 'Genero', value: 'gender' },
         { text: 'Acciones', value: 'dni' },
-      ]
+      ],
+      menu: false,
+      patientForm: {
+        dni: null,
+        first_name: null,
+        last_name: null,
+        birth_date: null,
+        history_number: null,
+        gender: null,
+        income_diagnosis: null
+      },
     }
   },
   computed: {
@@ -75,13 +151,25 @@ export default {
     this.$store.dispatch('patient/obtainPatients', token)
   },
   methods: {
-    deletePatient(dni) {
+    createPatient() {
       let token = this.user.token
+      let patient = this.patientForm
       this.$store
-        .dispatch('patient/deletePatient', { token, dni })
+        .dispatch('patient/createPatient', { token, patient })
         .then(() => {
           this.$router.go()
         })
+    },
+    deletePatient(dni) {
+      let sure = confirm(`Estas seguro/a de que quieres eliminar al paciente ${dni}?`)
+      if (sure) {
+        let token = this.user.token
+        this.$store
+          .dispatch('patient/deletePatient', { token, dni })
+          .then(() => {
+            this.$router.go()
+          })
+      }
     },
   }
 }

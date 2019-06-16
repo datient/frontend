@@ -15,6 +15,45 @@ const mutations = {
 }
 
 const actions = {
+  createPatient({ commit }, { token, patient }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/patient/',
+        headers: { 'Authorization': `JWT ${token}` },
+        data: {
+          dni: patient.dni,
+          first_name: patient.first_name,
+          last_name: patient.last_name,
+          birth_date: patient.birth_date,
+          history_number: patient.history_number,
+          gender: 0,
+          income_diagnosis: patient.income_diagnosis
+        },
+      })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
+  deletePatient({ commit }, { token, dni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'delete',
+        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+        headers: { 'Authorization': `JWT ${token}` },
+      })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err)
+      })
+    })
+  },
   obtainPatient({ commit }, token) {
     axios({
       method: 'get',
@@ -35,21 +74,6 @@ const actions = {
       commit('setPatients', res.data)
     })
   },
-  deletePatient({ commit }, { token, dni }) {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'delete',
-        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
-        headers: { 'Authorization': `JWT ${token}` },
-      })
-      .then(res => {
-        resolve()
-      })
-      .catch(err => {
-        reject(err)
-      })
-    })
-  }
 }
 
 export default {
