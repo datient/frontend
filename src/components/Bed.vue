@@ -1,7 +1,14 @@
 <template>
   <div id="bed">
     <h1>Cama {{ bedId }}</h1>
-    <h3>Paciente {{ patient.dni }}</h3>
+    <h3>Paciente</h3>
+    <h4>{{ patient.dni }}</h4>
+    <h4>{{ patient.first_name }}</h4>
+    <h4>{{ patient.last_name }}</h4>
+    <h4>{{ patient.age }}</h4>
+    <h4>{{ patient.birth_date }}</h4>
+    <h4>{{ patient.gender }}</h4>
+    <h4>{{ patient.income_diagnosis }}</h4>
   </div>
 </template>
 
@@ -19,8 +26,9 @@ export default {
     ...mapState(['patient', 'user'])
   },
   mounted() {
+    let bedId = this.bedId
     let token = this.user.token
-    this.$store.dispatch('patient/obtainPatient', token)
+    this.$store.dispatch('patient/obtainPatient', { token, bedId })
   },
 }
 </script>

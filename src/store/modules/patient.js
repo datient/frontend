@@ -2,12 +2,32 @@ import axios from 'axios'
 
 const state = {
   dni: null,
+  age: null,
+  first_name: null,
+  last_name: null,
+  birth_date: null,
+  gender: null,
+  history_number: null,
+  income_diagnosis: null,
   patients: null,
 }
 
 const mutations = {
   setPatient(state, patient) {
-    state.dni = patient['patient']
+    state.dni = patient['dni']
+    state.age = patient['age']
+    state.first_name = patient['first_name']
+    state.last_name = patient['last_name']
+    state.birth_date = patient['birth_date']
+    if (patient.gender === 0) {
+      state.gender = 'Masculino'
+    } else if (patient.gender === 1) {
+      state.gender = 'Femenino'
+    } else {
+      state.gender = null
+    }
+    state.history_number = patient['history_number']
+    state.income_diagnosis = patient['income_diagnosis']
   },
   setPatients(state, patients) {
     state.patients = patients
@@ -54,14 +74,35 @@ const actions = {
       })
     })
   },
-  obtainPatient({ commit }, token) {
+  obtainPatient({ commit }, { token, bedId }) {
     axios({
       method: 'get',
-      url: 'http://127.0.0.1:8000/api/hospitalization/',
+      url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
       headers: { 'Authorization': `JWT ${token}` },
     })
     .then(res => {
-      commit('setPatient', res.data[0]) 
+      let index = res.data.hospitalizations.length - 1
+      let dni = res.data.hospitalizations[index]['patient']
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+        headers: { 'Authorization': `JWT ${token}` },
+      })
+      .then(res => {
+        commit('setPatient', res.data) 
+      })
+    })
+    .catch(() => {
+      commit('setPatient', {
+        dni: null,
+        age: null,
+        first_name: null,
+        last_name: null,
+        birth_date: null,
+        gender: null,
+        history_number: null,
+        income_diagnosis: null,
+      })
     })
   },
   obtainPatients({ commit }, token) {
