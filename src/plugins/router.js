@@ -4,6 +4,7 @@ import Base from '../components/Base'
 import Bed from '../components/Bed'
 import Home from '../components/Home'
 import Patients from '../components/Patients'
+import Register from '../components/Register'
 import Room from '../components/Room'
 import Login from '../components/Login'
 
@@ -21,6 +22,7 @@ const routes = [
     ]
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login' } },
+  { path: '/register', name: 'register', component: Register, Register, meta: { title: 'Register' } },
 ]
 
 export default new VueRouter({
