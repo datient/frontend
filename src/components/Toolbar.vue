@@ -24,11 +24,14 @@
     <v-toolbar color="primary" dark>
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-toolbar-title>
-        <v-btn
-          flat large
-          :to="{ name: 'home' }">
+        <router-link :to="{ name: 'home'}"> 
+          <v-btn flat dark
+            color="" 
+            class="btnDatient"
+          >
           Datient
-        </v-btn>
+          </v-btn>
+        </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -75,7 +78,11 @@ export default {
     logOut() {
       this.$store.dispatch('user/logOut')
       this.$router.push({ name: 'login' })
+      this.$router.push({name:'home'})
+      
     },
   },
 }
+
+
 </script>
