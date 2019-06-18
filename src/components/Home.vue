@@ -1,10 +1,10 @@
 <template>
   <div id="home">
-    <v-card round class="cardSalas">
+      <v-card round class="cardSalas">
       <v-toolbar class="toolbarSalas">
           <v-toolbar-title class="titleSalas">Salas</v-toolbar-title>
-          <v-spacer></v-spacer>
       </v-toolbar>
+      
       <v-expansion-panel popout focusable>
         <v-expansion-panel-content
           v-for="(room, index) in rooms.rooms"
