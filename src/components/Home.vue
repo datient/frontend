@@ -10,18 +10,19 @@
           v-for="(room, index) in rooms.rooms"
           :key="index">
           <template v-slot:header>  
-              <div>
-                <h3>{{ room.name }}</h3>
-              </div>
+              <v-list-tile>
+                <v-toolbar-title class="text-xs-left titleroom"> {{ room.name }}</v-toolbar-title>
+              </v-list-tile>
           </template>
           <v-card>
             <v-card-text v-for="(bed, i) in room.beds" :key="i">
-              <v-btn
-                color="primary"
-                flat
-                :to="{ name: 'bed', params: { id: bed.id } }">
-                {{ bed.name }}
-              </v-btn>
+              <router-link :to="{ name: 'bed', params: { id: bed.id } }">
+                <v-btn
+                  color="primary"
+                  flat large>
+                  {{ bed.name }}
+                </v-btn>
+              </router-link>
             </v-card-text>
           </v-card>
         </v-expansion-panel-content>
@@ -60,5 +61,7 @@ h1 {
   color: white;
   border-radius: 10px;
 }
-
+.titleroom{
+  color: black;
+}
 </style>
