@@ -25,7 +25,7 @@
       <v-toolbar-side-icon @click="drawer = !drawer"/>
       <v-toolbar-title>
         <router-link :to="{ name: 'home'}"> 
-          <v-btn flat dark
+          <v-btn flat dark large
             color="" 
             class="btnDatient"
           >
