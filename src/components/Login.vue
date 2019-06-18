@@ -4,7 +4,7 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <v-card class="elevation-12">
+            <v-card class="elevation-12 cardLogin">
               <v-toolbar dark color="primary">
                 <v-toolbar-title>Login</v-toolbar-title>
               </v-toolbar>
@@ -23,11 +23,13 @@
                   />
                   <v-card-actions>
                     <v-spacer></v-spacer>
+                    <router-link :to="{ name: 'register' }">
                     <v-btn color="primary"
-                      :to="{ name: 'register' }">
+                      flat>
                       Registrarse
                     </v-btn>
-                    <v-btn color="primary" type="submit">Ingresar</v-btn>
+                    </router-link>
+                    <v-btn class= "btnIngresar" color="primary" type="submit">Ingresar</v-btn>
                   </v-card-actions>
                 </form>
               </v-card-text>
@@ -50,6 +52,11 @@
     </v-app>
   </div>
 </template>
+<style>
+.cardLogin{
+  border-radius: 3.5px;
+}
+</style>
 
 <script>
 import { mapState } from 'vuex'
