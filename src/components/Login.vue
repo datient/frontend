@@ -38,15 +38,10 @@
         </v-layout>
         <v-snackbar
           v-model="snackbar"
+          color="error"
           :right="true"
           :timeout="timeout">
           {{ error }}
-          <v-btn
-            color="pink"
-            flat
-            @click="snackbar = false">
-            Close
-          </v-btn>
         </v-snackbar>
       </v-container>
     </v-app>
