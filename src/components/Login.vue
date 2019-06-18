@@ -23,7 +23,7 @@
                   />
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" type="submit">Submit</v-btn>
+                    <v-btn color="primary" type="submit">Ingresar</v-btn>
                   </v-card-actions>
                 </form>
               </v-card-text>
