@@ -7,6 +7,7 @@ import App from './App.vue'
 Vue.config.productionTip = false
 
 router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
   switch (to.name) {
     case 'home':
       store.state.user.token === null ? next({ name: 'login' }) : null
@@ -18,7 +19,6 @@ router.beforeEach((to, from, next) => {
       store.state.user.token !== null ? next({ name: 'home' }) : null
       break
   }
-  document.title = to.meta.title
   next()
 })
 
