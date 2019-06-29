@@ -14,7 +14,11 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <router-link :to="{ 'name': 'patients' }">
-              {{ item.title }}
+                <v-toolbar-title>
+                  <v-list>
+                  {{ item.title }}
+                  </v-list>
+                </v-toolbar-title>  
               </router-link>
             </v-list-tile-title>
           </v-list-tile-content>
