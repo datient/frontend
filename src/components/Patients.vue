@@ -1,7 +1,8 @@
 <template>
   <div id="patients">
-    <v-toolbar color="white" flat>
-      <v-toolbar-title>Pacientes</v-toolbar-title>
+    <v-card round class="cardPatient">
+      <v-toolbar color="white" flat>
+          <v-toolbar-title>Pacientes</v-toolbar-title>
       <v-divider
         class="mx-2"
         inset
@@ -92,8 +93,9 @@
             </v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog>    
     </v-toolbar>
+    
     <v-data-table
       hide-actions
       :headers="headers"
@@ -111,9 +113,14 @@
         </td>
       </template>
     </v-data-table>
+    </v-card> 
   </div>
 </template>
-
+<style>
+.cardPatient{
+  border-radius: 10px;
+}
+</style>
 <script>
 import { mapState } from 'vuex'
 import { setTimeout } from 'timers';
@@ -226,6 +233,7 @@ export default {
     margin-top: -20px;
   }
 </style>
+
 
 
 
