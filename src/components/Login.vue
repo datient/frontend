@@ -18,7 +18,7 @@
                   <v-text-field
                     v-model="password"
                     prepend-icon="lock"
-                    label="Password"
+                    label="Contraseña"
                     type="password"
                   />
                   <v-card-actions>

@@ -44,13 +44,13 @@
                         <v-text-field
                           v-model="user.password"
                           prepend-icon="lock"
-                          label="Password"
+                          label="Contraseña"
                           type="password"/>
                       </v-flex>
                       <v-flex md6>
                         <v-text-field
                           v-model="user.password_confirm"
-                          label="Confirmar password"
+                          label="Confirmar contraseña"
                           type="password"/>
                       </v-flex>
                     </v-layout>
