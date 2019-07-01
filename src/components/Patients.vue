@@ -188,6 +188,13 @@ export default {
       this.dialog = true
     },
     editPatient() {
+      let token = this.user.token
+      let patient = this.patientForm
+      this.$store
+        .dispatch('patient/editPatient', { token, patient })
+        .then(() => {
+          this.$router.go()
+        }),
       console.log('edit')
     },
     savePatient() {
