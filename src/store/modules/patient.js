@@ -47,7 +47,7 @@ const actions = {
           last_name: patient.last_name,
           birth_date: patient.birth_date,
           history_number: patient.history_number,
-          gender: 0,
+          gender: patient.gender === 'Masculino' ? 0 : 1,
           income_diagnosis: patient.income_diagnosis
         },
       })
@@ -71,7 +71,7 @@ const actions = {
           last_name: patient.last_name,
           birth_date: patient.birth_date,
           history_number: patient.history_number,
-          gender: 0,
+          gender: patient.gender === 'Masculino' ? 0 : 1,
           income_diagnosis: patient.income_diagnosis
         },
       })

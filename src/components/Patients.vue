@@ -65,12 +65,14 @@
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
+                    v-model="patientForm.history_number"
                     label="Numero de historia"
                     prepend-icon="edit"
                     type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-select
+                    v-model="patientForm.gender"
                     :items="['Masculino', 'Femenino']"
                     label="Genero"
                     prepend-icon="wc"/>
@@ -88,7 +90,7 @@
             <v-btn
               color="primary" flat
               @click="savePatient">
-              Agregar
+               {{ submit }}
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -130,6 +132,7 @@ export default {
         { text: 'Fecha de nacimiento', value: 'birth_date' },
         { text: 'Edad', value: 'age' },
         { text: 'Genero', value: 'gender' },
+        { text: 'N° de Historia', value: 'history_number'},
         { text: 'Acciones', value: 'dni',sortable: false },
       ],
       menu: false,
@@ -156,8 +159,11 @@ export default {
   },
   computed: {
     ...mapState(['patient', 'user']),
+    submit (){
+      return this.index === -1 ? 'Agregar' : 'Editar'
+    },
     title () {
-      return this.index === -1 ? 'New Item' : 'Edit Item'
+      return this.index === -1 ? 'Nuevo Paciente' : 'Editar Paciente'
     },
     formButton() {
       return this.index === -1 ? 'createPatient' : 'savePatient'
@@ -194,8 +200,7 @@ export default {
         .dispatch('patient/editPatient', { token, patient })
         .then(() => {
           this.$router.go()
-        }),
-      console.log('edit')
+        })
     },
     savePatient() {
       this.index === -1 ? this.createPatient() : this.editPatient()
@@ -223,7 +228,7 @@ export default {
 </script>
 <style>
   .card_actions{
-    margin-top: -20px;
+    margin-top: -25px;
   }
 </style>
 
