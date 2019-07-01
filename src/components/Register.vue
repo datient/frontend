@@ -70,7 +70,6 @@
 </template>
 
 <script>
-import PatientsVue from './Patients.vue';
 export default {
   name: 'Register',
   data() {
@@ -91,7 +90,6 @@ export default {
         .dispatch('user/createUser', this.user)
         .then(() => {
           this.$router.push({ name: 'login' })
-          this.$data({name: 'login'}).close() 
         })
     }
   }

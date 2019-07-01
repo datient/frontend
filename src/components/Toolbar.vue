@@ -16,7 +16,8 @@
               <router-link :to="{ 'name': 'patients' }">
                 <v-toolbar-title>
                   <v-list>
-                  {{ item.title }}
+     
+                 {{ item.title }}
                   </v-list>
                 </v-toolbar-title>  
               </router-link>

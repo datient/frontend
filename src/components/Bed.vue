@@ -9,7 +9,49 @@
         <v-list-tile>
           <v-list-tile-content>
             <v-list-tile>
-              Paciente {{ patient.dni }}
+              {{ patient.dni }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.first_name }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.last_name }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.age }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.birth_date }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.gender }}
+            </v-list-tile>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile>
+              {{ patient.income_diagnosis }}
             </v-list-tile>
           </v-list-tile-content>
         </v-list-tile>
@@ -17,7 +59,6 @@
       </div>
     </v-card>
   </div>
-  
 </template>
 
 <script>
@@ -40,9 +81,9 @@ export default {
   },
 }
 </script>
+
 <style>
 .cardBed{
   border-radius: 10px;
 }
 </style>
-
