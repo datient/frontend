@@ -1,14 +1,5 @@
 <template>
-  <div id="bed">
-    <h1>Cama {{ bedId }}</h1>
-    <h3>Paciente</h3>
-    <h4>{{ patient.dni }}</h4>
-    <h4>{{ patient.first_name }}</h4>
-    <h4>{{ patient.last_name }}</h4>
-    <h4>{{ patient.age }}</h4>
-    <h4>{{ patient.birth_date }}</h4>
-    <h4>{{ patient.gender }}</h4>
-    <h4>{{ patient.income_diagnosis }}</h4>
+      </div>
   </div>
   
 </template>
@@ -20,7 +11,15 @@ export default {
   name: 'Bed',
   data () {
     return {
-      bedId: this.$route.params.id
+      bedId: this.$route.params.id,
+      dialog: false,
+      select: 'Roberto',
+        items: [
+          'Raul',
+          'Rene',
+          'Timoteo',
+          'Nahuel'
+        ]
     }
   },
   computed: {
