@@ -7,7 +7,7 @@
         inset
         vertical/>
       <v-spacer/>
-      <v-dialog v-model="createDialog" width="800">
+      <v-dialog v-model="dialog" width="800">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" v-on="on">
             Nuevo Paciente
@@ -17,7 +17,7 @@
           <v-card-title
             class="headline"
             primary-title>
-            Agregar nuevo paciente
+            {{ title }}
           </v-card-title>
           <v-card-text>
             <v-container grid-list-md>
@@ -83,11 +83,11 @@
               </v-layout>
             </v-container>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class=card_actions>
             <v-spacer/>
             <v-btn
               color="primary" flat
-              @click="createPatient">
+              @click="savePatient">
               Agregar
             </v-btn>
           </v-card-actions>
@@ -106,7 +106,7 @@
         <td>{{ props.item.age }}</td>
         <td>{{ props.item.gender }}</td>
         <td>
-          <v-icon class="mr-2" @click="editPatient(props.item.dni)">edit</v-icon>
+          <v-icon class="mr-2" @click="editPatientDialog(props.item)">edit</v-icon>
           <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
         </td>
       </template>
@@ -116,12 +116,12 @@
 
 <script>
 import { mapState } from 'vuex'
+import { setTimeout } from 'timers';
 
 export default {
   name: 'Patients',
   data() {
     return {
-      createDialog: false,
       dialog: false,
       headers: [
         { text: 'DNI', value: 'dni' },
@@ -142,10 +142,31 @@ export default {
         gender: null,
         income_diagnosis: null
       },
+      defaultForm: {
+        dni: null,
+        first_name: null,
+        last_name: null,
+        birth_date: null,
+        history_number: null,
+        gender: null,
+        income_diagnosis: null
+      },
+      index: -1,
     }
   },
   computed: {
-    ...mapState(['patient', 'user'])
+    ...mapState(['patient', 'user']),
+    title () {
+      return this.index === -1 ? 'New Item' : 'Edit Item'
+    },
+    formButton() {
+      return this.index === -1 ? 'createPatient' : 'savePatient'
+    },
+  },
+  watch: {
+    dialog (val) {
+      val || this.close()
+    }
   },
   mounted() {
     let token = this.user.token
@@ -161,6 +182,17 @@ export default {
           this.$router.go()
         })
     },
+    editPatientDialog(item){
+      this.index = 1
+      this.patientForm = Object.assign({}, item)
+      this.dialog = true
+    },
+    editPatient() {
+      console.log('edit')
+    },
+    savePatient() {
+      this.index === -1 ? this.createPatient() : this.editPatient()
+    },
     deletePatient(dni) {
       let sure = confirm(`Estas seguro/a de que quieres eliminar al paciente ${dni}?`)
       if (sure) {
@@ -172,7 +204,22 @@ export default {
           })
       }
     },
+    close() {
+      this.dialog = false
+      setTimeout(() => {
+        this.patientForm = Object.assign({}, this.defaultForm)
+        this.index = -1
+      }, 300)
+    },
   }
 }
 </script>
+<style>
+  .card_actions{
+    margin-top: -20px;
+  }
+</style>
+
+
+
 
