@@ -106,6 +106,7 @@
         <td>{{ props.item.age }}</td>
         <td>{{ props.item.gender }}</td>
         <td>
+          <v-icon class="mr-2" @click="editPatient(props.item.dni)">edit</v-icon>
           <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
         </td>
       </template>
@@ -129,7 +130,7 @@ export default {
         { text: 'Fecha de nacimiento', value: 'birth_date' },
         { text: 'Edad', value: 'age' },
         { text: 'Genero', value: 'gender' },
-        { text: 'Acciones', value: 'dni' },
+        { text: 'Acciones', value: 'dni',sortable: false },
       ],
       menu: false,
       patientForm: {
