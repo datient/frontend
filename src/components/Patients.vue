@@ -113,14 +113,9 @@
         </td>
       </template>
     </v-data-table>
-    </v-card> 
   </div>
 </template>
-<style>
-.cardPatient{
-  border-radius: 10px;
-}
-</style>
+
 <script>
 import { mapState } from 'vuex'
 import { setTimeout } from 'timers';

@@ -1,21 +1,14 @@
 <template>
-  <div id="toolbar">
-    <v-card round class="cardBed">
-      <v-toolbar class="toolbarSalas">
-          <v-toolbar-title class="titleSalas">Cama {{ bedId }}</v-toolbar-title>
-      </v-toolbar>
-      <div id="room">
-      <v-list>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              Paciente {{ patient.dni }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-      </v-list>
-      </div>
-    </v-card>
+  <div id="bed">
+    <h1>Cama {{ bedId }}</h1>
+    <h3>Paciente</h3>
+    <h4>{{ patient.dni }}</h4>
+    <h4>{{ patient.first_name }}</h4>
+    <h4>{{ patient.last_name }}</h4>
+    <h4>{{ patient.age }}</h4>
+    <h4>{{ patient.birth_date }}</h4>
+    <h4>{{ patient.gender }}</h4>
+    <h4>{{ patient.income_diagnosis }}</h4>
   </div>
   
 </template>
@@ -45,4 +38,3 @@ export default {
   border-radius: 10px;
 }
 </style>
-
