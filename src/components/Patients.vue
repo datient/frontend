@@ -106,7 +106,8 @@
         <td>{{ props.item.first_name }}</td>
         <td>{{ props.item.birth_date }}</td>
         <td>{{ props.item.age }}</td>
-        <td>{{ props.item.gender }}</td>
+        <td>{{ props.item.gender === 0 ? 'Masculino' : 'Femenino' }}</td>
+        <td>{{ props.item.history_number }}</td>
         <td>
           <v-icon class="mr-2" @click="editPatientDialog(props.item)">edit</v-icon>
           <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
@@ -132,8 +133,8 @@ export default {
         { text: 'Fecha de nacimiento', value: 'birth_date' },
         { text: 'Edad', value: 'age' },
         { text: 'Genero', value: 'gender' },
-        { text: 'N° de Historia', value: 'history_number'},
-        { text: 'Acciones', value: 'dni',sortable: false },
+        { text: 'N° de Historia', value: 'history_number' },
+        { text: 'Acciones', value: 'dni', sortable: false },
       ],
       menu: false,
       patientForm: {
@@ -226,12 +227,9 @@ export default {
   }
 }
 </script>
+
 <style>
   .card_actions{
     margin-top: -25px;
   }
 </style>
-
-
-
-
