@@ -59,7 +59,11 @@
     </v-toolbar>
   </div>
 </template>
-
+<style>
+#toolbar{
+  background-color: #52894c;
+}
+</style>
 <script>
 import { mapState } from 'vuex'
 

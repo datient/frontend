@@ -61,6 +61,7 @@ h1 {
 }
 .toolbarSalas {
     display: flex;
+    
 }
 .cardSalas {
   color: white;
