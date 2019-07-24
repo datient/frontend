@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import hospitalization from './modules/hospitalization'
 import patient from './modules/patient'
 import rooms from './modules/rooms'
 import user from './modules/user'
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     patient,
     rooms,
     user,
+    hospitalization,
   },
   plugins: [createPersistedState()],
 })
