@@ -3,58 +3,13 @@
     <v-card round class="cardBed">
       <v-toolbar class="toolbarSalas">
           <v-toolbar-title class="titleSalas">Cama {{ bedId }}</v-toolbar-title>
-      <div class="text-xs-center">
-        <v-dialog
-          v-model="dialog"
-          width="500"
-        >
-          <template v-slot:activator="{ on }">
-            <v-btn flat icon color="blue" v-on="on">
-              <v-icon color="blue">add</v-icon>
-            </v-btn>
-          </template>
-
-          <v-card>
-            <v-card-title
-              class="headline grey lighten-2"
-              primary-title
-            >
-              Agregar un paciente
-            </v-card-title>
-            <v-container fluid>
-              <v-layout wrap>
-                <v-flex xs12>
-                  <v-combobox
-                    v-model="select"
-                    :items="patient.last_name"
-                    label="Seleccione uno de los pacientes disponibles para anadirlo a la cama"
-                  ></v-combobox>
-                </v-flex>      
-              </v-layout>
-            </v-container>
-           
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-                color="primary"
-                flat
-                @click="dialog = false"
-              >
-                Agregar
-              </v-btn>                                                                                                                                      
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-    </v-toolbar>
-    <div id="room">
+      </v-toolbar>
+      <div id="room">
       <v-list>
         <v-list-tile>
           <v-list-tile-content>
             <v-list-tile>
-              {{ patient.last_name }}
+              {{ patient.dni }}
             </v-list-tile>
           </v-list-tile-content>
         </v-list-tile>
