@@ -98,24 +98,16 @@ const actions = {
       })
     })
   },
-  obtainPatient({ commit }, { token, bedId }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      let index = res.data.hospitalizations.length - 1
-      let dni = res.data.hospitalizations[index]['patient']
+  obtainPatient({ commit }, { token, dni }) {
       axios({
         method: 'get',
         url: `http://127.0.0.1:8000/api/patient/${dni}/`,
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
+        console.log(res.data)
         commit('setPatient', res.data) 
       })
-    })
     .catch(() => {
       commit('setPatient', {
         dni: null,
