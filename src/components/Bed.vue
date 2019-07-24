@@ -22,16 +22,16 @@
               Agregar un paciente
             </v-card-title>
             <v-container fluid>
-            <v-layout wrap>
-              <v-flex xs12>
-                <v-combobox
-                  v-model="select"
-                  :items="patient.patients"
-                  label="Seleccione uno de los pacientes disponibles para anadirlo a la cama"
-                ></v-combobox>
-              </v-flex>      
-            </v-layout>
-  </v-container>
+              <v-layout wrap>
+                <v-flex xs12>
+                  <v-combobox
+                    v-model="select"
+                    :items="patient.last_name"
+                    label="Seleccione uno de los pacientes disponibles para anadirlo a la cama"
+                  ></v-combobox>
+                </v-flex>      
+              </v-layout>
+            </v-container>
            
             <v-divider></v-divider>
 
@@ -48,14 +48,13 @@
           </v-card>
         </v-dialog>
       </div>
-      
-      </v-toolbar>
-      <div id="room">
+    </v-toolbar>
+    <div id="room">
       <v-list>
         <v-list-tile>
           <v-list-tile-content>
             <v-list-tile>
-              {{ patient.dni }}
+              {{ patient.last_name }}
             </v-list-tile>
           </v-list-tile-content>
         </v-list-tile>
