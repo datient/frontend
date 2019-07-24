@@ -101,7 +101,7 @@
       :headers="headers"
       :items="patient.patients">
       <template v-slot:items="props">
-        <td>{{ props.item.dni }}</td>
+        <td><router-link :to="{ name: 'detailview', params: { id: props.item.dni } }"><a>{{ props.item.dni }}</a></router-link></td>
         <td>{{ props.item.last_name }}</td>
         <td>{{ props.item.first_name }}</td>
         <td>{{ props.item.birth_date }}</td>
