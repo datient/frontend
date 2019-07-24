@@ -47,7 +47,31 @@ const actions = {
           last_name: patient.last_name,
           birth_date: patient.birth_date,
           history_number: patient.history_number,
-          gender: 0,
+          gender: patient.gender === 'Masculino' ? 0 : 1,
+          income_diagnosis: patient.income_diagnosis
+        },
+      })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
+  editPatient({ commit }, { token, patient }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'put',
+        url: `http://127.0.0.1:8000/api/patient/${patient.dni}/` ,
+        headers: { 'Authorization': `JWT ${token}` },
+        data: {
+          dni: patient.dni,
+          first_name: patient.first_name,
+          last_name: patient.last_name,
+          birth_date: patient.birth_date,
+          history_number: patient.history_number,
+          gender: patient.gender === 'Masculino' ? 0 : 1,
           income_diagnosis: patient.income_diagnosis
         },
       })
@@ -98,24 +122,16 @@ const actions = {
       })
     })
   },
-  obtainPatient({ commit }, { token, bedId }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      let index = res.data.hospitalizations.length - 1
-      let dni = res.data.hospitalizations[index]['patient']
+  obtainPatient({ commit }, { token, dni }) {
       axios({
         method: 'get',
         url: `http://127.0.0.1:8000/api/patient/${dni}/`,
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
+        console.log(res.data)
         commit('setPatient', res.data) 
       })
-    })
     .catch(() => {
       commit('setPatient', {
         dni: null,

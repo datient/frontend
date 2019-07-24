@@ -125,7 +125,7 @@ export default {
   mounted() {
     let bedId = this.bedId
     let token = this.user.token
-    this.$store.dispatch('patient/obtainPatient', { token, bedId })
+    this.$store.dispatch('hospitalization/obtainHospitalization', { token, bedId })
   },
 }
 </script>
