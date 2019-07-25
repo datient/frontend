@@ -3,7 +3,7 @@
     <v-card round class="cardBed">
       <v-toolbar class="toolbarSalas">
           <v-toolbar-title class="titleSalas">Cama {{ bedId }}</v-toolbar-title>
-          <v-card-title>Medico a cargo: {{ user.email }} </v-card-title>
+          <v-card-title>Medico a cargo: {{ hospitalization.doctor.last_name }} {{hospitalization.doctor.first_name}} </v-card-title>
       <div class="text-xs-center">
         <v-dialog
           v-model="dialog"
@@ -120,7 +120,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['patient', 'user'])
+    ...mapState(['hospitalization' ,'patient', 'user'])
   },
   mounted() {
     let bedId = this.bedId
