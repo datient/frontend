@@ -1,5 +1,5 @@
 <template>
-  <div id="toolbar">
+  <div id="room">
     <v-card round class="cardBed">
       <v-toolbar class="toolbarSalas">
           <v-toolbar-title class="titleSalas">Cama {{ bedId }}</v-toolbar-title>
@@ -45,62 +45,78 @@
     </v-toolbar>
     <div id="room">
       <v-list>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.dni }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>      
-              {{ patient.last_name }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.first_name }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.last_name }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.age }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.birth_date }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.gender }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile>
-          <v-list-tile-content>
-            <v-list-tile>
-              {{ patient.income_diagnosis }}
-            </v-list-tile>
-          </v-list-tile-content>
-        </v-list-tile>
+        <v-container grid-list-md>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Nombre Completo</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#2e7d32">
+                <v-card-text>{{ patient.first_name }} {{ patient.last_name }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>           
+              <v-card-text>Edad</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#388e3c">
+                <v-card-text>{{ patient.age }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Dni</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#2e7d32">
+                <v-card-text>{{ patient.dni }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Fecha de Nacimiento</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#388e3c">
+                <v-card-text>{{ patient.birth_date }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Genero del Paciente</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#2e7d32">
+                <v-card-text>{{ patient.gender }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Edad</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#388e3c">
+                <v-card-text>{{ patient.age }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+          <v-layout>
+            <v-flex xs3>
+              <v-card-text>Diagnostico</v-card-text>
+            </v-flex>
+            <v-flex xs6 grid-list-md text-xs-center>
+              <v-card dark tile flat color="#2e7d32">
+                <v-card-text>{{ patient.income_diagnosis }}</v-card-text>
+              </v-card>
+            </v-flex>
+          </v-layout>
+        </v-container>  
       </v-list>
       </div>
     </v-card>
