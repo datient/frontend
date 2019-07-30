@@ -9,7 +9,7 @@
       <v-spacer/>
       <v-dialog v-model="dialog" width="800">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" v-on="on">
+          <v-btn color="primary" id="btn_new_patient" v-on="on">
             Nuevo Paciente
           </v-btn>
         </template>
@@ -27,12 +27,14 @@
                     v-model="patientForm.first_name"
                     label="Nombre"
                     prepend-icon="person"
+                    id="first_name"
                     type="text"/>
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
                     v-model="patientForm.last_name"
                     label="Apellido"
+                    id="last_name"
                     type="text"/>
                 </v-flex>
                 <v-flex xs12 md7>
@@ -49,6 +51,7 @@
                       <v-text-field
                         v-model="patientForm.birth_date"
                         label="Fecha de nacimiento"
+                        id="birth_date"
                         prepend-icon="calendar_today"
                         readonly
                         v-on="on"/>
@@ -61,6 +64,7 @@
                     v-model="patientForm.dni"
                     label="DNI"
                     prepend-icon="crop_landscape"
+                    id="dni"
                     type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
@@ -68,6 +72,7 @@
                     v-model="patientForm.history_number"
                     label="Numero de historia"
                     prepend-icon="edit"
+                    id="history_number"
                     type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
@@ -75,12 +80,14 @@
                     v-model="patientForm.gender"
                     :items="['Masculino', 'Femenino']"
                     label="Genero"
+                    id="gender"
                     prepend-icon="wc"/>
                 </v-flex>
                 <v-flex>
                   <v-textarea
                     v-model="patientForm.income_diagnosis"
-                    label="Diagnostico"/>
+                    label="Diagnostico"
+                    id="diagnostic"/>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -89,6 +96,7 @@
             <v-spacer/>
             <v-btn
               color="primary" flat
+              id="btn_submit"
               @click="savePatient">
                {{ submit }}
             </v-btn>
