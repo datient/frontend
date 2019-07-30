@@ -105,7 +105,6 @@ const actions = {
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
-        console.log(res.data)
         commit('setPatient', res.data) 
       })
     .catch(() => {
