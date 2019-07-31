@@ -99,16 +99,16 @@ const actions = {
     })
   },
   obtainPatient({ commit }, { token, dni }) {
-      axios({
-        method: 'get',
-        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
-        headers: { 'Authorization': `JWT ${token}` },
-      })
-      .then(res => {
-        console.log(res.data)
-        commit('setPatient', res.data) 
-      })
-    .catch(() => {
+    axios({
+      method: 'get',
+      url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+      headers: { 'Authorization': `JWT ${token}` },
+    })
+    .then(res => {
+      commit('setPatient', res.data) 
+    })
+    .catch((err) => {
+      console.log(err.response)
       commit('setPatient', {
         dni: null,
         age: null,

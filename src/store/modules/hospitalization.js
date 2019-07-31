@@ -3,12 +3,16 @@ import { userInfo } from 'os';
 
 const state = {
   doctor: null,
+  error: null,
 }
 
 const mutations = {
   setDoctor(state, doctor) {
     state.doctor = doctor
-  }
+  },
+  setError(state, error) {
+    state.error = error
+  },
 }
 
 const actions = {
@@ -29,7 +33,27 @@ const actions = {
       })
       .then(res => {
         commit('setDoctor', res.data)
+        commit('setError', null)
       })
+    })
+    .catch(err => {
+      commit('setDoctor', null)
+      let detailError = err.response.data.detail
+      commit('setError', detailError)
+      commit(
+        'patient/setPatient',
+        {
+          dni: null,
+          age: null,
+          first_name: null,
+          last_name: null,
+          birth_date: null,
+          gender: null,
+          history_number: null,
+          income_diagnosis: null,
+        },
+        { root: true },
+      )
     })
   }
 }

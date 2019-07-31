@@ -9,9 +9,12 @@
         <v-spacer></v-spacer>
         
         <v-icon>person</v-icon>
-        <v-toolbar-title>{{ hospitalization.doctor.first_name }} {{ hospitalization.doctor.last_name }}</v-toolbar-title>
+        <v-toolbar-title v-if="hospitalization.doctor != null">
+          {{ hospitalization.doctor.first_name }} {{ hospitalization.doctor.last_name }}
+        </v-toolbar-title>
       </v-toolbar>  
-      <v-container grid-list-xl text-center>
+      <h1 v-if="hospitalization.error != null">{{ hospitalization.error }}</h1>
+      <v-container grid-list-xl text-center v-if="patient.dni != null">
         <v-layout>
           <v-flex xs3 offset-xs3>
               <v-card-text >Nombre: {{ patient.last_name }} {{ patient.first_name }}</v-card-text>
@@ -21,7 +24,7 @@
           </v-flex>
         </v-layout>
         <v-layout>
-          <v-flex xs3 xs3 offset-xs3>
+          <v-flex xs3 offset-xs3>
               <v-card-text >Dni: {{ patient.dni }}</v-card-text>
           </v-flex>
           <v-flex xs3>
@@ -29,56 +32,13 @@
           </v-flex>
         </v-layout>
         <v-layout>
-          <v-flex xs3 xs3 offset-xs3>
+          <v-flex xs3 offset-xs3>
               <v-card-text >Genero: {{ patient.gender }}</v-card-text>
           </v-flex>
           <v-flex xs3>
               <v-card-text >Diagnostico: {{ patient.income_diagnosis }}</v-card-text>
           </v-flex>
         </v-layout>
-
-        <!-- <v-layout>
-          <v-flex xs3>
-              <v-card-text >Nombre:</v-card-text>
-          </v-flex>
-          <v-flex xs3>
-              <v-card-text >{{ patient.last_name }} {{ patient.first_name }}</v-card-text>
-          </v-flex>
-            <v-flex xs3>
-                <v-card-text >Edad:</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >{{ patient.age }}</v-card-text>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs3>
-                <v-card-text >Dni:</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >{{ patient.dni }}</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >Fecha de Nacimiento:</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >{{ patient.birth_date }}</v-card-text>
-            </v-flex>
-          </v-layout>
-          <v-layout>
-            <v-flex xs3>
-                <v-card-text >Genero:</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >{{ patient.gender }}</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >Diagnostico:</v-card-text>
-            </v-flex>
-            <v-flex xs3>
-                <v-card-text >{{ patient.income_diagnosis }}</v-card-text>
-            </v-flex>
-          </v-layout> -->
       </v-container>  
     
     </v-card>
