@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-      <v-card round class="cardSalas">
+      <v-card class="cardSalas">
       <v-toolbar class="toolbarSalas">
           <v-toolbar-title class="titleSalas">Salas</v-toolbar-title>
       </v-toolbar>
