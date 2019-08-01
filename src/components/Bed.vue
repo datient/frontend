@@ -48,7 +48,7 @@
                       color="primary"
                       text
                       @click="assignPatient">
-                      I accept
+                      Asignar
                     </v-btn>
                   </v-card-actions>
                 </v-card>
@@ -111,7 +111,19 @@ export default {
   },
   methods: {
     assignPatient() {
-      console.log(this.select)
+      let bedId = this.bedId
+      let token = this.user.token
+      let doctorId = this.user.id
+      let patientDni = this.select.dni
+      this.$store.dispatch('hospitalization/createHospitalization', {
+        token,
+        bedId,
+        doctorId,
+        patientDni
+      })
+      .then(res => {
+        this.$router.go()
+      })
       this.dialog = false
     },
   },

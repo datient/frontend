@@ -16,6 +16,31 @@ const mutations = {
 }
 
 const actions = {
+  createHospitalization({ commit }, { token, bedId, doctorId, patientDni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/api/hospitalization/`,
+        headers: { 'Authorization': `JWT ${token}` },
+        data: {
+          bed: bedId,
+          doctor: doctorId,
+          patient: patientDni,
+          progress: {
+            diagnosis: 'Asd',
+            description: 'desc',
+            status: 0
+          },
+        },
+      })
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
   obtainHospitalization({ commit, dispatch }, { token, bedId }) {
     axios({
       method: 'get',
