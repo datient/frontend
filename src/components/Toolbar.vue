@@ -13,13 +13,8 @@
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
-              <router-link :to="{ 'name': 'patients' }">
-                <v-toolbar-title>
-                  <v-list>
-     
-                 {{ item.title }}
-                  </v-list>
-                </v-toolbar-title>  
+              <router-link :id="item.id" :to="{ 'name': 'patients' }">
+              {{ item.title }}
               </router-link>
             </v-list-tile-title>
           </v-list-tile-content>
@@ -27,9 +22,9 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="primary" dark>
-      <v-toolbar-side-icon @click="drawer = !drawer"/>
+      <v-toolbar-side-icon id="btn_drawer" @click="drawer = !drawer"/>
       <v-toolbar-title>
-        <router-link :to="{ name: 'home'}"> 
+        <router-link :to="{ name: 'home' }"> 
           <v-btn flat dark large
             color="" 
             class="btnDatient"
@@ -59,11 +54,7 @@
     </v-toolbar>
   </div>
 </template>
-<style>
-#toolbar{
-  background-color: #52894c;
-}
-</style>
+
 <script>
 import { mapState } from 'vuex'
 
@@ -73,7 +64,7 @@ export default {
     return {
       drawer: null,
       drawerItems: [
-        { title: 'Pacientes', icon: 'person' },
+        { title: 'Pacientes', icon: 'person', id: 'btn_patients' },
       ],
       toolItems: [
         { title: 'Cerrar sesión' },
@@ -87,9 +78,8 @@ export default {
     logOut() {
       this.$store.dispatch('user/logOut')
       this.$router.push({ name: 'login' })
+
     },
   },
 }
-
-
 </script>

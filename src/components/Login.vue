@@ -13,23 +13,33 @@
                   <v-text-field
                     v-model="email"
                     prepend-icon="person"
+                    id="email"
                     label="Email"
                     type="email"/>
                   <v-text-field
                     v-model="password"
                     prepend-icon="lock"
+                    id="password"
                     label="Contraseña"
                     type="password"
                   />
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <router-link :to="{ name: 'register' }">
-                    <v-btn color="primary"
+                    <v-btn
+                      id="btn_register"
+                      color="primary"
                       flat>
                       Registrarse
                     </v-btn>
                     </router-link>
-                    <v-btn class= "btnIngresar" color="primary" type="submit">Ingresar</v-btn>
+                    <v-btn
+                      id="btn_login"
+                      class= "btnIngresar"
+                      color="primary"
+                      type="submit">
+                      Ingresar
+                    </v-btn>
                   </v-card-actions>
                 </form>
               </v-card-text>

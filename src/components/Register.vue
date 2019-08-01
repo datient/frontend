@@ -16,12 +16,14 @@
                         <v-text-field
                           v-model="user.first_name"
                           prepend-icon="person"
+                          id="first_name"
                           label="Nombre"
                           type="text"/>
                       </v-flex>
                       <v-flex md6>
                         <v-text-field
                           v-model="user.last_name"
+                          id="last_name"
                           label="Apellido"
                           type="text"/>
                       </v-flex>
@@ -29,6 +31,7 @@
                         <v-text-field
                           v-model="user.email"
                           prepend-icon="alternate_email"
+                          id="email"
                           label="Email"
                           type="email"/>
                       </v-flex>
@@ -37,6 +40,7 @@
                           v-model="user.hierarchy"
                           :items="['Jefe', 'Medico', 'Medico']"
                           prepend-icon="how_to_reg"
+                          id="hierarchy"
                           label="Jerarquia">
                         </v-select>
                       </v-flex>
@@ -44,12 +48,14 @@
                         <v-text-field
                           v-model="user.password"
                           prepend-icon="lock"
+                          id="password"
                           label="Contraseña"
                           type="password"/>
                       </v-flex>
                       <v-flex md6>
                         <v-text-field
                           v-model="user.password_confirm"
+                          id="password_confirm"
                           label="Confirmar contraseña"
                           type="password"/>
                       </v-flex>
@@ -57,7 +63,12 @@
                   </v-container>
                   <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" type="submit">Registrarse</v-btn>
+                    <v-btn
+                      id="btn_register"
+                      color="primary"
+                      type="submit">
+                      Registrarse
+                    </v-btn>
                   </v-card-actions>
                 </form>
               </v-card-text>
