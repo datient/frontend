@@ -14,7 +14,12 @@
           <v-list-tile-content>
             <v-list-tile-title>
               <router-link :to="{ 'name': 'patients' }">
-              {{ item.title }}
+                <v-toolbar-title>
+                  <v-list>
+     
+                 {{ item.title }}
+                  </v-list>
+                </v-toolbar-title>  
               </router-link>
             </v-list-tile-title>
           </v-list-tile-content>
@@ -54,7 +59,11 @@
     </v-toolbar>
   </div>
 </template>
-
+<style>
+#toolbar{
+  background-color: #52894c;
+}
+</style>
 <script>
 import { mapState } from 'vuex'
 
@@ -78,8 +87,6 @@ export default {
     logOut() {
       this.$store.dispatch('user/logOut')
       this.$router.push({ name: 'login' })
-      this.$router.push({name:'home'})
-      
     },
   },
 }

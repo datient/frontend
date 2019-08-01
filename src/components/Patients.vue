@@ -82,7 +82,7 @@
             <v-btn color="primary" flat @click="savePatient">{{ submit }}</v-btn>
           </v-card-actions>
         </v-card>
-      </v-dialog>
+      </v-dialog>    
     </v-toolbar>
     <v-data-table hide-actions :headers="headers" :items="patient.patients">
       <template v-slot:items="props">
@@ -106,6 +106,7 @@
         <td class="text-xs-center" colspan="8"> No hay pacientes registrados</td>
       </template>
     </v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -221,6 +222,11 @@ export default {
   }
 };
 </script>
+<style>
+  .card_actions{
+    margin-top: -20px;
+  }
+</style>
 
 <style>
 .card_actions {
