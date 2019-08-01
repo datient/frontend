@@ -2,18 +2,15 @@
   <div id="room">
     <v-card class="cardBed">
       <v-toolbar dense>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>Cama {{ bedId }}</v-toolbar-title>
-       
-        <v-spacer></v-spacer>
-        
+        <v-spacer/>
         <v-icon>person</v-icon>
         <v-toolbar-title v-if="hospitalization.doctor != null">
           {{ hospitalization.doctor.first_name }} {{ hospitalization.doctor.last_name }}
         </v-toolbar-title>
       </v-toolbar>
       <v-container v-if="hospitalization.error != null">
-        <v-spacer></v-spacer>
+        <v-spacer/>
         <v-layout>
           <v-flex xs11>
             <v-card-text>{{ hospitalization.error }}</v-card-text>
@@ -22,39 +19,35 @@
             <div class="text-center">
               <v-dialog
                 v-model="dialog"
-                width="500"
-              >
+                width="500">
                 <template v-slot:activator="{ on }">
                   <v-btn class="mx-2" fab dark color="indigo" v-on="on">
                     <v-icon dark>add</v-icon>
                   </v-btn>
                 </template>
-
                 <v-card>
                   <v-card-title
                     class="headline grey lighten-2"
-                    primary-title
-                  >
+                    primary-title>
                     Agregar paciente a la cama
                   </v-card-title>
                   <v-layout wrap>
                     <v-flex xs12>
-                      <v-combobox
+                      <v-select
                         v-model="select"
                         :items="patient.patients"
+                        item-text="last_name"
                         label="Seleccione un paciente para asignar a la cama"
-                      ></v-combobox>
+                        return-object/>
                     </v-flex>
                   </v-layout>
-                  <v-divider></v-divider>
-
+                  <v-divider/>
                   <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
                     <v-btn
                       color="primary"
                       text
-                      @click="dialog = false"
-                    >
+                      @click="assignPatient">
                       I accept
                     </v-btn>
                   </v-card-actions>
@@ -115,6 +108,12 @@ export default {
     let bedId = this.bedId
     let token = this.user.token
     this.$store.dispatch('hospitalization/obtainHospitalization', { token, bedId })
+  },
+  methods: {
+    assignPatient() {
+      console.log(this.select)
+      this.dialog = false
+    },
   },
 }
 </script>

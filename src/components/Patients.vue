@@ -180,7 +180,6 @@ export default {
   },
   mounted() {
     let token = this.user.token
-    this.$store.dispatch('patient/obtainPatients', token)
   },
   methods: {
     createPatient() {

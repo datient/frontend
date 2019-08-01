@@ -48,6 +48,7 @@ export default {
   mounted() {
     let token = this.user.token
     this.$store.dispatch('rooms/obtainRooms', token)
+    this.$store.dispatch('patient/obtainPatients', token)
   },
 }
 </script>
