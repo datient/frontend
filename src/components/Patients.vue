@@ -6,7 +6,9 @@
       <v-spacer />
       <v-dialog v-model="dialog" width="800">
         <template v-slot:activator="{ on }">
-          <v-btn color="primary" v-on="on">Nuevo Paciente</v-btn>
+          <v-btn color="primary" id="btn_new_patient" v-on="on">
+            Nuevo Paciente
+          </v-btn>
         </template>
         <v-card>
           <v-card-title class="headline" primary-title>{{ title }}</v-card-title>
@@ -18,11 +20,15 @@
                     v-model="patientForm.first_name"
                     label="Nombre"
                     prepend-icon="person"
-                    type="text"
-                  />
+                    id="first_name"
+                    type="text"/>
                 </v-flex>
                 <v-flex xs12 md6>
-                  <v-text-field v-model="patientForm.last_name" label="Apellido" type="text" />
+                  <v-text-field
+                    v-model="patientForm.last_name"
+                    label="Apellido"
+                    id="last_name"
+                    type="text"/>
                 </v-flex>
                 <v-flex xs12 md7>
                   <v-menu
@@ -39,6 +45,7 @@
                       <v-text-field
                         v-model="patientForm.birth_date"
                         label="Fecha de nacimiento"
+                        id="birth_date"
                         prepend-icon="calendar_today"
                         readonly
                         v-on="on"
@@ -52,34 +59,42 @@
                     v-model="patientForm.dni"
                     label="DNI"
                     prepend-icon="crop_landscape"
-                    type="number"
-                  />
+                    id="dni"
+                    type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-text-field
                     v-model="patientForm.history_number"
                     label="Numero de historia"
                     prepend-icon="edit"
-                    type="number"
-                  />
+                    id="history_number"
+                    type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
                   <v-select
                     v-model="patientForm.gender"
                     :items="['Masculino', 'Femenino']"
                     label="Genero"
-                    prepend-icon="wc"
-                  />
+                    id="gender"
+                    prepend-icon="wc"/>
                 </v-flex>
                 <v-flex>
-                  <v-textarea v-model="patientForm.income_diagnosis" label="Diagnostico" />
+                  <v-textarea
+                    v-model="patientForm.income_diagnosis"
+                    label="Diagnostico"
+                    id="diagnostic"/>
                 </v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
-          <v-card-actions class="card_actions">
-            <v-spacer />
-            <v-btn color="primary" flat @click="savePatient">{{ submit }}</v-btn>
+          <v-card-actions class=card_actions>
+            <v-spacer/>
+            <v-btn
+              color="primary" flat
+              id="btn_submit"
+              @click="savePatient">
+               {{ submit }}
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>    
