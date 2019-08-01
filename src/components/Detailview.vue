@@ -15,7 +15,7 @@
         <v-tabs-items v-model="tab">
           <v-tab-item>
             <v-container fluid grid-list-sm>
-              <v-layout wrap>
+              <v-layout class="grid" wrap>
                 <v-flex lg12>
                   <v-icon>crop_landscape</v-icon>
                   DNI:
@@ -50,7 +50,11 @@
           </v-tab-item>
           <v-tab-item>
             <v-container fluid grid-list-sm>
-              <v-layout wrap>
+              <v-layout class="grid" wrap>
+                <v-flex lg9>
+                  <v-icon>hotel</v-icon>
+                  Cama actual:
+                </v-flex>
                 <v-flex lg9>
                   <v-icon>healing</v-icon>
                   Diagnostico inicial:
@@ -60,7 +64,7 @@
             </v-container>
           </v-tab-item>
           <v-tab-item>
-            <v-container fluid grid-list-sm>
+            <v-container class="grid" fluid grid-list-sm>
               <v-layout wrap>
                 <v-flex lg6 md6>
                   <v-icon>folder_shared</v-icon>Estudios complementarios:
@@ -99,6 +103,9 @@ export default {
 };
 </script>
 <style>
+.grid{
+  grid-row-gap: 20px;
+}
 .cardDetailview {
   border-radius: 10px;
 }

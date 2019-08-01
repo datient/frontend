@@ -102,6 +102,9 @@
           <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
         </td>
       </template>
+      <template v-slot:no-data>
+        <td class="text-xs-center" colspan="8"> No hay pacientes registrados</td>
+      </template>
     </v-data-table>
   </div>
 </template>
