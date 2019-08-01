@@ -1,10 +1,12 @@
 <template>
   <div id="detailview">
     <v-card round class="cardDetailview">
-      <v-toolbar >
+      <v-toolbar>
         <v-toolbar-title>
           <v-layout>
-            <v-flex xs6> {{ patient.last_name }},</v-flex> <v-flex class="fixtitle"> {{ patient.first_name }}</v-flex>
+            <v-flex class="fixtitle">
+              {{ patient.last_name }}, {{ patient.first_name }}
+            </v-flex>
           </v-layout>
         </v-toolbar-title>
       </v-toolbar>
@@ -105,11 +107,10 @@ export default {
     let dni = this.dni;
     this.$store.dispatch("patient/obtainPatient", { token, dni });
     this.$store.dispatch("studies/obtainComplementaryStudies", { token });
-    let filter = "patient_filter"
-    this.$store.dispatch('hospitalization/obtainHospitalization', { token, dni, filter });
   }
 };
 </script>
+
 <style>
 .grid{
   grid-row-gap: 20px;
