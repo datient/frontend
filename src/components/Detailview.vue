@@ -54,6 +54,7 @@
                 <v-flex lg9>
                   <v-icon>hotel</v-icon>
                   Cama actual:
+                  {{ hospitalization.bedName }}
                 </v-flex>
                 <v-flex lg9>
                   <v-icon>healing</v-icon>
@@ -67,7 +68,11 @@
             <v-container class="grid" fluid grid-list-sm>
               <v-layout wrap>
                 <v-flex lg6 md6>
-                  <v-icon>folder_shared</v-icon>Estudios complementarios:
+                  <v-icon>folder_shared</v-icon>
+                  Estudios complementarios:
+                  <v-flex v-for="study in studies.studies" :key="study.id">
+                    <v-img :src="study.image"/>
+                  </v-flex>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -92,13 +97,16 @@ export default {
     };
   },
   computed: {
-    ...mapState(["patient", "user"])
+    ...mapState(["studies","hospitalization","patient", "user"])
   },
   watch: {},
   mounted() {
     let token = this.user.token;
     let dni = this.dni;
     this.$store.dispatch("patient/obtainPatient", { token, dni });
+    this.$store.dispatch("studies/obtainComplementaryStudies", { token });
+    let filter = "patient_filter"
+    this.$store.dispatch('hospitalization/obtainHospitalization', { token, dni, filter });
   }
 };
 </script>

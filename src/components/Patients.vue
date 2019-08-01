@@ -106,7 +106,6 @@
         <td class="text-xs-center" colspan="8"> No hay pacientes registrados</td>
       </template>
     </v-data-table>
-    </v-card>
   </div>
 </template>
 
@@ -222,11 +221,6 @@ export default {
   }
 };
 </script>
-<style>
-  .card_actions{
-    margin-top: -20px;
-  }
-</style>
 
 <style>
 .card_actions {
