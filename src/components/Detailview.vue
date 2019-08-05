@@ -106,7 +106,6 @@ export default {
     let token = this.user.token;
     let dni = this.dni;
     this.$store.dispatch("patient/obtainPatient", { token, dni });
-    this.$store.dispatch("studies/obtainComplementaryStudies", { token });
   }
 };
 </script>
