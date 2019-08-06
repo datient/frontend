@@ -69,12 +69,24 @@
           <v-tab-item>
             <v-container class="grid" fluid grid-list-sm>
               <v-layout wrap>
-                <v-flex lg6 md6>
-                  <v-icon>folder_shared</v-icon>
-                  Estudios complementarios:
-                  <v-flex v-for="study in studies.studies" :key="study.id">
-                    <v-img :src="study.image"/>
-                  </v-flex>
+                <v-flex xs 12>
+                  <v-expansion-panel
+                      v-model="panel"
+                      expand
+                    >
+                     <v-expansion-panel-content>
+                       <template v-slot:header>
+                        <div>Imagenes</div>
+                      </template>
+                      <v-card>
+                        <v-card-text>
+                           <v-flex v-for="study in studies.studies" :key="study.id">
+                            <v-img :src="study.image"/>
+                          </v-flex>
+                        </v-card-text>
+                      </v-card>
+                     </v-expansion-panel-content>
+                  </v-expansion-panel>
                 </v-flex>
               </v-layout>
             </v-container>
