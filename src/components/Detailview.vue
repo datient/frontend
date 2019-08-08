@@ -11,10 +11,10 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text>
-        <v-tabs v-model="tab" background-color="transparent" color="basil" grow>
+        <v-tabs v-model="studies.tab" background-color="transparent" color="basil" grow @change="selectTab">
           <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
         </v-tabs>
-        <v-tabs-items v-model="tab">
+        <v-tabs-items v-model="studies.tab">
           <v-tab-item>
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
@@ -67,22 +67,33 @@
             </v-container>
           </v-tab-item>
           <v-tab-item>
-            <v-container class="grid" fluid grid-list-sm>
+            <v-container fluid grid-list-sm>
               <v-layout wrap>
                 <v-flex xs 12>
-                  <v-expansion-panel
-                      v-model="panel"
-                      expand
-                    >
+                  <v-expansion-panel expand>
                      <v-expansion-panel-content>
                        <template v-slot:header>
                         <div>Imagenes</div>
                       </template>
                       <v-card>
                         <v-card-text>
-                           <v-flex v-for="study in studies.studies" :key="study.id">
-                            <v-img :src="study.image"/>
+                          <v-layout>
+                          <v-spacer/>
+                            <v-btn xs12 fab dark color="indigo" >
+                              <v-icon dark>create_new_folder</v-icon>
+                            </v-btn>
+                          </v-layout>
+                          <v-layout wrap >
+                          <v-flex xs3 class="ig" v-for="study in studies.studies" :key="study.id">
+                            <a :href="study.image">
+                            <v-img 
+                              :src="study.image"
+                              aspect-ratio="1" 
+                            >
+                            </v-img>
+                            </a>
                           </v-flex>
+                          </v-layout>
                         </v-card-text>
                       </v-card>
                      </v-expansion-panel-content>
@@ -118,11 +129,20 @@ export default {
     let token = this.user.token;
     let dni = this.dni;
     this.$store.dispatch("patient/obtainPatient", { token, dni });
+  },
+  methods:{
+    selectTab(){
+      let tab = this.tab;
+      this.$store.commit("studies/setIndexTab", { tab })
+    }
   }
 };
 </script>
 
 <style>
+.ig{
+  padding:10px !important;
+}
 .grid{
   grid-row-gap: 20px;
 }

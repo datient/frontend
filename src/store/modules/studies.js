@@ -1,12 +1,16 @@
 import axios from 'axios'
 
 const state = {
-  studies: null
+  studies: null,
+  indexTab: null
 }
 
 const mutations = {
   setStudies(state, studies){
     state.studies = studies
+  },
+  setIndexTab(state,indexTab){
+    state.indexTab = indexTab
   }
 
 }
