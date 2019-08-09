@@ -79,11 +79,19 @@
                         <v-card-text>
                           <v-layout>
                           <v-spacer/>
-                            <v-btn xs12 fab dark color="indigo" >
+                          	<v-text-field label="Seleccionar imagen" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
+                              <input
+                                type="file"
+                                style="display: none"
+                                ref="image"
+                                accept="image/*"
+                                @change="onFilePicked"
+                              >
+                            <v-btn xs12 fab dark color="indigo" @click="agregar">
                               <v-icon dark>create_new_folder</v-icon>
                             </v-btn>
                           </v-layout>
-                          <v-layout wrap >
+                          <v-layout wrap>
                           <v-flex xs3 class="ig" v-for="study in studies.studies" :key="study.id">
                             <a :href="study.image">
                             <v-img 
@@ -116,6 +124,11 @@ export default {
   name: "Patients",
   data() {
     return {
+      title: "Image Upload",
+      dialog: false,
+		  imageName: '',
+		  imageUrl: '',
+		  imageFile: '',
       dni: this.$route.params.id,
       tab: null,
       items: ["Datos Personales", "Diagnosticos", "Estudios Complementarios"]
@@ -134,8 +147,44 @@ export default {
     selectTab(){
       let tab = this.tab;
       this.$store.commit("studies/setIndexTab", { tab })
+    },
+    pickFile () {
+            this.$refs.image.click ()
+        },
+		
+		onFilePicked (e) {
+			const files = e.target.files
+			if(files[0] !== undefined) {
+				this.imageName = files[0].name
+				if(this.imageName.lastIndexOf('.') <= 0) {
+					return
+				}
+				const fr = new FileReader ()
+				fr.readAsDataURL(files[0])
+				fr.addEventListener('load', () => {
+					this.imageUrl = fr.result
+					this.imageFile = files[0] // this is an image file that can be sent to server...
+				})
+			} else {
+				this.imageName = ''
+				this.imageFile = ''
+				this.imageUrl = ''
+			}
+    },
+    agregar () {
+      let token = this.user.token
+      let dni = this.dni
+      let imageName = this.imageName
+      let imageUrl = this.imageUrl
+      let imageFile = this.imageFile
+      let image = { 
+        imageName,
+		    imageUrl,
+        imageFile}
+        console.log(imageFile)
+      this.$store.dispatch("studies/createComplementaryStudy",{ token,dni,imageFile }).then(() => { this.$router.go() });
     }
-  }
+    } 
 };
 </script>
 
