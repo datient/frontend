@@ -11,7 +11,11 @@
         </v-toolbar-title>
       </v-toolbar>
       <v-card-text>
-        <v-tabs v-model="studies.tab" background-color="transparent" color="basil" grow @change="selectTab">
+        <v-tabs
+          v-model="studies.tab"
+          background-color="transparent"
+          grow
+          @change="selectTab">
           <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
         </v-tabs>
         <v-tabs-items v-model="studies.tab">
@@ -42,6 +46,16 @@
                   Sexo:
                   {{ patient.gender }}
                 </v-flex>
+                <v-flex lg4 v-if="patient.contact">
+                  <v-icon>phone</v-icon>
+                  Telefono de contacto:
+                  {{ patient.contact }}
+                </v-flex>
+                <v-flex lg4 v-if="patient.contact2">
+                  <v-icon>phone</v-icon>
+                  Telefono de contacto 2:
+                  {{ patient.contact2 }}
+                </v-flex>
                 <v-flex lg3>
                   <v-icon>format_list_numbered</v-icon>
                   Numero de Historia:
@@ -53,12 +67,17 @@
           <v-tab-item>
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
-                <v-flex lg9>
+                <v-flex lg3>
                   <v-icon>hotel</v-icon>
                   Cama actual:
-                  {{ hospitalization.bedName }}
                 </v-flex>
-                <v-flex lg9>
+                <v-flex class="fix2" lg4 v-if="hospitalization.bed">
+                  {{ hospitalization.bed.name }}
+                </v-flex>
+                <v-flex class="fix2" lg4 v-if="hospitalization.error">
+                  No se encuentra internado en este momento
+                </v-flex>
+                <v-flex lg12>
                   <v-icon>healing</v-icon>
                   Diagnostico inicial:
                   {{ patient.income_diagnosis }}
@@ -79,26 +98,29 @@
                         <v-card-text>
                           <v-layout>
                           <v-spacer/>
-                          	<v-text-field label="Seleccionar imagen" @click='pickFile' v-model='imageName' prepend-icon='attach_file'></v-text-field>
-                              <input
-                                type="file"
-                                style="display: none"
-                                ref="image"
-                                accept="image/*"
-                                @change="onFilePicked"
-                              >
+                          	<v-text-field
+                              label="Seleccionar imagen"
+                              @click='pickFile'
+                              v-model='imageName'
+                              prepend-icon='attach_file'/>
+                            <input
+                              type="file"
+                              style="display: none"
+                              ref="image"
+                              accept="image/*"
+                              @change="onFilePicked">
                             <v-btn xs12 fab dark color="indigo" @click="agregar">
                               <v-icon dark>create_new_folder</v-icon>
                             </v-btn>
                           </v-layout>
                           <v-layout wrap>
-                          <v-flex xs3 class="ig" v-for="study in studies.studies" :key="study.id">
+                          <v-flex xs3 class="ig"
+                            v-for="study in studies.studies"
+                            :key="study.id">
                             <a :href="study.image">
-                            <v-img 
-                              :src="study.image"
-                              aspect-ratio="1" 
-                            >
-                            </v-img>
+                              <v-img
+                                :src="study.image"
+                                aspect-ratio="1"/>
                             </a>
                           </v-flex>
                           </v-layout>
@@ -117,42 +139,48 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { setTimeout } from "timers";
+import { mapState } from 'vuex'
 
 export default {
-  name: "Patients",
+  name: 'Patients',
   data() {
     return {
-      title: "Image Upload",
       dialog: false,
 		  imageName: '',
 		  imageUrl: '',
 		  imageFile: '',
       dni: this.$route.params.id,
       tab: null,
-      items: ["Datos Personales", "Diagnosticos", "Estudios Complementarios"]
-    };
+      items: [
+        'Datos Personales',
+        'Diagnosticos',
+        'Estudios Complementarios'
+      ]
+    }
   },
   computed: {
-    ...mapState(["studies","hospitalization","patient", "user"])
+    ...mapState(['studies','hospitalization', 'patient', 'user'])
   },
-  watch: {},
   mounted() {
-    let token = this.user.token;
-    let dni = this.dni;
-    this.$store.dispatch("patient/obtainPatient", { token, dni });
+    let token = this.user.token
+    let dni = this.dni
+    this.$store.dispatch('patient/obtainPatient', { token, dni })
+    this.getHospitalization()
   },
-  methods:{
+  methods: {
+    getHospitalization() {
+      let dni = this.dni
+      let token = this.user.token
+      this.$store.dispatch('hospitalization/obtainHospitalizationPatient', { token, dni })
+    },
     selectTab(){
       let tab = this.tab;
-      this.$store.commit("studies/setIndexTab", { tab })
+      this.$store.commit('studies/setIndexTab', tab)
     },
-    pickFile () {
-            this.$refs.image.click ()
-        },
-		
-		onFilePicked (e) {
+    pickFile() {
+      this.$refs.image.click()
+    },
+		onFilePicked(e) {
 			const files = e.target.files
 			if(files[0] !== undefined) {
 				this.imageName = files[0].name
@@ -171,7 +199,7 @@ export default {
 				this.imageUrl = ''
 			}
     },
-    agregar () {
+    agregar() {
       let token = this.user.token
       let dni = this.dni
       let imageName = this.imageName
@@ -180,11 +208,13 @@ export default {
       let image = { 
         imageName,
 		    imageUrl,
-        imageFile}
-        console.log(imageFile)
-      this.$store.dispatch("studies/createComplementaryStudy",{ token,dni,imageFile }).then(() => { this.$router.go() });
+        imageFile
+      }
+      this.$store
+        .dispatch('studies/createComplementaryStudy', { token, dni, imageFile })
+        .then(() => { this.$router.go() })
     }
-    } 
+  } 
 };
 </script>
 
@@ -204,5 +234,8 @@ export default {
 .fix {
   margin-top: 4.8px;
 }
+.fix2{
+  margin-top: 4.8px;
+  margin-left: -148px;
+}
 </style>
-

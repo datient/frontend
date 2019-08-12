@@ -8,6 +8,8 @@ const state = {
   birth_date: null,
   gender: null,
   history_number: null,
+  contact: null,
+  contact2: null,
   income_diagnosis: null,
   patients: null,
 }
@@ -27,6 +29,8 @@ const mutations = {
       state.gender = null
     }
     state.history_number = patient['history_number']
+    state.contact = patient['contact']
+    state.contact2 = patient['contact2']
     state.income_diagnosis = patient['income_diagnosis']
   },
   setPatients(state, patients) {
@@ -48,6 +52,8 @@ const actions = {
           birth_date: patient.birth_date,
           history_number: patient.history_number,
           gender: patient.gender === 'Masculino' ? 0 : 1,
+          contact: patient.contact,
+          contact2: patient.contact2,
           income_diagnosis: patient.income_diagnosis
         },
       })
@@ -72,6 +78,8 @@ const actions = {
           birth_date: patient.birth_date,
           history_number: patient.history_number,
           gender: patient.gender === 'Masculino' ? 0 : 1,
+          contact: patient.contact,
+          contact2: patient.contact2,
           income_diagnosis: patient.income_diagnosis
         },
       })
@@ -109,7 +117,6 @@ const actions = {
       commit('studies/setStudies', res.data.studies, { root:true }) 
     })
     .catch((err) => {
-      console.log(err.response)
       commit('setPatient', {
         dni: null,
         age: null,
@@ -118,6 +125,8 @@ const actions = {
         birth_date: null,
         gender: null,
         history_number: null,
+        contact: null,
+        contact2: null,
         income_diagnosis: null,
       })
     })

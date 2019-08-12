@@ -13,7 +13,7 @@
         <v-card>
           <v-card-title class="headline" primary-title>{{ title }}</v-card-title>
           <v-card-text>
-            <v-container grid-list-md>
+            <v-container class="form" grid-list-md>
               <v-layout wrap>
                 <v-flex xs12 md6>
                   <v-text-field
@@ -39,8 +39,7 @@
                     transition="scale-transition"
                     offset-y
                     full-width
-                    min-width="290"
-                  >
+                    min-width="290">
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="patientForm.birth_date"
@@ -48,10 +47,9 @@
                         id="birth_date"
                         prepend-icon="calendar_today"
                         readonly
-                        v-on="on"
-                      />
+                        v-on="on"/>
                     </template>
-                    <v-date-picker v-model="patientForm.birth_date" @input="menu = false" />
+                    <v-date-picker v-model="patientForm.birth_date" @input="menu = false"/>
                   </v-menu>
                 </v-flex>
                 <v-flex xs12 md5>
@@ -78,8 +76,26 @@
                     id="gender"
                     prepend-icon="wc"/>
                 </v-flex>
+                <v-flex xs6 md6>
+                  <v-text-field
+                  v-model="patientForm.contact"
+                  label="Numero de contacto"
+                  type="number"
+                  prepend-icon="phone"
+                  id="contact"/>
+                </v-flex>
+                <v-flex xs6 md6>
+                  <v-text-field
+                  v-model="patientForm.contact2"
+                  label="Numero de contacto 2"
+                  type="number"
+                  prepend-icon="phone"
+                  id="contact2"/>
+                </v-flex>
                 <v-flex>
-                  <v-textarea
+                  <v-textarea 
+                    style="max-height: 55px;"
+                    rows=2
                     v-model="patientForm.income_diagnosis"
                     label="Diagnostico"
                     id="diagnostic"/>
@@ -118,30 +134,30 @@
         </td>
       </template>
       <template v-slot:no-data>
-        <td class="text-xs-center" colspan="8"> No hay pacientes registrados</td>
+        <td class="text-xs-center" colspan="8">No hay pacientes registrados</td>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
-import { setTimeout } from "timers";
+import { mapState } from 'vuex';
+import { setTimeout } from 'timers';
 
 export default {
-  name: "Patients",
+  name: 'Patients',
   data() {
     return {
       dialog: false,
       headers: [
-        { text: "DNI", value: "dni" },
-        { text: "Apellido", value: "last_name" },
-        { text: "Nombre", value: "first_name" },
-        { text: "Fecha de nacimiento", value: "birth_date" },
-        { text: "Edad", value: "age" },
-        { text: "Genero", value: "gender" },
-        { text: "N° de Historia", value: "history_number" },
-        { text: "Acciones", value: "dni", sortable: false }
+        { text: 'DNI', value: 'dni' },
+        { text: 'Apellido', value: 'last_name' },
+        { text: 'Nombre', value: 'first_name' },
+        { text: 'Fecha de nacimiento', value: 'birth_date' },
+        { text: 'Edad', value: 'age' },
+        { text: 'Genero', value: 'gender' },
+        { text: 'N° de Historia', value: 'history_number' },
+        { text: 'Acciones', value: 'dni', sortable: false }
       ],
       menu: false,
       patientForm: {
@@ -166,72 +182,72 @@ export default {
     };
   },
   computed: {
-    ...mapState(["patient", "user"]),
+    ...mapState(['patient', 'user']),
     submit() {
-      return this.index === -1 ? "Agregar" : "Editar";
+      return this.index === -1 ? 'Agregar' : 'Editar'
     },
     title() {
-      return this.index === -1 ? "Nuevo Paciente" : "Editar Paciente";
+      return this.index === -1 ? 'Nuevo Paciente' : 'Editar Paciente'
     },
     formButton() {
-      return this.index === -1 ? "createPatient" : "savePatient";
+      return this.index === -1 ? 'createPatient' : 'savePatient'
     }
   },
   watch: {
     dialog(val) {
-      val || this.close();
+      val || this.close()
     }
   },
   mounted() {
-    let token = this.user.token;
-    this.$store.dispatch("patient/obtainPatients", token);
+    let token = this.user.token
+    this.$store.dispatch('patient/obtainPatients', token)
   },
   methods: {
     createPatient() {
-      let token = this.user.token;
-      let patient = this.patientForm;
+      let token = this.user.token
+      let patient = this.patientForm
       this.$store
-        .dispatch("patient/createPatient", { token, patient })
+        .dispatch('patient/createPatient', { token, patient })
         .then(() => {
-          this.$router.go();
-        });
+          this.$router.go()
+        })
     },
     editPatientDialog(item) {
-      this.index = 1;
-      this.patientForm = Object.assign({}, item);
-      this.dialog = true;
+      this.index = 1
+      this.patientForm = Object.assign({}, item)
+      this.dialog = true
     },
     editPatient() {
-      let token = this.user.token;
-      let patient = this.patientForm;
+      let token = this.user.token
+      let patient = this.patientForm
       this.$store
-        .dispatch("patient/editPatient", { token, patient })
+        .dispatch('patient/editPatient', { token, patient })
         .then(() => {
-          this.$router.go();
-        });
+          this.$router.go()
+        })
     },
     savePatient() {
-      this.index === -1 ? this.createPatient() : this.editPatient();
+      this.index === -1 ? this.createPatient() : this.editPatient()
     },
     deletePatient(dni) {
       let sure = confirm(
         `Estas seguro/a de que quieres eliminar al paciente ${dni}?`
       );
       if (sure) {
-        let token = this.user.token;
+        let token = this.user.token
         this.$store
-          .dispatch("patient/deletePatient", { token, dni })
+          .dispatch('patient/deletePatient', { token, dni })
           .then(() => {
-            this.$router.go();
-          });
+            this.$router.go()
+          })
       }
     },
     close() {
-      this.dialog = false;
+      this.dialog = false
       setTimeout(() => {
-        this.patientForm = Object.assign({}, this.defaultForm);
-        this.index = -1;
-      }, 300);
+        this.patientForm = Object.assign({}, this.defaultForm)
+        this.index = -1
+      }, 300)
     }
   }
 };
@@ -239,6 +255,12 @@ export default {
 
 <style>
 .card_actions {
-  margin-top: -25px;
+  margin-top: 13px;
+}
+.form{
+  margin-top: -43px;
+}
+.form2{
+  max-height: 10px;
 }
 </style>

@@ -1,12 +1,15 @@
 import axios from 'axios'
-import { userInfo } from 'os';
 
 const state = {
+  bed: null,
   doctor: null,
   error: null,
 }
 
 const mutations = {
+  setBed(state, bed) { 
+    state.bed = bed
+  },
   setDoctor(state, doctor) {
     state.doctor = doctor
   },
@@ -39,6 +42,29 @@ const actions = {
       .catch(err => {
         reject(err.response.data)
       })
+    })
+  },
+  obtainHospitalizationPatient({ commit }, { token, dni }) {
+    axios({
+      method: 'get',
+      url: `http://127.0.0.1:8000/api/hospitalization/${dni}/patient_filter/`,
+      headers: { 'Authorization': `JWT ${token}` },
+    })
+    .then(res => {
+      let bedId = res.data.bed
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
+        headers: { 'Authorization': `JWT ${token}` },
+      })
+      .then(res => {
+        commit('setBed', res.data)
+        commit('setError', null)
+      })
+    })
+    .catch(err => {
+      commit('setError', err.response.data.detail)
+      commit('setBed', null)
     })
   },
   obtainHospitalization({ commit, dispatch }, { token, bedId }) {
@@ -82,6 +108,7 @@ const actions = {
     })
   }
 }
+
 export default {
   namespaced: true,
   state,
