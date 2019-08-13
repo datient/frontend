@@ -74,7 +74,7 @@ const actions = {
         resolve()
       })
       .catch((err) => {
-        let reason = err.response.data['non_field_errors']
+        let reason = err.response.data['non_field_errors'][0]
         reject(reason)
       })
     })

@@ -121,7 +121,7 @@ export default {
         doctorId,
         patientDni
       })
-      .then(res => {
+      .then(() => {
         this.$router.go()
       })
       this.dialog = false

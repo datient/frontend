@@ -1,63 +1,61 @@
 <template>
   <div id="toolbar">
     <v-navigation-drawer
+      v-model="drawer"
       absolute
-      temporary
-      v-model="drawer">
-      <v-toolbar class="transparent" flat>
-        <v-list>
-          <v-list-tile>
-            <v-list-tile-title class="title">
-              {{ user.first_name }} {{ user.last_name }}
-            </v-list-tile-title>
-          </v-list-tile>
-        </v-list>
-      </v-toolbar>
+      temporary>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            {{ user.first_name }} {{ user.last_name }}
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
       <v-divider/>
-      <v-list>
-        <v-list-tile
-          v-for="(item, index) in drawerItems"
-          :key="index"
-          @click="changeRoute(item.route)">
-          <v-list-tile-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-title>
-            {{ item.title }}
-          </v-list-tile-title>
-        </v-list-tile>
-      </v-list>
+      <v-list-item
+        v-for="(item, index) in drawerItems"
+        :key="index"
+        @click="changeRoute(item.route)">
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+       </v-list-item>
     </v-navigation-drawer>
-    <v-toolbar color="primary" dark>
-      <v-toolbar-side-icon
-        id="btn_drawer"
-        @click="drawer = !drawer"/>
+    <v-app-bar color="primary" dark>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+        <v-icon>menu</v-icon>
+      </v-app-bar-nav-icon>
       <v-toolbar-title>
         <router-link :to="{ name: 'home' }">
-          <v-btn flat dark large>
+          <v-btn text large>
             Datient
           </v-btn>
         </router-link>
       </v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer/>
       <v-toolbar-items>
-        <v-menu transition="slide-x-transition">
+        <v-menu
+          transition="slide-x-transition"
+          bottom
+          right>
           <template v-slot:activator="{ on }">
-            <v-btn dark flat v-on="on">
+            <v-btn text v-on="on">
               {{ user.email }}
             </v-btn>
           </template>
           <v-list>
-            <v-list-tile
-              v-for="(item, index) in toolItems"
-              :key="index"
-              @click="logOut()">
-            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-          </v-list-tile>
-        </v-list>
+            <v-list-item @click="logOut">
+              <v-list-item-title>
+                Cerrar sesión
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
         </v-menu>
       </v-toolbar-items>
-    </v-toolbar>
+    </v-app-bar>
   </div>
 </template>
 
@@ -72,9 +70,6 @@ export default {
       drawerItems: [
         { title: 'Home', icon: 'home', route: 'home', id: 'btn_home' },
         { title: 'Pacientes', icon: 'person', route: 'patients', id: 'btn_patients' },
-      ],
-      toolItems: [
-        { title: 'Cerrar sesión' },
       ],
     }
   },

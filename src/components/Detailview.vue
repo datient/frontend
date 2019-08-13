@@ -98,7 +98,7 @@
                         <v-card-text>
                           <v-layout>
                           <v-spacer/>
-                          	<v-text-field
+                            <v-text-field
                               label="Seleccionar imagen"
                               @click='pickFile'
                               v-model='imageName'
@@ -146,9 +146,9 @@ export default {
   data() {
     return {
       dialog: false,
-		  imageName: '',
-		  imageUrl: '',
-		  imageFile: '',
+      imageName: '',
+      imageUrl: '',
+      imageFile: '',
       dni: this.$route.params.id,
       tab: null,
       items: [
@@ -202,14 +202,7 @@ export default {
     agregar() {
       let token = this.user.token
       let dni = this.dni
-      let imageName = this.imageName
-      let imageUrl = this.imageUrl
       let imageFile = this.imageFile
-      let image = { 
-        imageName,
-		    imageUrl,
-        imageFile
-      }
       this.$store
         .dispatch('studies/createComplementaryStudy', { token, dni, imageFile })
         .then(() => { this.$router.go() })

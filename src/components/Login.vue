@@ -6,7 +6,7 @@
           <v-flex xs12 sm8 md4>
             <v-card class="elevation-12 cardLogin">
               <v-toolbar dark color="primary">
-                <v-toolbar-title>Inicio de Sesion</v-toolbar-title>
+                <v-toolbar-title>Inicio de Sesión</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
                 <form @submit.prevent="submit">
@@ -21,18 +21,16 @@
                     prepend-icon="lock"
                     id="password"
                     label="Contraseña"
-                    type="password"
-                  />
+                    type="password"/>
                   <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <router-link :to="{ name: 'register' }">
+                    <v-spacer/>
                     <v-btn
                       id="btn_register"
                       color="primary"
-                      flat>
+                      text
+                      :to="{ name: 'register' }">
                       Registrarse
                     </v-btn>
-                    </router-link>
                     <v-btn
                       id="btn_login"
                       class= "btnIngresar"
@@ -52,16 +50,17 @@
           :right="true"
           :timeout="timeout">
           {{ error }}
+          <v-btn
+            dark
+            text
+            @click="snackbar = false">
+            Cerrar
+          </v-btn>
         </v-snackbar>
       </v-container>
     </v-app>
   </div>
 </template>
-<style>
-.cardLogin{
-  border-radius: 3.5px;
-}
-</style>
 
 <script>
 import { mapState } from 'vuex'
@@ -86,7 +85,7 @@ export default {
         email: this.email,
         password: this.password
       })
-      .then(res => {
+      .then(() => {
         this.$router.push({ name: 'home' })
       })
       .catch(err => {

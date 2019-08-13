@@ -34,6 +34,13 @@ const mutations = {
     state.income_diagnosis = patient['income_diagnosis']
   },
   setPatients(state, patients) {
+    patients.forEach(element => {
+        if (element.gender === 1) {
+        element.gender = 'Femenino' 
+      } else {
+        element.gender = 'Masculino'
+      }
+    })
     state.patients = patients
   },
 }

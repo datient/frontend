@@ -1,40 +1,32 @@
 <template>
   <div id="home">
-      <v-card class="cardSalas">
-      <v-toolbar class="toolbarSalas">
-          <v-toolbar-title class="titleSalas">Salas</v-toolbar-title>
-      </v-toolbar>
-      
-      <v-expansion-panel popout focusable>
-        <v-expansion-panel-content
-          v-for="(room, index) in rooms.rooms"
-          :key="index">
-          <template v-slot:header> 
-            <v-list-tile-content> 
-              <v-list-tile>
-                <v-list-tile-title class="text-xs-left titleroom"> {{ room.name }}</v-list-tile-title>
-              </v-list-tile>
-            </v-list-tile-content>
-          </template>
-          <v-card>
-            <v-card-text v-for="(bed, i) in room.beds" :key="i">
-              <router-link :to="{ name: 'bed', params: { id: bed.id } }">
-                 
-                <v-list-tile-sub-title>
-                  <v-btn
-                    color="primary"
-                    flat large>
-                    {{ bed.name }}
-                  </v-btn>
-                 </v-list-tile-sub-title>
-              </router-link>
-            </v-card-text>
-          </v-card>
-        </v-expansion-panel-content>
-      </v-expansion-panel>
+    <v-card class="cardSalas">
+      <v-card-title>
+        <v-toolbar-title>Salas</v-toolbar-title>
+      </v-card-title>
+      <v-card-text>
+        <v-expansion-panels focusable>
+          <v-expansion-panel
+            v-for="(room, index) in rooms.rooms"
+            :key="index">
+            <v-expansion-panel-header expand-icon="keyboard_arrow_down">
+              {{ room.name }}
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-list v-for="(bed, i) in room.beds" :key="i">
+                <v-btn
+                  color="primary"
+                  text
+                  :to="{ name: 'bed', params: { id: bed.id } }">
+                  {{ bed.name }}
+                </v-btn>
+              </v-list>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-card-text>
     </v-card>
   </div>
-
 </template>
 
 <script>
@@ -54,20 +46,7 @@ export default {
 </script>
 
 <style>
-h1 {
-  text-align: center;
-}
-.titleSalas {
-  color: black;
-}
-.toolbarSalas {
-    display: flex;
-}
 .cardSalas {
-  color: white;
   border-radius: 10px;
-}
-.titleroom{
-  color: black;
 }
 </style>

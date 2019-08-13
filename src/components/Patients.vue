@@ -35,7 +35,6 @@
                     v-model="menu"
                     :close-on-content-click="false"
                     :nudge-right="40"
-                    lazy
                     transition="scale-transition"
                     offset-y
                     full-width
@@ -106,8 +105,9 @@
           <v-card-actions class=card_actions>
             <v-spacer/>
             <v-btn
-              color="primary" flat
+              color="primary"
               id="btn_submit"
+              text
               @click="savePatient">
                {{ submit }}
             </v-btn>
@@ -115,34 +115,36 @@
         </v-card>
       </v-dialog>    
     </v-toolbar>
-    <v-data-table hide-actions :headers="headers" :items="patient.patients">
-      <template v-slot:items="props">
-        <td>
-          <router-link :to="{ name: 'detailview', params: { id: props.item.dni } }">
-            <a>{{ props.item.dni }}</a>
-          </router-link>
-        </td>
-        <td>{{ props.item.last_name }}</td>
-        <td>{{ props.item.first_name }}</td>
-        <td>{{ props.item.birth_date }}</td>
-        <td>{{ props.item.age }}</td>
-        <td>{{ props.item.gender === 0 ? 'Masculino' : 'Femenino' }}</td>
-        <td>{{ props.item.history_number }}</td>
-        <td>
-          <v-icon class="mr-2" @click="editPatientDialog(props.item)">edit</v-icon>
-          <v-icon @click="deletePatient(props.item.dni)">delete</v-icon>
-        </td>
+    <v-data-table
+      hide-default-footer
+      :headers="headers"
+      :items="patient.patients">
+      <template v-slot:item.dni="props">
+        <router-link :to="{ name: 'detailview', params: { id: props.item.dni } }">
+          <a>{{ props.item.dni }}</a>
+        </router-link>
+      </template>
+      <template v-slot:item.action="{ item }">
+        <v-icon
+          class="mr-2"
+          @click="editPatientDialog(item)">
+          edit
+        </v-icon>
+        <v-icon
+          @click="deletePatient(item.dni)">
+          delete
+        </v-icon>
       </template>
       <template v-slot:no-data>
-        <td class="text-xs-center" colspan="8">No hay pacientes registrados</td>
+        <td>No hay pacientes registrados</td>
       </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { setTimeout } from 'timers';
+import { mapState } from 'vuex'
+import { setTimeout } from 'timers'
 
 export default {
   name: 'Patients',
@@ -157,7 +159,7 @@ export default {
         { text: 'Edad', value: 'age' },
         { text: 'Genero', value: 'gender' },
         { text: 'N° de Historia', value: 'history_number' },
-        { text: 'Acciones', value: 'dni', sortable: false }
+        { text: 'Acciones', value: 'action', sortable: false }
       ],
       menu: false,
       patientForm: {
@@ -250,17 +252,5 @@ export default {
       }, 300)
     }
   }
-};
+}
 </script>
-
-<style>
-.card_actions {
-  margin-top: 13px;
-}
-.form{
-  margin-top: -43px;
-}
-.form2{
-  max-height: 10px;
-}
-</style>
