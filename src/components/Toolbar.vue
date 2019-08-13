@@ -4,32 +4,38 @@
       absolute
       temporary
       v-model="drawer">
+      <v-toolbar class="transparent" flat>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title class="title">
+              {{ user.first_name }} {{ user.last_name }}
+            </v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-toolbar>
+      <v-divider/>
       <v-list>
         <v-list-tile
           v-for="(item, index) in drawerItems"
-          :key="index">
+          :key="index"
+          @click="changeRoute(item.route)">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title>
-              <router-link :id="item.id" :to="{ 'name': 'patients' }">
-              {{ item.title }}
-              </router-link>
-            </v-list-tile-title>
-          </v-list-tile-content>
+          <v-list-tile-title>
+            {{ item.title }}
+          </v-list-tile-title>
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="primary" dark>
-      <v-toolbar-side-icon id="btn_drawer" @click="drawer = !drawer"/>
+      <v-toolbar-side-icon
+        id="btn_drawer"
+        @click="drawer = !drawer"/>
       <v-toolbar-title>
-        <router-link :to="{ name: 'home' }"> 
-          <v-btn flat dark large
-            color="" 
-            class="btnDatient"
-          >
-          Datient
+        <router-link :to="{ name: 'home' }">
+          <v-btn flat dark large>
+            Datient
           </v-btn>
         </router-link>
       </v-toolbar-title>
@@ -64,7 +70,8 @@ export default {
     return {
       drawer: null,
       drawerItems: [
-        { title: 'Pacientes', icon: 'person', id: 'btn_patients' },
+        { title: 'Home', icon: 'home', route: 'home', id: 'btn_home' },
+        { title: 'Pacientes', icon: 'person', route: 'patients', id: 'btn_patients' },
       ],
       toolItems: [
         { title: 'Cerrar sesión' },
@@ -75,11 +82,13 @@ export default {
     ...mapState(['user'])
   },
   methods: {
+    changeRoute(route) {
+      this.$router.push({ name: route })
+    },
     logOut() {
       this.$store.dispatch('user/logOut')
       this.$router.push({ name: 'login' })
-
-    },
+    },    
   },
 }
 </script>
