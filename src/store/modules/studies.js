@@ -25,26 +25,27 @@ const actions = {
       commit('setStudies',res.data)
     })
   },
-  createComplementaryStudy({ commit }, { token,dni,imageFile }){
+  createComplementaryStudy({ commit }, { token, dni, files }){
     return new Promise((resolve, reject) => {
-      console.log(imageFile)
-      let formData = new FormData()
-      formData.append('image', imageFile)
-      formData.append('patient', dni)
-      axios({
-        method: 'post',
-        url: `http://127.0.0.1:8000/api/study/`,
-        headers: {
-          'Authorization': `JWT ${token}`,
-          'Content-Type' : 'multipart/form-data'
-        },
-        data: formData,
-      })
-      .then(res => {
-        resolve(res.data)
-      })
-      .catch(err => {
-        reject(err.response.data)
+      files.forEach(image => {
+        let formData = new FormData()
+        formData.append('image', image)
+        formData.append('patient', dni)
+        axios({
+          method: 'post',
+          url: `http://127.0.0.1:8000/api/study/`,
+          headers: {
+            'Authorization': `JWT ${token}`,
+            'Content-Type' : 'multipart/form-data'
+          },
+          data: formData,
+        })
+        .then(res => {
+          resolve(res.data)
+        })
+        .catch(err => {
+          reject(err.response.data.image[0])
+        })
       })
     })
   }

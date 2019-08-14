@@ -136,7 +136,7 @@
         </v-icon>
       </template>
       <template v-slot:no-data>
-        <td>No hay pacientes registrados</td>
+        <v-flex class="nodata">No hay pacientes registrados</v-flex>
       </template>
     </v-data-table>
   </div>
@@ -254,3 +254,8 @@ export default {
   }
 }
 </script>
+<style>
+  .nodata{
+    text-align: center;
+  }
+</style>

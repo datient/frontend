@@ -37,7 +37,7 @@
                   Fecha de Nacimiento:
                   {{ patient.birth_date }}
                 </v-flex>
-                <v-flex class="fix" lg4>
+                <v-flex lg4>
                   Edad:
                   {{ patient.age }}
                 </v-flex>
@@ -71,10 +71,10 @@
                   <v-icon>hotel</v-icon>
                   Cama actual:
                 </v-flex>
-                <v-flex class="fix2" lg4 v-if="hospitalization.bed">
+                <v-flex class="fix" lg4 v-if="hospitalization.bed">
                   {{ hospitalization.bed.name }}
                 </v-flex>
-                <v-flex class="fix2" lg4 v-if="hospitalization.error">
+                <v-flex class="fix" lg4 v-if="hospitalization.error">
                   No se encuentra internado en este momento
                 </v-flex>
                 <v-flex lg12>
@@ -89,45 +89,51 @@
             <v-container fluid grid-list-sm>
               <v-layout wrap>
                 <v-flex xs 12>
-                  <v-expansion-panel expand>
-                     <v-expansion-panel-content>
-                       <template v-slot:header>
-                        <div>Imagenes</div>
-                      </template>
-                      <v-card>
-                        <v-card-text>
-                          <v-layout>
-                          <v-spacer/>
-                            <v-text-field
-                              label="Seleccionar imagen"
-                              @click='pickFile'
-                              v-model='imageName'
-                              prepend-icon='attach_file'/>
-                            <input
-                              type="file"
-                              style="display: none"
-                              ref="image"
-                              accept="image/*"
-                              @change="onFilePicked">
-                            <v-btn xs12 fab dark color="indigo" @click="agregar">
-                              <v-icon dark>create_new_folder</v-icon>
-                            </v-btn>
-                          </v-layout>
-                          <v-layout wrap>
-                          <v-flex xs3 class="ig"
-                            v-for="study in studies.studies"
-                            :key="study.id">
-                            <a :href="study.image">
-                              <v-img
-                                :src="study.image"
-                                aspect-ratio="1"/>
-                            </a>
-                          </v-flex>
-                          </v-layout>
-                        </v-card-text>
-                      </v-card>
-                     </v-expansion-panel-content>
-                  </v-expansion-panel>
+                  <v-expansion-panels multiple>
+                    <v-expansion-panel>
+                      <v-expansion-panel-header expand-icon="keyboard_arrow_down">Imagenes</v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <v-card>
+                          <v-card-text>
+                            <v-layout>
+                            <v-spacer/>
+                              <v-file-input chips multiple 
+                              clear-icon="clear" 
+                              v-model="files" 
+                              label="Seleccionar imagen"/>
+                              <v-btn xs12 fab dark color="indigo" @click="agregar">
+                                <v-icon dark>create_new_folder</v-icon>
+                              </v-btn>
+                               <v-snackbar
+                                  v-model="snackbar"
+                                  color="error"
+                                  :right="true"
+                                  :timeout="timeout">
+                                  {{ error }}
+                                  <v-btn
+                                    dark
+                                    text
+                                    @click="snackbar = false">
+                                    Cerrar
+                                  </v-btn>
+                                </v-snackbar>
+                            </v-layout>
+                            <v-layout wrap>
+                            <v-flex xs3 class="ig"
+                              v-for="study in studies.studies"
+                              :key="study.id">
+                              <a :href="study.image">
+                                <v-img
+                                  :src="study.image"
+                                  aspect-ratio="1"/>
+                              </a>
+                            </v-flex>
+                            </v-layout>
+                          </v-card-text>
+                        </v-card>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -145,10 +151,14 @@ export default {
   name: 'Patients',
   data() {
     return {
+      files: [],
       dialog: false,
       imageName: '',
       imageUrl: '',
       imageFile: '',
+      snackbar: false,
+      timeout: 8000,
+      error: null,
       dni: this.$route.params.id,
       tab: null,
       items: [
@@ -177,38 +187,21 @@ export default {
       let tab = this.tab;
       this.$store.commit('studies/setIndexTab', tab)
     },
-    pickFile() {
-      this.$refs.image.click()
-    },
-		onFilePicked(e) {
-			const files = e.target.files
-			if(files[0] !== undefined) {
-				this.imageName = files[0].name
-				if(this.imageName.lastIndexOf('.') <= 0) {
-					return
-				}
-				const fr = new FileReader ()
-				fr.readAsDataURL(files[0])
-				fr.addEventListener('load', () => {
-					this.imageUrl = fr.result
-					this.imageFile = files[0] // this is an image file that can be sent to server...
-				})
-			} else {
-				this.imageName = ''
-				this.imageFile = ''
-				this.imageUrl = ''
-			}
-    },
     agregar() {
       let token = this.user.token
       let dni = this.dni
-      let imageFile = this.imageFile
+      let files = this.files
       this.$store
-        .dispatch('studies/createComplementaryStudy', { token, dni, imageFile })
+        .dispatch('studies/createComplementaryStudy', { token, dni, files })
         .then(() => { this.$router.go() })
-    }
+        .catch(err => {
+        if (err !== undefined) {
+          this.error = err
+          this.snackbar = true
+        }
+        });   
   } 
-};
+}}
 </script>
 
 <style>
@@ -224,11 +217,7 @@ export default {
 .fixtitle{
   margin-left: 10px;
 }
-.fix {
-  margin-top: 4.8px;
-}
-.fix2{
-  margin-top: 4.8px;
-  margin-left: -148px;
+.fix{
+  margin-left: -174px;
 }
 </style>
