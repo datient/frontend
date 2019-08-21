@@ -82,6 +82,27 @@
                   Diagnostico inicial:
                   {{ patient.income_diagnosis }}
                 </v-flex>
+                <v-flex lg12>
+                  <v-icon>healing</v-icon>
+                    Evolucion:
+                  <v-list
+                    flat
+                    three-line
+                  >
+                      <v-list-item v-for="progress in progress.progress"
+                              :key="progress.id">
+                        <template>
+                          <v-list-item-content>
+                            <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
+                            <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                            <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
+                            <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
+                            <v-divider></v-divider>
+                          </v-list-item-content>
+                        </template>
+                      </v-list-item>
+                  </v-list>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-tab-item>
@@ -169,7 +190,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['studies','hospitalization', 'patient', 'user'])
+    ...mapState(['studies','progress','hospitalization', 'patient', 'user'])
   },
   mounted() {
     let token = this.user.token
@@ -218,6 +239,6 @@ export default {
   margin-left: 10px;
 }
 .fix{
-  margin-left: -174px;
+  margin-left: -184px;
 }
 </style>

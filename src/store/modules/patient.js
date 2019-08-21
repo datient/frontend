@@ -175,7 +175,8 @@ const actions = {
       })
       .then(res => {
         commit('setPatient', res.data)
-        commit('studies/setStudies', res.data.studies, { root:true }) 
+        commit('studies/setStudies', res.data.studies, { root:true })
+        commit('progress/setProgress',res.data.progress, { root:true })
         resolve(res.data)
       })
       .catch(err => {
