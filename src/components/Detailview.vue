@@ -83,11 +83,67 @@
                   {{ patient.income_diagnosis }}
                 </v-flex>
                 <v-flex lg12>
-                  <v-icon>healing</v-icon>
-                    Evolucion:
+                  <v-row>
+                    <v-flex lg1>
+                      <v-icon>show_chart</v-icon>
+                        Evolucion:
+                    </v-flex>
+                    <v-flex lg11>
+                      <v-dialog v-model="dialog" width="800">
+                        <template v-slot:activator="{ on }">
+                          <v-btn fab dark small color="indigo" v-on="on">
+                            <v-icon dark>post_add</v-icon>
+                          </v-btn>  
+                        </template>
+                        <v-card>
+                          <v-card-title class="headline" primary-title>Nuevo Progreso</v-card-title>
+                          <v-card-text>
+                            <v-container class="form" grid-list-md>
+                              <v-layout wrap>
+                                <v-flex xs12 md12>
+                                  <v-text-field
+                                    v-model="progressForm.diagnosis"
+                                    id="diagnosis"
+                                    label="Diagnostico"
+                                    :error-messages="errorFormProgress"
+                                    type="text"/>
+                                </v-flex>
+                                <v-flex xs12 md12>
+                                  <v-textarea
+                                    rows=3
+                                    v-model="progressForm.description"
+                                    id="description"
+                                    label="Descripcion"/>
+                                </v-flex>    
+                                <v-flex xs12 md12>  
+                                  <v-select
+                                    v-model="progressForm.status"
+                                    label="Estado"
+                                    :items="[{text:'Bien',value:0},{text:'Precaucion',value:1},{text:'Peligro',value:2}]"
+                                    :error-messages="errorFormProgress"
+                                    id="status"/>
+                                </v-flex>
+                              </v-layout>
+                            </v-container>
+                          </v-card-text>
+                          <v-card-actions class=card_actions>
+                            <v-spacer/>
+                            <v-btn
+                              color="primary"
+                              id="btn_add_progress"
+                              text
+                              @click="saveProgress">
+                              Agregar
+                            </v-btn>
+                          </v-card-actions>   
+                        </v-card>  
+                      </v-dialog>                    
+                    </v-flex>
+                  </v-row>
                   <v-list
                     flat
                     three-line
+                    v-if="progress.progress !== null"
                   >
                       <v-list-item v-for="progress in progress.progress"
                               :key="progress.id">
@@ -102,6 +158,7 @@
                         </template>
                       </v-list-item>
                   </v-list>
+                  <v-flex v-if="progress.progress">No hay progresos registrados</v-flex>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -123,7 +180,7 @@
                               v-model="files" 
                               label="Seleccionar imagen"/>
                               <v-btn xs12 fab dark color="indigo" @click="agregar">
-                                <v-icon dark>create_new_folder</v-icon>
+                                <v-icon dark>add_photo_alternate</v-icon>
                               </v-btn>
                                <v-snackbar
                                   v-model="snackbar"
@@ -186,7 +243,13 @@ export default {
         'Datos Personales',
         'Diagnosticos',
         'Estudios Complementarios'
-      ]
+      ],
+      progressForm: {
+        diagnosis: null,
+        description: null,
+        status: null,
+      },
+      errorFormProgress: null
     }
   },
   computed: {
@@ -195,6 +258,7 @@ export default {
   mounted() {
     let token = this.user.token
     let dni = this.dni
+    let progress = this.progress
     this.$store.dispatch('patient/obtainPatient', { token, dni })
     this.getHospitalization()
   },
@@ -221,7 +285,19 @@ export default {
           this.snackbar = true
         }
         });   
-  } 
+    },
+    saveProgress() {
+      let token = this.user.token
+      let progress = this.progressForm
+      let dni = this.dni
+      this.$store
+        .dispatch('progress/createProgress', { token, dni, progress })
+        .then(() => {this.$router.go() })
+        .catch(err => {
+          this.errorFormProgress = err["diagnosis"]
+          this.errorFormProgress = err["status"]
+        })
+    }, 
 }}
 </script>
 
