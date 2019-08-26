@@ -72,7 +72,32 @@
         Teléfono de contacto 2: {{ patient.contact2 }}<br>
         <h1>Último Progreso</h1>
         <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
-        {{ patient.progress.description }}
+        {{ patient.progress.description }}<br>
+        <v-dialog v-model="dischargeDialog" max-width="600px">
+          <template v-slot:activator="{ on }">
+            <v-btn v-on="on">Dar de alta</v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="headline">Dar de alta</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-text-field v-model="dischargeForm.diagnosis" label="Diagnóstico de egreso"/>
+                <v-text-field v-model="dischargeForm.description" label="Descripción"/>
+                <v-select
+                  v-model="dischargeForm.status"
+                  label="Estado"
+                  :items="[{ text: 'Bien', value: 0 }, { text: 'Precaución', value: 1 }, { text: 'Peligro', value: 2 }]"/>
+              </v-container>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn color="primary" text @click="dischargeDialog = false">Cancelar</v-btn>
+              <v-btn color="primary" text @click="dischargePatinent">Enviar</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-card-text>
     </v-card>
   </div>
@@ -87,6 +112,12 @@ export default {
     return {
       bedId: this.$route.params.id,
       dialog: false,
+      dischargeDialog: false,
+      dischargeForm: {
+        diagnosis: null,
+        description: null,
+        status: null
+      },
       select: null,
     }
   },
@@ -114,6 +145,29 @@ export default {
         this.$router.go()
       })
       this.dialog = false
+    },
+    dischargePatinent() {
+      let token = this.user.token
+      let progress = this.dischargeForm
+      let patientDni = this.patient.dni
+      let bedId = this.bedId
+      let doctorId = this.user.id
+      this.$store.dispatch('patient/createProgress', {
+        token,
+        progress,
+        patientDni
+      })
+      .then(() => {
+        this.$store.dispatch('patient/dischargePatient', {
+          token,
+          bedId,
+          doctorId,
+          patientDni
+        })
+        .then(() => {
+          this.$router.go()
+        })
+      })
     },
   },
 }

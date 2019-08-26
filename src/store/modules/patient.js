@@ -81,6 +81,48 @@ const actions = {
       })
     })
   },
+  createProgress({ commit }, { token, progress, patientDni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: 'http://127.0.0.1:8000/api/progress/',
+        headers: { 'Authorization': `JWT ${token}` },
+        data: {
+          diagnosis: progress.diagnosis,
+          description: progress.description,
+          status: progress.status,
+          patient: patientDni
+        }
+      })
+      .then(res => {
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
+  dischargePatient({ commit }, { token, bedId, doctorId, patientDni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: `http://127.0.0.1:8000/api/hospitalization/`,
+        headers: { 'Authorization': `JWT ${token}` },
+        data: {
+          bed: bedId,
+          doctor: doctorId,
+          patient: patientDni,
+          left_at: new Date()
+        },
+      })
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
   editPatient({ commit }, { token, patient }) {
     return new Promise((resolve, reject) => {
       axios({
