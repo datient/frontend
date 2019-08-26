@@ -1,12 +1,12 @@
 <template>
   <div id="room">
-    <v-card class="cardBed">
-      <v-toolbar dense>
+    <v-card round class="cardBed">
+      <v-toolbar>
         <v-toolbar-title>Cama {{ bedId }}</v-toolbar-title>
         <v-spacer/>
         <v-icon>person</v-icon>
         <v-toolbar-title v-if="hospitalization.doctor != null">
-          {{ hospitalization.doctor.first_name }} {{ hospitalization.doctor.last_name }}
+          {{ hospitalization.doctor.last_name }}, {{ hospitalization.doctor.first_name }}
         </v-toolbar-title>
       </v-toolbar>
       <v-container v-if="hospitalization.error != null">
@@ -57,34 +57,23 @@
           </v-flex>
           </v-layout>
       </v-container>
-      
-      <v-container grid-list-xl text-center v-if="patient.dni != null">
-        <v-layout>
-          <v-flex xs3 offset-xs3>
-              <v-card-text >Nombre: {{ patient.last_name }} {{ patient.first_name }}</v-card-text>
-          </v-flex>
-          <v-flex xs3>
-              <v-card-text >Edad: {{ patient.age }}</v-card-text>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs3 offset-xs3>
-              <v-card-text >Dni: {{ patient.dni }}</v-card-text>
-          </v-flex>
-          <v-flex xs3>
-              <v-card-text >Fecha de Nacimiento: {{ patient.birth_date }}</v-card-text>
-          </v-flex>
-        </v-layout>
-        <v-layout>
-          <v-flex xs3 offset-xs3>
-              <v-card-text >Genero: {{ patient.gender }}</v-card-text>
-          </v-flex>
-          <v-flex xs3>
-              <v-card-text >Diagnostico: {{ patient.income_diagnosis }}</v-card-text>
-          </v-flex>
-        </v-layout>
-      </v-container>  
-    
+      <v-card-text fluid class="bed-text" v-if="patient.dni != null">
+        <h1>Datos Personales</h1>
+        DNI: {{ patient.dni }}<br>
+        Nombre completo: {{ patient.first_name }} {{ patient.last_name }}<br>
+        Fecha de nacimiento: {{ patient.birth_date }}<br>
+        Edad: {{ patient.age }}<br>
+        Género: {{ patient.gender }}<br>
+        Número de historia: {{ patient.history_number }}<br>
+        Fecha de ingreso: {{ hospitalization.entry_at }}
+        Días internado: {{ hospitalization.boarding_days }}<br>
+        Diagnóstico de ingreso: {{ patient.income_diagnosis }}<br>
+        Teléfono de contacto 1: {{ patient.contact }}<br>
+        Teléfono de contacto 2: {{ patient.contact2 }}<br>
+        <h1>Último Progreso</h1>
+        <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
+        {{ patient.progress.description }}
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -134,5 +123,12 @@ export default {
 .cardBed{
   color: white;
   border-radius: 10px;
+}
+.bed-text{
+  font-size: 1rem !important;
+  padding: 1rem 2rem 1rem 2rem !important;
+}
+.bed-text h1{
+  margin: 1rem 0 1rem 0;
 }
 </style>

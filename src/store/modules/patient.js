@@ -11,6 +11,7 @@ const state = {
   contact: null,
   contact2: null,
   income_diagnosis: null,
+  progress: null,
   patients: null,
 }
 
@@ -32,6 +33,14 @@ const mutations = {
     state.contact = patient['contact']
     state.contact2 = patient['contact2']
     state.income_diagnosis = patient['income_diagnosis']
+    state.progress = patient['progress'][0]
+    if (state.progress.status === 0) {
+      state.progress.status = 'Bien'
+    } else if (state.progress.status === 1) {
+      state.progress.status = 'Precaución'
+    } else {
+      state.progress.status = 'Peligro'
+    }
   },
   setPatients(state, patients) {
     patients.forEach(element => {
@@ -135,6 +144,7 @@ const actions = {
         contact: null,
         contact2: null,
         income_diagnosis: null,
+        progress: null
       })
     })
   },

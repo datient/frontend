@@ -3,6 +3,9 @@ import axios from 'axios'
 const state = {
   bed: null,
   doctor: null,
+  entry_at: null,
+  done_at: null,
+  boarding_days: null,
   error: null,
 }
 
@@ -15,6 +18,11 @@ const mutations = {
   },
   setError(state, error) {
     state.error = error
+  },
+  setHospitalization(state, info) {
+    state.entry_at = info.entry_at
+    state.done_at = info.done_at
+    state.boarding_days = info.boarding_days
   },
 }
 
@@ -76,6 +84,10 @@ const actions = {
     .then(res => {
       let doctorId = res.data.doctor
       let dni = res.data.patient
+      let entry_at = res.data.entry_at
+      let done_at = res.data.done_at
+      let boarding_days = res.data.boarding_days
+      commit('setHospitalization', { entry_at, done_at, boarding_days })
       dispatch('patient/obtainPatient', { token, dni }, { root: true })
       axios({
         method: 'get',
