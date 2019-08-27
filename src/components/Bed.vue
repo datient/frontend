@@ -19,31 +19,32 @@
             <div class="text-center">
               <v-dialog
                 v-model="dialog"
-                width="500">
+                width="600">
                 <template v-slot:activator="{ on }">
-                  <v-btn class="mx-2" fab dark color="indigo" v-on="on">
-                    <v-icon dark>add</v-icon>
+                  <v-btn fab color="primary" v-on="on">
+                    <v-icon>add</v-icon>
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-card-title
-                    class="headline grey lighten-2"
-                    primary-title>
-                    Agregar paciente a la cama
+                  <v-card-title>
+                    <span class="headline">Agregar paciente a la cama</span>
                   </v-card-title>
-                  <v-layout wrap>
-                    <v-flex xs12>
+                  <v-card-text>
+                    <v-container>
                       <v-select
                         v-model="select"
-                        :items="patient.patients"
-                        item-text="last_name"
-                        label="Seleccione un paciente para asignar a la cama"
-                        return-object/>
-                    </v-flex>
-                  </v-layout>
-                  <v-divider/>
+                        :items="items"
+                        label="Seleccione un paciente para asignar a la cama"/>
+                    </v-container>
+                  </v-card-text>
                   <v-card-actions>
                     <v-spacer/>
+                    <v-btn
+                      color="primary"
+                      text
+                      @click="dialog = false">
+                      Cancelar
+                    </v-btn>
                     <v-btn
                       color="primary"
                       text
@@ -70,9 +71,11 @@
         Diagnóstico de ingreso: {{ patient.income_diagnosis }}<br>
         Teléfono de contacto 1: {{ patient.contact }}<br>
         Teléfono de contacto 2: {{ patient.contact2 }}<br>
-        <h1>Último Progreso</h1>
-        <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
-        {{ patient.progress.description }}<br>
+        <div v-if="patient.progress !== null">
+          <h1>Último Progreso</h1>
+          <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
+          {{ patient.progress.description }}<br>
+        </div>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on">Dar de alta</v-btn>
@@ -119,6 +122,7 @@ export default {
         status: null
       },
       select: null,
+      items: [],
     }
   },
   computed: {
@@ -128,6 +132,7 @@ export default {
     let bedId = this.bedId
     let token = this.user.token
     this.$store.dispatch('hospitalization/obtainHospitalization', { token, bedId })
+    this.createSelect()
   },
   methods: {
     assignPatient() {
@@ -145,6 +150,14 @@ export default {
         this.$router.go()
       })
       this.dialog = false
+    },
+    createSelect() {
+      Array.prototype.forEach.call(this.patient.patients, patient => {
+        this.items.push({
+          text: `${patient.dni} - ${patient.last_name}, ${patient.first_name}`,
+          value: patient
+        })
+      })
     },
     dischargePatinent() {
       let token = this.user.token

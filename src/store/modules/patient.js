@@ -33,13 +33,15 @@ const mutations = {
     state.contact = patient['contact']
     state.contact2 = patient['contact2']
     state.income_diagnosis = patient['income_diagnosis']
-    state.progress = patient['progress'][0]
-    if (state.progress.status === 0) {
-      state.progress.status = 'Bien'
-    } else if (state.progress.status === 1) {
-      state.progress.status = 'Precaución'
-    } else {
-      state.progress.status = 'Peligro'
+    if (patient['progress'].length >= 1) {
+      state.progress = patient['progress'][0]
+      if (state.progress.status === 0) {
+        state.progress.status = 'Bien'
+      } else if (state.progress.status === 1) {
+        state.progress.status = 'Precaución'
+      } else {
+        state.progress.status = 'Peligro'
+      }
     }
   },
   setPatients(state, patients) {
@@ -165,28 +167,32 @@ const actions = {
     })
   },
   obtainPatient({ commit }, { token, dni }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/patient/${dni}/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      commit('setPatient', res.data)
-      commit('studies/setStudies', res.data.studies, { root:true }) 
-    })
-    .catch((err) => {
-      commit('setPatient', {
-        dni: null,
-        age: null,
-        first_name: null,
-        last_name: null,
-        birth_date: null,
-        gender: null,
-        history_number: null,
-        contact: null,
-        contact2: null,
-        income_diagnosis: null,
-        progress: null
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+        headers: { 'Authorization': `JWT ${token}` },
+      })
+      .then(res => {
+        commit('setPatient', res.data)
+        commit('studies/setStudies', res.data.studies, { root:true }) 
+        resolve(res.data)
+      })
+      .catch(err => {
+        commit('setPatient', {
+          dni: null,
+          age: null,
+          first_name: null,
+          last_name: null,
+          birth_date: null,
+          gender: null,
+          history_number: null,
+          contact: null,
+          contact2: null,
+          income_diagnosis: null,
+          progress: null
+        })
+        reject(err)
       })
     })
   },

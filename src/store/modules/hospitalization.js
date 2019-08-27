@@ -37,11 +37,6 @@ const actions = {
           bed: bedId,
           doctor: doctorId,
           patient: patientDni,
-          progress: {
-            diagnosis: 'Asd',
-            description: 'desc',
-            status: 0
-          },
         },
       })
       .then(res => {
@@ -114,6 +109,7 @@ const actions = {
           gender: null,
           history_number: null,
           income_diagnosis: null,
+          progress: []
         },
         { root: true },
       )
