@@ -8,6 +8,7 @@
         <v-expansion-panels focusable>
           <v-expansion-panel
             v-for="(room, index) in rooms.rooms"
+            :id="'btn_room_'+room.id"
             :key="index">
             <v-expansion-panel-header expand-icon="keyboard_arrow_down">
               {{ room.name }}
@@ -17,6 +18,7 @@
                 <v-btn
                   color="primary"
                   text
+                  :id="'btn_bed_'+bed.id"
                   :to="{ name: 'bed', params: { id: bed.id } }">
                   {{ bed.name }}
                 </v-btn>

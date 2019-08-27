@@ -21,7 +21,7 @@
                 v-model="dialog"
                 width="600">
                 <template v-slot:activator="{ on }">
-                  <v-btn fab color="primary" v-on="on">
+                  <v-btn fab color="primary" v-on="on" id="btn_add">
                     <v-icon>add</v-icon>
                   </v-btn>
                 </template>
@@ -48,6 +48,7 @@
                     <v-btn
                       color="primary"
                       text
+                      id="btn_assign"
                       @click="assignPatient">
                       Asignar
                     </v-btn>
@@ -78,7 +79,7 @@
         </div>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on">Dar de alta</v-btn>
+            <v-btn v-on="on" id="btn_discharge">Dar de alta</v-btn>
           </template>
           <v-card>
             <v-card-title>
@@ -86,8 +87,8 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-text-field v-model="dischargeForm.diagnosis" label="Diagnóstico de egreso"/>
-                <v-text-field v-model="dischargeForm.description" label="Descripción"/>
+                <v-text-field v-model="dischargeForm.diagnosis" id="txt_diagnosis" label="Diagnóstico de egreso"/>
+                <v-text-field v-model="dischargeForm.description" id="txt_description" label="Descripción"/>
                 <v-select
                   v-model="dischargeForm.status"
                   label="Estado"
@@ -97,7 +98,7 @@
             <v-card-actions>
               <v-spacer/>
               <v-btn color="primary" text @click="dischargeDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" text @click="dischargePatinent">Enviar</v-btn>
+              <v-btn color="primary" text id="btn_send_discharge" @click="dischargePatinent">Enviar</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

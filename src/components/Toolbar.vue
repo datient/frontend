@@ -15,6 +15,7 @@
       <v-list-item
         v-for="(item, index) in drawerItems"
         :key="index"
+        :id="item.id"
         @click="changeRoute(item.route)">
         <v-list-item-icon>
           <v-icon>{{ item.icon }}</v-icon>
@@ -25,7 +26,7 @@
        </v-list-item>
     </v-navigation-drawer>
     <v-app-bar color="primary" dark>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer">
+      <v-app-bar-nav-icon id="btn_drawer" @click.stop="drawer = !drawer">
         <v-icon>menu</v-icon>
       </v-app-bar-nav-icon>
       <v-toolbar-title>
