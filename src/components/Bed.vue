@@ -97,7 +97,7 @@
             <v-card-actions>
               <v-spacer/>
               <v-btn color="primary" text @click="dischargeDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" text @click="dischargePatinent">Enviar</v-btn>
+              <v-btn color="primary" text @click="dischargePatient">Enviar</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -119,7 +119,8 @@ export default {
       dischargeForm: {
         diagnosis: null,
         description: null,
-        status: null
+        status: null,
+        has_left: true
       },
       select: null,
       items: [],
@@ -159,23 +160,23 @@ export default {
         })
       })
     },
-    dischargePatinent() {
+    dischargePatient() {
       let token = this.user.token
       let progress = this.dischargeForm
-      let patientDni = this.patient.dni
+      let dni = this.patient.dni
       let bedId = this.bedId
       let doctorId = this.user.id
-      this.$store.dispatch('patient/createProgress', {
+      this.$store.dispatch('progress/createProgress', {
         token,
-        progress,
-        patientDni
+        dni,
+        progress
       })
       .then(() => {
         this.$store.dispatch('patient/dischargePatient', {
           token,
           bedId,
           doctorId,
-          patientDni
+          dni
         })
         .then(() => {
           this.$router.go()

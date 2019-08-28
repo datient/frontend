@@ -48,6 +48,7 @@ const actions = {
           diagnosis: progress.diagnosis,
           description: progress.description,
           status: progress.status,
+          has_left: progress.has_left,
           patient: dni
         },
       })

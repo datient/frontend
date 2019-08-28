@@ -89,7 +89,7 @@
                         Evolucion:
                     </v-flex>
                     <v-flex lg11>
-                      <v-dialog v-model="dialog" width="800">
+                      <v-dialog v-if = "!progress.progress[0].has_left" v-model="dialog" width="800">
                         <template v-slot:activator="{ on }">
                           <v-btn fab dark small color="indigo" v-on="on">
                             <v-icon dark>post_add</v-icon>
@@ -150,7 +150,14 @@
                         <template>
                           <v-list-item-content>
                             <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
-                            <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                            <v-layout style="margin: auto 0px;"> 
+                              <v-flex lg2 style="margin-left: -2px;">
+                                <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                              </v-flex>
+                              <v-flex lg10>
+                                <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
+                              </v-flex>
+                            </v-layout>
                             <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
                             <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
                             <v-divider></v-divider>
@@ -248,6 +255,7 @@ export default {
         diagnosis: null,
         description: null,
         status: null,
+        has_left: false
       },
       errorFormProgress: null
     }
