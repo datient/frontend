@@ -71,10 +71,10 @@
         Diagnóstico de ingreso: {{ patient.income_diagnosis }}<br>
         Teléfono de contacto 1: {{ patient.contact }}<br>
         Teléfono de contacto 2: {{ patient.contact2 }}<br>
-        <div v-if="patient.progress !== null">
+        <div v-if="progress.progress !== null">
           <h1>Último Progreso</h1>
-          <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
-          {{ patient.progress.description }}<br>
+          <h2>{{ progress.progress[0].diagnosis }}: {{ progress.progress[0].status }}</h2>
+          {{ progress.progress[0].description }}<br>
         </div>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
@@ -126,7 +126,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['hospitalization', 'patient', 'user'])
+    ...mapState(['hospitalization', 'patient', 'progress', 'user'])
   },
   mounted() {
     let bedId = this.bedId
