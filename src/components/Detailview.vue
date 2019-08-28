@@ -143,10 +143,10 @@
                   <v-list
                     flat
                     three-line
-                    v-if="progress.progress !== null"
+                    v-if="progress.progress !== null && progress.progress[0].diagnosis !== null"
                   >
                       <v-list-item v-for="progress in progress.progress"
-                              :key="progress.id">
+                        :key="progress.id">
                         <template>
                           <v-list-item-content>
                             <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
@@ -305,7 +305,8 @@ export default {
           this.errorFormProgress = err["diagnosis"]
           this.errorFormProgress = err["status"]
         })
-    }, 
+    },
+    
 }}
 </script>
 

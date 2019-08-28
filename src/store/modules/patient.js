@@ -159,7 +159,6 @@ const actions = {
           contact: null,
           contact2: null,
           income_diagnosis: null,
-          progress: null
         })
         reject(err)
       })

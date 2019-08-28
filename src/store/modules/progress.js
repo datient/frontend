@@ -22,7 +22,12 @@ const mutations = {
         p.created_at = new Date(p.created_at).toLocaleString()
       });
     } else {
-      state.progress = null
+      state.progress = [
+        {
+          diagnosis: null,
+          has_left: false,
+        }
+      ]
     }
 }
 }
