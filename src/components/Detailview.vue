@@ -105,7 +105,7 @@
                                     v-model="progressForm.diagnosis"
                                     id="diagnosis"
                                     label="Diagnostico"
-                                    :error-messages="errorFormProgress"
+                                    :error-messages="errorDiagnosis"
                                     type="text"/>
                                 </v-flex>
                                 <v-flex xs12 md12>
@@ -120,7 +120,7 @@
                                     v-model="progressForm.status"
                                     label="Estado"
                                     :items="[{text:'Bien',value:0},{text:'Precaucion',value:1},{text:'Peligro',value:2}]"
-                                    :error-messages="errorFormProgress"
+                                    :error-messages="errorStatus"
                                     id="status"/>
                                 </v-flex>
                               </v-layout>
@@ -258,7 +258,8 @@ export default {
         status: null,
         has_left: false
       },
-      errorFormProgress: null
+      errorStatus: null,
+      errorDiagnosis: null
     }
   },
   computed: {
@@ -303,8 +304,8 @@ export default {
         .dispatch('progress/createProgress', { token, dni, progress })
         .then(() => {this.$router.go() })
         .catch(err => {
-          this.errorFormProgress = err["diagnosis"]
-          this.errorFormProgress = err["status"]
+          this.errorDiagnosis = err["diagnosis"]
+          this.errorStatus = err["status"]
         })
     },
     
