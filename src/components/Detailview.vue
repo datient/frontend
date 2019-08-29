@@ -185,6 +185,7 @@
                               <v-file-input chips multiple 
                               clear-icon="clear" 
                               v-model="files" 
+                              :rules="[value => value.length >= 1 || 'No se han seleccionado imagenes.']"
                               label="Seleccionar imagen"/>
                               <v-btn xs12 fab dark color="indigo" @click="agregar">
                                 <v-icon dark>add_photo_alternate</v-icon>
