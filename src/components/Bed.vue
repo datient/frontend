@@ -31,22 +31,30 @@
                   </v-card-title>
                   <v-card-text>
                     <v-container>
-                      <v-select
-                        v-model="select"
-                        :items="patientItems"
-                        label="Seleccione un paciente para asignar a la cama"
-                        no-data-text="No se han encontrado pacientes"/>
-                      <v-text-field
-                        v-model="form.diagnosis"
-                        label="Diagnóstico de ingreso"/>
-                      <v-textarea
-                        v-model="form.description"
-                        rows="3"
-                        label="Descripción"/>
-                      <v-select
-                        v-model="form.status"
-                        label="Estado"
-                        :items="statusItems"/>
+                      <v-form ref="form">
+                        <v-select
+                          v-model="select"
+                          :items="patientItems"
+                          :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                          label="Seleccione un paciente para asignar a la cama"
+                          no-data-text="No se han encontrado pacientes"
+                          required/>
+                        <v-text-field
+                          v-model="form.diagnosis"
+                          :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                          label="Diagnóstico de ingreso"
+                          required/>
+                        <v-textarea
+                          v-model="form.description"
+                          rows="3"
+                          label="Descripción"/>
+                        <v-select
+                          v-model="form.status"
+                          :rules="[v => [0, 1 , 2].includes(v) || 'Este campo no puede estar en blanco.']"
+                          :items="statusItems"
+                          label="Estado"
+                          required/>
+                      </v-form>
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -99,12 +107,24 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-text-field v-model="form.diagnosis" id="txt_diagnosis" label="Diagnóstico de egreso"/>
-                <v-text-field v-model="form.description" id="txt_description" label="Descripción"/>
-                <v-select
-                  v-model="form.status"
-                  label="Estado"
-                  :items="statusItems"/>
+                <v-form ref="form">
+                  <v-text-field
+                    v-model="form.diagnosis"
+                    :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                    id="txt_diagnosis"
+                    label="Diagnóstico de egreso"
+                    required/>
+                  <v-text-field
+                    v-model="form.description"
+                    id="txt_description"
+                    label="Descripción"/>
+                  <v-select
+                    v-model="form.status"
+                    :items="statusItems"
+                    :rules="[v => [0, 1 , 2].includes(v) || 'Este campo no puede estar en blanco.']"
+                    label="Estado"
+                    required/>
+                </v-form>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -157,28 +177,29 @@ export default {
   },
   methods: {
     assignPatient() {
-      let bedId = this.bedId
-      let token = this.user.token
-      let doctorId = this.user.id
-      let patientDni = this.select.dni
-      let progress = this.form
-      this.$store.dispatch('patient/createProgress', {
-        token,
-        progress,
-        patientDni
-      })
-      .then(() => {
-        this.$store.dispatch('hospitalization/createHospitalization', {
+      if (this.$refs.form.validate()) {
+        let bedId = this.bedId
+        let token = this.user.token
+        let doctorId = this.user.id
+        let patientDni = this.select.dni
+        let progress = this.form
+        this.$store.dispatch('patient/createProgress', {
           token,
-          bedId,
-          doctorId,
+          progress,
           patientDni
         })
         .then(() => {
-          this.$router.go()
+          this.$store.dispatch('hospitalization/createHospitalization', {
+            token,
+            bedId,
+            doctorId,
+            patientDni
+          })
+          .then(() => {
+            this.$router.go()
+          })
         })
-      })
-      this.dialog = false
+      }
     },
     createSelect() {
       Array.prototype.forEach.call(this.patient.patients, patient => {
@@ -189,27 +210,29 @@ export default {
       })
     },
     dischargePatinent() {
-      let token = this.user.token
-      let progress = this.form
-      let patientDni = this.patient.dni
-      let bedId = this.bedId
-      let doctorId = this.user.id
-      this.$store.dispatch('patient/createProgress', {
-        token,
-        progress,
-        patientDni
-      })
-      .then(() => {
-        this.$store.dispatch('patient/dischargePatient', {
+      if (this.$refs.form.validate()) {
+        let token = this.user.token
+        let progress = this.form
+        let patientDni = this.patient.dni
+        let bedId = this.bedId
+        let doctorId = this.user.id
+        this.$store.dispatch('patient/createProgress', {
           token,
-          bedId,
-          doctorId,
+          progress,
           patientDni
         })
         .then(() => {
-          this.$router.go()
+          this.$store.dispatch('patient/dischargePatient', {
+            token,
+            bedId,
+            doctorId,
+            patientDni
+          })
+          .then(() => {
+            this.$router.go()
+          })
         })
-      })
+      }
     },
   },
 }
