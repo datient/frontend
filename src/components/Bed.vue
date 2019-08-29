@@ -19,7 +19,7 @@
             <div class="text-center">
               <v-dialog
                 v-model="dialog"
-                width="600">
+                width="800">
                 <template v-slot:activator="{ on }">
                   <v-btn fab color="primary" v-on="on" id="btn_add">
                     <v-icon>add</v-icon>
@@ -33,8 +33,20 @@
                     <v-container>
                       <v-select
                         v-model="select"
-                        :items="items"
-                        label="Seleccione un paciente para asignar a la cama"/>
+                        :items="patientItems"
+                        label="Seleccione un paciente para asignar a la cama"
+                        no-data-text="No se han encontrado pacientes"/>
+                      <v-text-field
+                        v-model="form.diagnosis"
+                        label="Diagnóstico de ingreso"/>
+                      <v-textarea
+                        v-model="form.description"
+                        rows="3"
+                        label="Descripción"/>
+                      <v-select
+                        v-model="form.status"
+                        label="Estado"
+                        :items="statusItems"/>
                     </v-container>
                   </v-card-text>
                   <v-card-actions>
@@ -87,12 +99,12 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-text-field v-model="dischargeForm.diagnosis" id="txt_diagnosis" label="Diagnóstico de egreso"/>
-                <v-text-field v-model="dischargeForm.description" id="txt_description" label="Descripción"/>
+                <v-text-field v-model="form.diagnosis" id="txt_diagnosis" label="Diagnóstico de egreso"/>
+                <v-text-field v-model="form.description" id="txt_description" label="Descripción"/>
                 <v-select
-                  v-model="dischargeForm.status"
+                  v-model="form.status"
                   label="Estado"
-                  :items="[{ text: 'Bien', value: 0 }, { text: 'Precaución', value: 1 }, { text: 'Peligro', value: 2 }]"/>
+                  :items="statusItems"/>
               </v-container>
             </v-card-text>
             <v-card-actions>
@@ -117,13 +129,18 @@ export default {
       bedId: this.$route.params.id,
       dialog: false,
       dischargeDialog: false,
-      dischargeForm: {
+      form: {
         diagnosis: null,
         description: null,
         status: null
       },
       select: null,
-      items: [],
+      patientItems: [],
+      statusItems: [
+        { text: 'Bien', value: 0 },
+        { text: 'Precaución', value: 1 },
+        { text: 'Peligro', value: 2 }
+      ],
     }
   },
   computed: {
@@ -132,8 +149,11 @@ export default {
   mounted() {
     let bedId = this.bedId
     let token = this.user.token
+    this.$store.dispatch('patient/obtainPatients', token)
+    .then(() => {
+      this.createSelect()
+    })
     this.$store.dispatch('hospitalization/obtainHospitalization', { token, bedId })
-    this.createSelect()
   },
   methods: {
     assignPatient() {
@@ -141,20 +161,28 @@ export default {
       let token = this.user.token
       let doctorId = this.user.id
       let patientDni = this.select.dni
-      this.$store.dispatch('hospitalization/createHospitalization', {
+      let progress = this.form
+      this.$store.dispatch('patient/createProgress', {
         token,
-        bedId,
-        doctorId,
+        progress,
         patientDni
       })
       .then(() => {
-        this.$router.go()
+        this.$store.dispatch('hospitalization/createHospitalization', {
+          token,
+          bedId,
+          doctorId,
+          patientDni
+        })
+        .then(() => {
+          this.$router.go()
+        })
       })
       this.dialog = false
     },
     createSelect() {
       Array.prototype.forEach.call(this.patient.patients, patient => {
-        this.items.push({
+        this.patientItems.push({
           text: `${patient.dni} - ${patient.last_name}, ${patient.first_name}`,
           value: patient
         })
@@ -162,7 +190,7 @@ export default {
     },
     dischargePatinent() {
       let token = this.user.token
-      let progress = this.dischargeForm
+      let progress = this.form
       let patientDni = this.patient.dni
       let bedId = this.bedId
       let doctorId = this.user.id
