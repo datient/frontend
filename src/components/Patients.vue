@@ -21,6 +21,7 @@
                     label="Nombre"
                     prepend-icon="person"
                     id="first_name"
+                    :error-messages="errorFN"
                     type="text"/>
                 </v-flex>
                 <v-flex xs12 md6>
@@ -28,6 +29,7 @@
                     v-model="patientForm.last_name"
                     label="Apellido"
                     id="last_name"
+                    :error-messages="errorLN"
                     type="text"/>
                 </v-flex>
                 <v-flex xs12 md7>
@@ -44,6 +46,7 @@
                         v-model="patientForm.birth_date"
                         label="Fecha de nacimiento"
                         id="birth_date"
+                        :error-messages="errorBirth"
                         prepend-icon="calendar_today"
                         readonly
                         v-on="on"/>
@@ -57,6 +60,7 @@
                     label="DNI"
                     prepend-icon="crop_landscape"
                     id="dni"
+                    :error-messages="errorDni"
                     type="number"/>
                 </v-flex>
                 <v-flex xs12 md6>
@@ -79,8 +83,9 @@
                   <v-text-field
                   v-model="patientForm.contact"
                   label="Numero de contacto"
-                  type="number"
                   prepend-icon="phone"
+                  type="number"
+                  hint="Introduzca solo numeros"
                   id="contact"/>
                 </v-flex>
                 <v-flex xs6 md6>
@@ -89,15 +94,8 @@
                   label="Numero de contacto 2"
                   type="number"
                   prepend-icon="phone"
+                  hint="Introduzca solo numeros"
                   id="contact2"/>
-                </v-flex>
-                <v-flex>
-                  <v-textarea 
-                    style="max-height: 55px;"
-                    rows=2
-                    v-model="patientForm.income_diagnosis"
-                    label="Diagnostico"
-                    id="diagnostic"/>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -168,8 +166,7 @@ export default {
         last_name: null,
         birth_date: null,
         history_number: null,
-        gender: null,
-        income_diagnosis: null
+        gender: null
       },
       defaultForm: {
         dni: null,
@@ -177,10 +174,13 @@ export default {
         last_name: null,
         birth_date: null,
         history_number: null,
-        gender: null,
-        income_diagnosis: null
+        gender: null
       },
-      index: -1
+      index: -1,
+      errorFN: null,
+      errorLN: null,
+      errorBirth: null,
+      errorDni: null,
     };
   },
   computed: {
@@ -213,6 +213,12 @@ export default {
         .then(() => {
           this.$router.go()
         })
+        .catch(err => {
+          this.errorFN = err["first_name"]
+          this.errorLN = err["last_name"]
+          this.errorBirth = err["birth_date"]
+          this.errorDni = err["dni"]
+        })
     },
     editPatientDialog(item) {
       this.index = 1
@@ -227,6 +233,12 @@ export default {
         .then(() => {
           this.$router.go()
         })
+        .catch(err => {
+          this.errorFN = err["first_name"]
+          this.errorLN = err["last_name"]
+          this.errorBirth = err["birth_date"]
+          this.errorDni = err["dni"]
+        }) 
     },
     savePatient() {
       this.index === -1 ? this.createPatient() : this.editPatient()

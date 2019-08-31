@@ -92,10 +92,10 @@
         Diagnóstico de ingreso: {{ patient.income_diagnosis }}<br>
         Teléfono de contacto 1: {{ patient.contact }}<br>
         Teléfono de contacto 2: {{ patient.contact2 }}<br>
-        <div v-if="patient.progress !== null">
+        <div v-if="progress.progress !== null">
           <h1>Último Progreso</h1>
-          <h2>{{ patient.progress.diagnosis }}: {{ patient.progress.status }}</h2>
-          {{ patient.progress.description }}<br>
+          <h2>{{ progress.progress[0].diagnosis }}: {{ progress.progress[0].status }}</h2>
+          {{ progress.progress[0].description }}<br>
         </div>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
@@ -152,7 +152,8 @@ export default {
       form: {
         diagnosis: null,
         description: null,
-        status: null
+        status: null,
+        has_left: false
       },
       select: null,
       patientItems: [],
@@ -164,7 +165,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['hospitalization', 'patient', 'user'])
+    ...mapState(['hospitalization', 'patient', 'progress', 'user'])
   },
   mounted() {
     let bedId = this.bedId
@@ -183,10 +184,10 @@ export default {
         let doctorId = this.user.id
         let patientDni = this.select.dni
         let progress = this.form
-        this.$store.dispatch('patient/createProgress', {
+        this.$store.dispatch('progress/createProgress', {
           token,
-          progress,
-          patientDni
+          patientDni,
+          progress
         })
         .then(() => {
           this.$store.dispatch('hospitalization/createHospitalization', {
@@ -195,9 +196,7 @@ export default {
             doctorId,
             patientDni
           })
-          .then(() => {
-            this.$router.go()
-          })
+          .then(() => { this.$router.go() })
         })
       }
     },
@@ -216,10 +215,11 @@ export default {
         let patientDni = this.patient.dni
         let bedId = this.bedId
         let doctorId = this.user.id
-        this.$store.dispatch('patient/createProgress', {
+        progress.has_left = true
+        this.$store.dispatch('progress/createProgress', {
           token,
-          progress,
-          patientDni
+          patientDni,
+          progress
         })
         .then(() => {
           this.$store.dispatch('patient/dischargePatient', {
@@ -228,12 +228,10 @@ export default {
             doctorId,
             patientDni
           })
-          .then(() => {
-            this.$router.go()
-          })
+          .then(() => { this.$router.go() })
         })
       }
-    },
+    }
   },
 }
 </script>

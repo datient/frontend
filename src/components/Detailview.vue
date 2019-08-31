@@ -89,7 +89,7 @@
                         Evolucion:
                     </v-flex>
                     <v-flex lg11>
-                      <v-dialog v-model="dialog" width="800">
+                      <v-dialog v-if = "!progress.progress[0].has_left" v-model="dialog" width="800">
                         <template v-slot:activator="{ on }">
                           <v-btn fab dark small color="indigo" v-on="on">
                             <v-icon dark>post_add</v-icon>
@@ -105,7 +105,7 @@
                                     v-model="progressForm.diagnosis"
                                     id="diagnosis"
                                     label="Diagnostico"
-                                    :error-messages="errorFormProgress"
+                                    :error-messages="errorDiagnosis"
                                     type="text"/>
                                 </v-flex>
                                 <v-flex xs12 md12>
@@ -120,7 +120,7 @@
                                     v-model="progressForm.status"
                                     label="Estado"
                                     :items="[{text:'Bien',value:0},{text:'Precaucion',value:1},{text:'Peligro',value:2}]"
-                                    :error-messages="errorFormProgress"
+                                    :error-messages="errorStatus"
                                     id="status"/>
                                 </v-flex>
                               </v-layout>
@@ -143,14 +143,20 @@
                   <v-list
                     flat
                     three-line
-                    v-if="progress.progress !== null"
-                  >
+                    v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
                       <v-list-item v-for="progress in progress.progress"
-                              :key="progress.id">
+                        :key="progress.id">
                         <template>
                           <v-list-item-content>
                             <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
-                            <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                            <v-layout style="margin: auto 0px;"> 
+                              <v-flex lg2 style="margin-left: -2px;">
+                                <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                              </v-flex>
+                              <v-flex lg10>
+                                <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
+                              </v-flex>
+                            </v-layout>
                             <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
                             <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
                             <v-divider></v-divider>
@@ -174,15 +180,16 @@
                         <v-card>
                           <v-card-text>
                             <v-layout>
-                            <v-spacer/>
+                              <v-spacer/>
                               <v-file-input chips multiple 
-                              clear-icon="clear" 
-                              v-model="files" 
-                              label="Seleccionar imagen"/>
-                              <v-btn xs12 fab dark color="indigo" @click="agregar">
-                                <v-icon dark>add_photo_alternate</v-icon>
-                              </v-btn>
-                               <v-snackbar
+                                clear-icon="clear" 
+                                v-model="files" 
+                                :rules="[value => value.length >= 1 || 'No se han seleccionado imagenes.']"
+                                label="Seleccionar imagen"/>
+                                <v-btn xs12 fab dark color="indigo" @click="agregar">
+                                  <v-icon dark>add_photo_alternate</v-icon>
+                                </v-btn>
+                                <v-snackbar
                                   v-model="snackbar"
                                   color="error"
                                   :right="true"
@@ -248,8 +255,10 @@ export default {
         diagnosis: null,
         description: null,
         status: null,
+        has_left: false
       },
-      errorFormProgress: null
+      errorStatus: null,
+      errorDiagnosis: null
     }
   },
   computed: {
@@ -268,7 +277,7 @@ export default {
       let token = this.user.token
       this.$store.dispatch('hospitalization/obtainHospitalizationPatient', { token, dni })
     },
-    selectTab(){
+    selectTab() {
       let tab = this.tab;
       this.$store.commit('studies/setIndexTab', tab)
     },
@@ -280,25 +289,26 @@ export default {
         .dispatch('studies/createComplementaryStudy', { token, dni, files })
         .then(() => { this.$router.go() })
         .catch(err => {
-        if (err !== undefined) {
-          this.error = err
-          this.snackbar = true
-        }
-        });   
+          if (err !== undefined) {
+            this.error = err
+            this.snackbar = true
+          }
+        })
     },
     saveProgress() {
       let token = this.user.token
       let progress = this.progressForm
-      let dni = this.dni
+      let patientDni = this.dni
       this.$store
-        .dispatch('progress/createProgress', { token, dni, progress })
-        .then(() => {this.$router.go() })
+        .dispatch('progress/createProgress', { token, patientDni, progress })
+        .then(() => { this.$router.go() })
         .catch(err => {
-          this.errorFormProgress = err["diagnosis"]
-          this.errorFormProgress = err["status"]
+          this.errorDiagnosis = err["diagnosis"]
+          this.errorStatus = err["status"]
         })
-    }, 
-}}
+    },
+  }
+}
 </script>
 
 <style>

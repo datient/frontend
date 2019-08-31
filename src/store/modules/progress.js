@@ -8,18 +8,27 @@ const state = {
 const mutations = {
   setProgress(state, progress) {
     state.progress = progress
-    progress.forEach(p => {
+    if (state.progress.length >= 1) {
+      state.progress.forEach(p => {
         if (p.status === 0) {
-        p.status = 'Bien'
-      } else if (p.status === 1) {
-        p.status = 'Precaucion'
-      } else if (p.status === 2) {
+          p.status = 'Bien'
+        } else if (p.status === 1) {
+          p.status = 'Precaucion'
+        } else if (p.status === 2) {
           p.status = 'Peligro'
-      } else {
-        p.status = null
-      }
-      p.created_at = new Date(p.created_at).toLocaleString()
-    });
+        } else {
+          p.status = null
+        }
+        p.created_at = new Date(p.created_at).toLocaleString()
+      });
+    } else {
+      state.progress = [
+        {
+          diagnosis: null,
+          has_left: false,
+        }
+      ]
+    }
 }
 }
 
@@ -34,7 +43,7 @@ const actions = {
       commit('setProgress',res.data)
     })
   },
-  createProgress({ commit }, { token, dni, progress }) {
+  createProgress({ commit }, { token, patientDni, progress }) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
@@ -44,7 +53,8 @@ const actions = {
           diagnosis: progress.diagnosis,
           description: progress.description,
           status: progress.status,
-          patient: dni
+          has_left: progress.has_left,
+          patient: patientDni
         },
       })
       .then(res => {

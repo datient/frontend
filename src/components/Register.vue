@@ -17,6 +17,7 @@
                           v-model="user.first_name"
                           prepend-icon="person"
                           id="first_name"
+                          :error-messages="errorFirstN"
                           label="Nombre"
                           type="text"/>
                       </v-flex>
@@ -24,6 +25,7 @@
                         <v-text-field
                           v-model="user.last_name"
                           id="last_name"
+                          :error-messages="errorLastN"
                           label="Apellido"
                           type="text"/>
                       </v-flex>
@@ -32,6 +34,7 @@
                           v-model="user.email"
                           prepend-icon="alternate_email"
                           id="email"
+                           :error-messages="errorEmail"
                           label="Email"
                           type="email"/>
                       </v-flex>
@@ -50,6 +53,7 @@
                           prepend-icon="lock"
                           id="password"
                           label="Contraseña"
+                           :error-messages="errorPassword"
                           type="password"/>
                       </v-flex>
                       <v-flex md6>
@@ -57,6 +61,7 @@
                           v-model="user.password_confirm"
                           id="password_confirm"
                           label="Confirmar contraseña"
+                          :error-messages="errorPasswordC"
                           type="password"/>
                       </v-flex>
                     </v-layout>
@@ -69,6 +74,19 @@
                       type="submit">
                       Registrarse
                     </v-btn>
+                      <v-snackbar
+                        v-model="snackbar"
+                        color="error"
+                        :right="true"
+                        :timeout="timeout">
+                        Las contraseñas no coinciden
+                        <v-btn
+                          dark
+                          text
+                          @click="snackbar = false">
+                          Cerrar
+                        </v-btn>
+                      </v-snackbar>
                   </v-card-actions>
                 </form>
               </v-card-text>
@@ -93,6 +111,13 @@ export default {
         password: null,
         password_confirm: null,
       },
+      snackbar: null,
+      timeout: 6000,
+      errorPassword: null,
+      errorPasswordC: null,
+      errorFirstN: null,
+      errorLastN: null,
+      errorEmail: null
     }
   },
   methods: {
@@ -102,6 +127,19 @@ export default {
         .then(() => {
           this.$router.push({ name: 'login' })
         })
+        .catch(err => {
+        this.errorFirstN = err ['first_name']
+        this.errorLastN = err ['last_name']
+        this.errorEmail = err['email']
+        this.errorPassword = err['password']
+        this.errorPasswordC = err['password_confirm']
+        if (err['non_field_errors'] !== undefined) {
+          this.error = err['non_field_errors'][0]
+          this.snackbar = true
+          this.user.password = null
+          this.user.password_confirm = null
+        }
+      })
     }
   }
 }

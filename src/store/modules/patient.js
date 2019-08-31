@@ -11,7 +11,6 @@ const state = {
   contact: null,
   contact2: null,
   income_diagnosis: null,
-  progress: null,
   patients: null,
 }
 
@@ -33,16 +32,6 @@ const mutations = {
     state.contact = patient['contact']
     state.contact2 = patient['contact2']
     state.income_diagnosis = patient['income_diagnosis']
-    if (patient['progress'].length >= 1) {
-      state.progress = patient['progress'][0]
-      if (state.progress.status === 0) {
-        state.progress.status = 'Bien'
-      } else if (state.progress.status === 1) {
-        state.progress.status = 'Precaución'
-      } else {
-        state.progress.status = 'Peligro'
-      }
-    }
   },
   setPatients(state, patients) {
     patients.forEach(element => {
@@ -74,27 +63,6 @@ const actions = {
           contact2: patient.contact2,
           income_diagnosis: patient.income_diagnosis
         },
-      })
-      .then(res => {
-        resolve(res)
-      })
-      .catch(err => {
-        reject(err.response.data)
-      })
-    })
-  },
-  createProgress({ commit }, { token, progress, patientDni }) {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'post',
-        url: 'http://127.0.0.1:8000/api/progress/',
-        headers: { 'Authorization': `JWT ${token}` },
-        data: {
-          diagnosis: progress.diagnosis,
-          description: progress.description,
-          status: progress.status,
-          patient: patientDni
-        }
       })
       .then(res => {
         resolve(res)
@@ -191,7 +159,6 @@ const actions = {
           contact: null,
           contact2: null,
           income_diagnosis: null,
-          progress: null
         })
         reject(err)
       })

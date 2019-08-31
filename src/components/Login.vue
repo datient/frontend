@@ -14,12 +14,14 @@
                     v-model="email"
                     prepend-icon="person"
                     id="email"
+                    :error-messages="errorUsername"
                     label="Email"
                     type="email"/>
                   <v-text-field
                     v-model="password"
                     prepend-icon="lock"
                     id="password"
+                    :error-messages="errorPassword"
                     label="Contraseña"
                     type="password"/>
                   <v-card-actions>
@@ -73,7 +75,9 @@ export default {
       password: null,
       snackbar: false,
       timeout: 6000,
-      error: null
+      error: null,
+      errorUsername: null,
+      errorPassword: null
     }
   },
   computed: {
@@ -89,8 +93,10 @@ export default {
         this.$router.push({ name: 'home' })
       })
       .catch(err => {
-        if (err !== undefined) {
-          this.error = err
+        this.errorUsername = err['email']
+        this.errorPassword = err['password']
+        if (err['non_field_errors'] !== undefined) {
+          this.error = err['non_field_errors'][0]
           this.snackbar = true
         }
       })
