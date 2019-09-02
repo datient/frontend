@@ -51,7 +51,11 @@
                         readonly
                         v-on="on"/>
                     </template>
-                    <v-date-picker v-model="patientForm.birth_date" @input="menu = false"/>
+                    <v-date-picker v-model="patientForm.birth_date" 
+                      min="1900-01-01"
+                      :max="new Date().toISOString().substr(0, 10)"
+                      locale="es - AR"
+                      @input="menu = false"/>
                   </v-menu>
                 </v-flex>
                 <v-flex xs12 md5>
