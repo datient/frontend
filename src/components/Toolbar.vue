@@ -12,18 +12,25 @@
         </v-list-item-content>
       </v-list-item>
       <v-divider/>
-      <v-list-item
-        v-for="(item, index) in drawerItems"
-        :key="index"
-        :id="item.id"
-        @click="changeRoute(item.route)">
-        <v-list-item-icon>
-          <v-icon>{{ item.icon }}</v-icon>
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item-content>
-       </v-list-item>
+      <v-list shaped>
+        <v-list-item-group
+          v-model="item"
+          color="primary"
+          mandatory>
+          <v-list-item
+            v-for="(item, index) in drawerItems"
+            :id="item.id"
+            :key="index"
+            @click="changeRoute(item.route)">
+            <v-list-item-icon>
+              <v-icon>{{ item.icon }}</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar color="primary" dark>
       <v-app-bar-nav-icon id="btn_drawer" @click.stop="drawer = !drawer">
@@ -72,6 +79,7 @@ export default {
         { title: 'Home', icon: 'home', route: 'home', id: 'btn_home' },
         { title: 'Pacientes', icon: 'person', route: 'patients', id: 'btn_patients' },
       ],
+      item: 0,
     }
   },
   computed: {
@@ -79,7 +87,9 @@ export default {
   },
   methods: {
     changeRoute(route) {
-      this.$router.push({ name: route })
+      return route !== this.$route.name
+        ? this.$router.push({ name: route })
+        : this.drawer = false
     },
     logOut() {
       this.$store.dispatch('user/logOut')
