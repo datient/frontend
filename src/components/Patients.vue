@@ -3,17 +3,18 @@
     <v-toolbar color="white" flat>
       <v-toolbar-title>Pacientes</v-toolbar-title>
       <v-divider class="mx-2" inset vertical />
-      <v-spacer />
+      <v-spacer/>
       <v-text-field
         v-model="search"
         append-icon="search"
         label="Buscar paciente..."
         single-line
         hide-details/>
+      <v-spacer/>
       <v-dialog v-model="dialog" width="800">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" id="btn_new_patient" v-on="on">
-            Nuevo Paciente
+            <v-icon>person_add</v-icon>
           </v-btn>
         </template>
         <v-card>
@@ -86,6 +87,7 @@
                     v-model="patientForm.gender"
                     :items="['Masculino', 'Femenino']"
                     label="Genero"
+                    append-icon="keyboard_arrow_down"
                     id="gender"
                     prepend-icon="wc"/>
                 </v-flex>
@@ -114,6 +116,13 @@
             <v-spacer/>
             <v-btn
               color="primary"
+              id="btn_cancel"
+              text
+              @click="dialog = false">
+              Cancelar
+            </v-btn>
+            <v-btn
+              color="primary"
               id="btn_submit"
               text
               @click="savePatient">
@@ -125,6 +134,7 @@
     </v-toolbar>
     <v-data-table
       hide-default-footer
+      no-results-text="No se han encontrado pacientes"
       :headers="headers"
       :items="patient.patients"
       :search="search">
