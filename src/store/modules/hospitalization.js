@@ -23,6 +23,7 @@ const mutations = {
     state.entry_at = info.entry_at
     state.done_at = info.done_at
     state.boarding_days = info.boarding_days
+    state.entry_at= new Date(info.entry_at).toLocaleString()
   },
 }
 
@@ -82,7 +83,7 @@ const actions = {
       let entry_at = res.data.entry_at
       let done_at = res.data.done_at
       let boarding_days = res.data.boarding_days
-      commit('setHospitalization', { entry_at, done_at, boarding_days })
+      commit('setHospitalization', { entry_at, done_at, boarding_days, entry_at })
       dispatch('patient/obtainPatient', { token, dni }, { root: true })
       axios({
         method: 'get',
@@ -108,7 +109,6 @@ const actions = {
           birth_date: null,
           gender: null,
           history_number: null,
-          income_diagnosis: null,
           progress: []
         },
         { root: true },

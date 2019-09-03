@@ -25,7 +25,7 @@ const mutations = {
       state.progress = [
         {
           diagnosis: null,
-          has_left: false,
+          has_left: true,
         }
       ]
     }
@@ -54,6 +54,7 @@ const actions = {
           description: progress.description,
           status: progress.status,
           has_left: progress.has_left,
+          income: progress.income,
           patient: patientDni
         },
       })

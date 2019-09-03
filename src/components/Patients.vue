@@ -71,6 +71,7 @@
                     label="DNI"
                     prepend-icon="crop_landscape"
                     id="dni"
+                    :readonly= "dniReadonly"
                     :error-messages="errorDni"
                     type="number"/>
                 </v-flex>
@@ -215,6 +216,9 @@ export default {
     },
     formButton() {
       return this.index === -1 ? 'createPatient' : 'savePatient'
+    },
+    dniReadonly() {
+      return this.index === 1 ? true : false  
     }
   },
   watch: {

@@ -32,13 +32,17 @@
                   <v-card-text>
                     <v-container>
                       <v-form ref="form">
-                        <v-select
+                        <v-autocomplete
                           v-model="select"
                           :items="patientItems"
+                          :loading="isLoading"
+                          :search-input.sync="searchInput"
+                          hide-selected
                           :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
                           label="Seleccione un paciente para asignar a la cama"
                           no-data-text="No se han encontrado pacientes"
-                          required/>
+                          required
+                        ></v-autocomplete>
                         <v-text-field
                           v-model="form.diagnosis"
                           :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
@@ -94,7 +98,6 @@
         Número de historia: {{ patient.history_number }}<br>
         Fecha de ingreso: {{ hospitalization.entry_at }}
         Días internado: {{ hospitalization.boarding_days }}<br>
-        Diagnóstico de ingreso: {{ patient.income_diagnosis }}<br>
         Teléfono de contacto 1: {{ patient.contact }}<br>
         Teléfono de contacto 2: {{ patient.contact2 }}<br>
         <div v-if="progress.progress !== null">
@@ -160,6 +163,8 @@ export default {
         status: null,
         has_left: false
       },
+      searchInput: null,
+      isLoading: false,
       select: null,
       patientItems: [],
       statusItems: [
@@ -189,6 +194,7 @@ export default {
         let doctorId = this.user.id
         let patientDni = this.select.dni
         let progress = this.form
+        progress.income = true
         this.$store.dispatch('progress/createProgress', {
           token,
           patientDni,

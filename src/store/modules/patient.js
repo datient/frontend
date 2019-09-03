@@ -10,7 +10,6 @@ const state = {
   history_number: null,
   contact: null,
   contact2: null,
-  income_diagnosis: null,
   patients: null,
 }
 
@@ -31,7 +30,6 @@ const mutations = {
     state.history_number = patient['history_number']
     state.contact = patient['contact']
     state.contact2 = patient['contact2']
-    state.income_diagnosis = patient['income_diagnosis']
   },
   setPatients(state, patients) {
     patients.forEach(element => {
@@ -61,7 +59,6 @@ const actions = {
           gender: patient.gender === 'Masculino' ? 0 : 1,
           contact: patient.contact,
           contact2: patient.contact2,
-          income_diagnosis: patient.income_diagnosis
         },
       })
       .then(res => {
@@ -108,7 +105,6 @@ const actions = {
           gender: patient.gender === 'Masculino' ? 0 : 1,
           contact: patient.contact,
           contact2: patient.contact2,
-          income_diagnosis: patient.income_diagnosis
         },
       })
       .then(res => {
@@ -158,7 +154,6 @@ const actions = {
           history_number: null,
           contact: null,
           contact2: null,
-          income_diagnosis: null,
         })
         reject(err)
       })

@@ -67,23 +67,29 @@
           <v-tab-item>
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
-                <v-flex lg3>
+                <v-flex lg3 style="margin-right: -181px;">
                   <v-icon>hotel</v-icon>
                   Cama actual:
                 </v-flex>
-                <v-flex class="fix" lg4 v-if="hospitalization.bed">
+                <router-link v-if="hospitalization.bed"
+                  :to="{ name: 'bed', params: { id: hospitalization.bed.id }}">
+                  <v-flex>
                   {{ hospitalization.bed.name }}
-                </v-flex>
-                <v-flex class="fix" lg4 v-if="hospitalization.error">
+                  </v-flex>
+                </router-link>
+                <v-flex lg9 v-if="hospitalization.error">
                   No se encuentra internado en este momento
                 </v-flex>
-                <v-flex lg12>
-                  <v-icon>healing</v-icon>
-                  Diagnostico inicial:
-                  {{ patient.income_diagnosis }}
+                <v-flex lg11>
+                  <v-icon>calendar_today</v-icon>
+                  Fecha de ingreso: {{ hospitalization.entry_at }}
+                </v-flex>
+                <v-flex lg4>
+                  <v-icon>calendar_today</v-icon>
+                  Dias internado: {{ hospitalization.boarding_days }} 
                 </v-flex>
                 <v-flex lg12>
-                  <v-row>
+                  <v-row class="row">
                     <v-flex lg1>
                       <v-icon>show_chart</v-icon>
                         Evolucion:
@@ -142,6 +148,9 @@
                   </v-row>
                   <v-list
                     flat
+                    class="mx-auto scroll" 
+                    max-width="100%" 
+                    height="330"
                     three-line
                     v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
                       <v-list-item v-for="progress in progress.progress"
@@ -155,6 +164,7 @@
                               </v-flex>
                               <v-flex lg10>
                                 <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
+                                <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
                               </v-flex>
                             </v-layout>
                             <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
@@ -164,7 +174,7 @@
                         </template>
                       </v-list-item>
                   </v-list>
-                  <v-flex v-if="progress.progress">No hay progresos registrados</v-flex>
+                  <v-flex v-if="progress.progress[0].diagnosis === null">No hay progresos registrados</v-flex>
                 </v-flex>
               </v-layout>
             </v-container>
@@ -244,6 +254,7 @@ export default {
       snackbar: false,
       timeout: 8000,
       error: null,
+      bed: null,
       dni: this.$route.params.id,
       tab: null,
       items: [
@@ -324,7 +335,10 @@ export default {
 .fixtitle{
   margin-left: 10px;
 }
-.fix{
-  margin-left: -184px;
+.scroll{
+  overflow-y: auto;
+}
+.row{
+  margin-left: 0px !important;
 }
 </style>
