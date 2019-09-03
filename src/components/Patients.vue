@@ -4,6 +4,12 @@
       <v-toolbar-title>Pacientes</v-toolbar-title>
       <v-divider class="mx-2" inset vertical />
       <v-spacer />
+      <v-text-field
+        v-model="search"
+        append-icon="search"
+        label="Buscar paciente..."
+        single-line
+        hide-details/>
       <v-dialog v-model="dialog" width="800">
         <template v-slot:activator="{ on }">
           <v-btn color="primary" id="btn_new_patient" v-on="on">
@@ -120,7 +126,8 @@
     <v-data-table
       hide-default-footer
       :headers="headers"
-      :items="patient.patients">
+      :items="patient.patients"
+      :search="search">
       <template v-slot:item.dni="props">
         <router-link :to="{ name: 'detailview', params: { id: props.item.dni } }">
           <a>{{ props.item.dni }}</a>
@@ -185,6 +192,7 @@ export default {
       errorLN: null,
       errorBirth: null,
       errorDni: null,
+      search: '',
     };
   },
   computed: {
