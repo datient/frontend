@@ -9,7 +9,7 @@
                 <v-toolbar-title>Registro de Usuario</v-toolbar-title>
               </v-toolbar>
               <v-card-text>
-                <form @submit.prevent="submit">
+                <v-form ref="form" @submit.prevent="submit">
                   <v-container grid-list-md>
                     <v-layout wrap>
                       <v-flex md6>
@@ -17,7 +17,7 @@
                           v-model="user.first_name"
                           prepend-icon="person"
                           id="first_name"
-                          :error-messages="errorFirstN"
+                          :error-messages="error['first_name']"
                           label="Nombre"
                           type="text"/>
                       </v-flex>
@@ -25,7 +25,7 @@
                         <v-text-field
                           v-model="user.last_name"
                           id="last_name"
-                          :error-messages="errorLastN"
+                          :error-messages="error['last_name']"
                           label="Apellido"
                           type="text"/>
                       </v-flex>
@@ -34,16 +34,17 @@
                           v-model="user.email"
                           prepend-icon="alternate_email"
                           id="email"
-                           :error-messages="errorEmail"
+                          :error-messages="error['email']"
                           label="Email"
                           type="email"/>
                       </v-flex>
                       <v-flex md12>
                         <v-select
                           v-model="user.hierarchy"
-                          :items="['Jefe', 'Medico', 'Medico']"
-                          prepend-icon="how_to_reg"
+                          :items="hierarchyItems"
                           id="hierarchy"
+                          append-icon="keyboard_arrow_down"
+                          prepend-icon="how_to_reg"
                           label="Jerarquia">
                         </v-select>
                       </v-flex>
@@ -53,7 +54,7 @@
                           prepend-icon="lock"
                           id="password"
                           label="Contraseña"
-                           :error-messages="errorPassword"
+                          :error-messages="error['password']"
                           type="password"/>
                       </v-flex>
                       <v-flex md6>
@@ -61,34 +62,41 @@
                           v-model="user.password_confirm"
                           id="password_confirm"
                           label="Confirmar contraseña"
-                          :error-messages="errorPasswordC"
+                          :error-messages="error['password_confirm']"
                           type="password"/>
                       </v-flex>
                     </v-layout>
                   </v-container>
                   <v-card-actions>
-                    <v-spacer></v-spacer>
+                    <v-spacer/>
+                    <v-btn
+                      :to="{name: 'login'}"
+                      id="btn_cancel"
+                      color="primary"
+                      text>
+                      Cancelar
+                    </v-btn>
                     <v-btn
                       id="btn_register"
                       color="primary"
                       type="submit">
                       Registrarse
                     </v-btn>
-                      <v-snackbar
-                        v-model="snackbar"
-                        color="error"
-                        :right="true"
-                        :timeout="timeout">
-                        Las contraseñas no coinciden
-                        <v-btn
-                          dark
-                          text
-                          @click="snackbar = false">
-                          Cerrar
-                        </v-btn>
-                      </v-snackbar>
+                    <v-snackbar
+                      v-model="snackbar"
+                      color="error"
+                      :right="true"
+                      :timeout="timeout">
+                      Las contraseñas no coinciden
+                      <v-btn
+                        dark
+                        text
+                        @click="snackbar = false">
+                        Cerrar
+                      </v-btn>
+                    </v-snackbar>
                   </v-card-actions>
-                </form>
+                </v-form>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -111,35 +119,41 @@ export default {
         password: null,
         password_confirm: null,
       },
+      error: {
+        email: null,
+        first_name: null,
+        last_name: null,
+        hierarchy: null,
+        password: null,
+        password_confirm: null,
+      },
+      hierarchyItems: [
+        { text: 'Jefe del servicio medico', value: 0 },
+        { text: 'Medico', value: 1 },
+        { text: 'Medico 2', value: 2 },
+      ],
       snackbar: null,
       timeout: 6000,
-      errorPassword: null,
-      errorPasswordC: null,
-      errorFirstN: null,
-      errorLastN: null,
-      errorEmail: null
     }
   },
   methods: {
     submit() {
       this.$store
         .dispatch('user/createUser', this.user)
-        .then(() => {
-          this.$router.push({ name: 'login' })
-        })
+        .then(() => this.$router.push({ name: 'login' }))
         .catch(err => {
-        this.errorFirstN = err ['first_name']
-        this.errorLastN = err ['last_name']
-        this.errorEmail = err['email']
-        this.errorPassword = err['password']
-        this.errorPasswordC = err['password_confirm']
-        if (err['non_field_errors'] !== undefined) {
-          this.error = err['non_field_errors'][0]
-          this.snackbar = true
-          this.user.password = null
-          this.user.password_confirm = null
-        }
-      })
+          this.error['first_name'] = err['first_name']
+          this.error['last_name'] = err['last_name']
+          this.error['email'] = err['email']
+          this.error['password'] = err['password']
+          this.error['password_confirm'] = err['password_confirm']
+          this.user['password'] = null
+          this.user['password_confirm'] = null
+          if (err['non_field_errors'] !== undefined) {
+            this.error = err['non_field_errors'][0]
+            this.snackbar = true
+          }
+        })
     }
   }
 }

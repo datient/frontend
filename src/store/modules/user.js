@@ -31,19 +31,19 @@ const mutations = {
 }
 
 const actions = {
-  createUser({ commit }, user) {
+  createUser({ }, user) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/accounts/register/',
         headers: { 'Content-Type': 'application/json' },
         data: {
-          'email': user.email,
-          'first_name': user.first_name,
-          'last_name': user.last_name,
-          // 'hierarchy': user.hierarchy,
-          'password': user.password,
-          'password_confirm': user.password_confirm
+          'email': user['email'],
+          'first_name': user['first_name'],
+          'last_name': user['last_name'],
+          'hierarchy': user['hierarchy'],
+          'password': user['password'],
+          'password_confirm': user['password_confirm']
         }
       })
       .then(res => {
