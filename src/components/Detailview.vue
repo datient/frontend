@@ -1,23 +1,23 @@
 <template>
   <div id="detailview">
     <v-card round class="cardDetailview">
-      <v-toolbar>
+      <v-card-title class="text-center justify-center">
         <v-toolbar-title>
-          <v-layout>
-            <v-flex class="fixtitle">
-              {{ patient.last_name }}, {{ patient.first_name }}
-            </v-flex>
-          </v-layout>
+          {{ patient.last_name }}, {{ patient.first_name }}
         </v-toolbar-title>
-      </v-toolbar>
+      </v-card-title>
+      <v-tabs
+        v-model="studies.tab"
+        background-color="transparent"
+        grow
+        @change="selectTab">
+        <v-tab
+          v-for="item in items"
+          :key="item">
+          {{ item }}
+        </v-tab>
+      </v-tabs>
       <v-card-text>
-        <v-tabs
-          v-model="studies.tab"
-          background-color="transparent"
-          grow
-          @change="selectTab">
-          <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
-        </v-tabs>
         <v-tabs-items v-model="studies.tab">
           <v-tab-item>
             <v-container fluid grid-list-sm>
@@ -233,6 +233,9 @@
               </v-layout>
             </v-container>
           </v-tab-item>
+          <v-tab-item>
+            <FuturePlan :dni="dni"/>
+          </v-tab-item>
         </v-tabs-items>
       </v-card-text>
     </v-card>
@@ -241,6 +244,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import FuturePlan from './FuturePlan'
 
 export default {
   name: 'Patients',
@@ -260,7 +264,8 @@ export default {
       items: [
         'Datos Personales',
         'Diagnosticos',
-        'Estudios Complementarios'
+        'Estudios Complementarios',
+        'Plan Futuro',
       ],
       progressForm: {
         diagnosis: null,
@@ -271,6 +276,9 @@ export default {
       errorStatus: null,
       errorDiagnosis: null
     }
+  },
+  components: {
+    FuturePlan,
   },
   computed: {
     ...mapState(['studies','progress','hospitalization', 'patient', 'user'])
