@@ -81,7 +81,12 @@
       </v-container>
       <v-card-text fluid class="bed-text" v-if="patient.dni != null">
         <h1>Datos Personales</h1>
-        DNI: {{ patient.dni }}<br>
+        DNI:
+        <router-link
+          :to="{ name: 'detailview', params: { id: patient.dni }}">
+          {{ patient.dni }}
+        </router-link>
+        <br>
         Nombre completo: {{ patient.first_name }} {{ patient.last_name }}<br>
         Fecha de nacimiento: {{ patient.birth_date }}<br>
         Edad: {{ patient.age }}<br>
