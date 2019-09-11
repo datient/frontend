@@ -112,8 +112,9 @@ export default {
     return {
       planDialog: false,
       planForm: {
+        id: null,
         title: null,
-        description: null,
+        description: null
       },
       defaultForm: {
         id: null,
@@ -164,7 +165,7 @@ export default {
     },
     editPlan() {
       this.$store
-      .dispatch('plan/editPlan', {
+        .dispatch('plan/editPlan', {
           planId: this.planForm['id'],
           title: this.planForm['title'],
           description: this.planForm['description'],
@@ -172,14 +173,14 @@ export default {
         })
       .then(() => this.$router.go())
     },
-      savePlan() {
-        return this.index === -1 ? this.createPlan() : this.editPlan() 
-      }
+    savePlan() {
+      return this.index === -1 ? this.createPlan() : this.editPlan() 
+    }
   }
 }
 </script>
 
-<style lang="stylus" scoped>
+<style>
 .scroll {
   overflow-y: auto;
 }
