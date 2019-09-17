@@ -33,28 +33,18 @@ const mutations = {
 }
 
 const actions = {
-  obtainProgress({ commit }, { token }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/progress/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      commit('setProgress',res.data)
-    })
-  },
-  createProgress({ commit }, { token, patientDni, progress }) {
+  createProgress({ rootState }, { patientDni, progress }) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
         url: 'http://127.0.0.1:8000/api/progress/',
-        headers: { 'Authorization': `JWT ${token}` },
+        headers: { 'Authorization': `JWT ${rootState.user.token}` },
         data: {
-          diagnosis: progress.diagnosis,
-          description: progress.description,
-          status: progress.status,
-          has_left: progress.has_left,
-          income: progress.income,
+          diagnosis: progress['diagnosis'],
+          description: progress['description'],
+          status: progress['status'],
+          has_left: progress['has_left'],
+          income: progress['income'],
           patient: patientDni
         },
       })
@@ -66,7 +56,23 @@ const actions = {
       })
     })
   },
-  }
+  obtainProgress({ commit, rootState }, { patientDni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/patient/${patientDni}/`,
+        headers: { 'Authorization': `JWT ${rootState.user.token}` },
+      })
+      .then(res => {
+        commit('setProgress', res.data)
+        resolve(res)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
+}
 
 export default {
   namespaced: true,

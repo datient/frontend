@@ -15,17 +15,7 @@ const mutations = {
 }
 
 const actions = {
-  obtainComplementaryStudies({ commit }, { token }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/study/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      commit('setStudies',res.data)
-    })
-  },
-  createComplementaryStudy({ commit }, { token, dni, files }){
+  createComplementaryStudy({ rootState }, { dni, files }){
     return new Promise((resolve, reject) => {
       files.forEach(image => {
         let formData = new FormData()
@@ -35,7 +25,7 @@ const actions = {
           method: 'post',
           url: `http://127.0.0.1:8000/api/study/`,
           headers: {
-            'Authorization': `JWT ${token}`,
+            'Authorization': `JWT ${rootState.user.token}`,
             'Content-Type' : 'multipart/form-data'
           },
           data: formData,
@@ -48,7 +38,23 @@ const actions = {
         })
       })
     })
-  }
+  },
+  obtainStudies({ commit, rootState }, { patientDni }) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/patient/${patientDni}/`,
+        headers: { 'Authorization': `JWT ${rootState.user.token}` },
+      })
+      .then(res => {
+        commit('setStudies',res.data['studies'])
+        resolve(res.data['studies'])
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
 }
 
 export default {

@@ -78,164 +78,10 @@
             </v-container>
           </v-tab-item>
           <v-tab-item>
-            <v-container fluid grid-list-sm>
-              <v-layout class="grid" wrap>
-                <v-flex lg11>
-                  <v-icon>calendar_today</v-icon>
-                  Fecha de ingreso: {{ hospitalization.entry_at }}
-                </v-flex>
-                <v-flex lg4>
-                  <v-icon>calendar_today</v-icon>
-                  Dias internado: {{ hospitalization.boarding_days }} 
-                </v-flex>
-                <v-flex lg12>
-                  <v-row class="row">
-                    <v-flex lg1>
-                      <v-icon>show_chart</v-icon>
-                        Evolucion:
-                    </v-flex>
-                    <v-flex lg11>
-                      <v-dialog v-if = "!progress.progress[0].has_left" v-model="dialog" width="800">
-                        <template v-slot:activator="{ on }">
-                          <div v-if="user.hierarchy in [0,1]">
-                            <v-btn fab dark small color="indigo" v-on="on">
-                              <v-icon dark>post_add</v-icon>
-                            </v-btn>  
-                          </div>
-                        </template>
-                        <v-card>
-                          <v-card-title class="headline" primary-title>Nuevo Progreso</v-card-title>
-                          <v-card-text>
-                            <v-container class="form" grid-list-md>
-                              <v-layout wrap>
-                                <v-flex xs12 md12>
-                                  <v-text-field
-                                    v-model="progressForm.diagnosis"
-                                    id="diagnosis"
-                                    label="Diagnostico"
-                                    :error-messages="errorDiagnosis"
-                                    type="text"/>
-                                </v-flex>
-                                <v-flex xs12 md12>
-                                  <v-textarea
-                                    rows=3
-                                    v-model="progressForm.description"
-                                    id="description"
-                                    label="Descripcion"/>
-                                </v-flex>    
-                                <v-flex xs12 md12>  
-                                  <v-select
-                                    v-model="progressForm.status"
-                                    label="Estado"
-                                    :items="[{text:'Bien',value:0},{text:'Precaucion',value:1},{text:'Peligro',value:2}]"
-                                    :error-messages="errorStatus"
-                                    id="status"/>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                          </v-card-text>
-                          <v-card-actions class=card_actions>
-                            <v-spacer/>
-                            <v-btn
-                              color="primary"
-                              id="btn_add_progress"
-                              text
-                              @click="saveProgress">
-                              Agregar
-                            </v-btn>
-                          </v-card-actions>   
-                        </v-card>  
-                      </v-dialog>                    
-                    </v-flex>
-                  </v-row>
-                  <v-list
-                    flat
-                    class="mx-auto scroll" 
-                    max-width="100%" 
-                    height="330"
-                    three-line
-                    v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
-                      <v-list-item v-for="progress in progress.progress"
-                        :key="progress.id">
-                        <template>
-                          <v-list-item-content>
-                            <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
-                            <v-layout style="margin: auto 0px;"> 
-                              <v-flex lg2 style="margin-left: -2px;">
-                                <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
-                              </v-flex>
-                              <v-flex lg10>
-                                <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
-                                <v-list-item-title v-if = "progress.income"> ( Ingreso ) </v-list-item-title>
-                              </v-flex>
-                            </v-layout>
-                            <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
-                            <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
-                            <v-divider></v-divider>
-                          </v-list-item-content>
-                        </template>
-                      </v-list-item>
-                  </v-list>
-                  <v-flex v-if="progress.progress[0].diagnosis === null">No hay progresos registrados</v-flex>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <Progress :dni="dni"/>
           </v-tab-item>
           <v-tab-item>
-            <v-container fluid grid-list-sm>
-              <v-layout wrap>
-                <v-flex xs 12>
-                  <v-expansion-panels multiple>
-                    <v-expansion-panel>
-                      <v-expansion-panel-header expand-icon="keyboard_arrow_down">Imagenes</v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <v-card>
-                          <v-card-text>
-                            <div v-if="user.hierarchy in[ 0,1]">
-                              <v-layout>
-                                <v-spacer/>
-                                <v-file-input chips multiple 
-                                  clear-icon="clear" 
-                                  v-model="files" 
-                                  :rules="[value => value.length >= 1 || 'No se han seleccionado imagenes.']"
-                                  label="Seleccionar imagen"/>
-                                <v-btn xs12 fab dark color="indigo" @click="agregar">
-                                <v-icon dark>add_photo_alternate</v-icon>
-                                </v-btn>
-                                <v-snackbar
-                                  v-model="snackbar"
-                                  color="error"
-                                  :right="true"
-                                  :timeout="timeout">
-                                  {{ error }}
-                                  <v-btn
-                                    dark
-                                    text
-                                    @click="snackbar = false">
-                                    Cerrar
-                                  </v-btn>
-                                </v-snackbar>                            
-                            </v-layout>
-                            </div>
-                            <v-layout wrap>
-                            <v-flex xs3 class="ig"
-                              v-for="study in studies.studies"
-                              :key="study.id">
-                              <a :href="study.image">
-                                <v-img
-                                  :src="study.image"
-                                  aspect-ratio="1"/>
-                              </a>
-                            </v-flex>
-                            </v-layout>
-                          </v-card-text>
-                        </v-card>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-flex>
-              </v-layout>
-            </v-container>
+            <Studies :dni="dni"/>
           </v-tab-item>
           <v-tab-item>
             <FuturePlan :dni="dni"/>
@@ -249,19 +95,13 @@
 <script>
 import { mapState } from 'vuex'
 import FuturePlan from './FuturePlan'
+import Progress from './Progress'
+import Studies from './Studies'
 
 export default {
   name: 'Patients',
   data() {
     return {
-      files: [],
-      dialog: false,
-      imageName: '',
-      imageUrl: '',
-      imageFile: '',
-      snackbar: false,
-      timeout: 8000,
-      error: null,
       bed: null,
       dni: this.$route.params.id,
       tab: null,
@@ -271,26 +111,19 @@ export default {
         'Estudios Complementarios',
         'Plan Futuro',
       ],
-      progressForm: {
-        diagnosis: null,
-        description: null,
-        status: null,
-        has_left: false
-      },
-      errorStatus: null,
-      errorDiagnosis: null
     }
   },
   components: {
     FuturePlan,
+    Progress,
+    Studies,
   },
   computed: {
-    ...mapState(['studies','progress','hospitalization', 'patient', 'user'])
+    ...mapState(['studies', 'patient', 'user'])
   },
   mounted() {
     let token = this.user.token
     let dni = this.dni
-    let progress = this.progress
     this.$store.dispatch('patient/obtainPatient', { token, dni })
     this.getHospitalization()
   },
@@ -304,40 +137,11 @@ export default {
       let tab = this.tab;
       this.$store.commit('studies/setIndexTab', tab)
     },
-    agregar() {
-      let token = this.user.token
-      let dni = this.dni
-      let files = this.files
-      this.$store
-        .dispatch('studies/createComplementaryStudy', { token, dni, files })
-        .then(() => { this.$router.go() })
-        .catch(err => {
-          if (err !== undefined) {
-            this.error = err
-            this.snackbar = true
-          }
-        })
-    },
-    saveProgress() {
-      let token = this.user.token
-      let progress = this.progressForm
-      let patientDni = this.dni
-      this.$store
-        .dispatch('progress/createProgress', { token, patientDni, progress })
-        .then(() => { this.$router.go() })
-        .catch(err => {
-          this.errorDiagnosis = err["diagnosis"]
-          this.errorStatus = err["status"]
-        })
-    },
   }
 }
 </script>
 
 <style>
-.ig{
-  padding:10px !important;
-}
 .grid{
   grid-row-gap: 20px;
 }
@@ -346,11 +150,5 @@ export default {
 }
 .fixtitle{
   margin-left: 10px;
-}
-.scroll{
-  overflow-y: auto;
-}
-.row{
-  margin-left: 0px !important;
 }
 </style>
