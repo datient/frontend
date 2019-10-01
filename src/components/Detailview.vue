@@ -74,6 +74,14 @@
                   Numero de Historia:
                   {{ patient.history_number }}
                 </v-flex>
+                <v-flex lg12>
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="openPrintView">
+                    Imprimir
+                  </v-btn>
+                </v-flex>
               </v-layout>
             </v-container>
           </v-tab-item>
@@ -111,6 +119,7 @@ export default {
         'Estudios Complementarios',
         'Plan Futuro',
       ],
+      printHref: `http://localhost:8000/pdf/${this.$route.params.id}`,
     }
   },
   components: {
@@ -137,6 +146,9 @@ export default {
       let tab = this.tab;
       this.$store.commit('studies/setIndexTab', tab)
     },
+    openPrintView() {
+      window.open(this.printHref, '_blank');
+    }
   }
 }
 </script>
