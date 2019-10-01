@@ -99,7 +99,7 @@
                       </v-flex>
                       <v-flex lg10>
                         <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
-                        <v-list-item-title v-if = "progress.income"> ( Ingreso ) </v-list-item-title>
+                        <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
                       </v-flex>
                     </v-layout>
                     <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
