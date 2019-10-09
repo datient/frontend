@@ -12,14 +12,33 @@ const mutations = {
 
 const actions = {
   obtainRooms({ commit }, token) {
-    axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/room/',
-      headers: { 'Authorization': `JWT ${token}` }
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8000/api/room/',
+        headers: { 'Authorization': `JWT ${token}` }
+      })
+      .then(res => {
+        res['data'].forEach(room => {
+          room['is_available'] = false
+          commit('setRooms', res.data)
+          resolve(res.data)
+        })
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+      
     })
-    .then(res => {
-      commit('setRooms', res.data)
-    })
+  },
+  haveBedAvailable({commit}, rooms){
+    rooms.forEach(room => {
+      room.beds.forEach(bed => {
+        if (bed['is_available']) {
+          room['is_available'] = true
+        }
+      })
+  })
   }
 }
 

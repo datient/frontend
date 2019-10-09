@@ -2,7 +2,7 @@
   <div id="room">
     <v-card round class="cardBed">
       <v-toolbar>
-        <v-toolbar-title>Cama {{ bedId }}</v-toolbar-title>
+        <v-toolbar-title>{{ bed.name }}</v-toolbar-title>
         <v-spacer/>
         <v-icon>person</v-icon>
         <v-toolbar-title v-if="hospitalization.doctor != null">
@@ -179,7 +179,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['hospitalization', 'patient', 'progress', 'user'])
+    ...mapState(['bed','hospitalization', 'patient', 'progress', 'user'])
   },
   mounted() {
     let bedId = this.bedId
@@ -189,6 +189,7 @@ export default {
       this.createSelect()
     })
     this.$store.dispatch('hospitalization/obtainHospitalization', { token, bedId })
+    this.$store.dispatch('bed/obtainBed', { id: this.bedId })
   },
   methods: {
     assignPatient() {
