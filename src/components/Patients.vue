@@ -12,7 +12,7 @@
         hide-details/>
       <v-spacer/>
       <v-dialog v-model="dialog" width="800">
-        <template v-slot:activator="{ on }">
+        <template v-if="user.hierarchy == 0 || user.hierarchy == 1" v-slot:activator="{ on }">
           <v-btn color="primary" id="btn_new_patient" v-on="on">
             <v-icon>person_add</v-icon>
           </v-btn>
@@ -144,20 +144,29 @@
           <a>{{ props.item.dni }}</a>
         </router-link>
       </template>
-      <template v-slot:item.action="{ item }">
-        <v-icon
-          class="mr-2"
-          @click="editPatientDialog(item)">
-          edit
-        </v-icon>
-        <v-icon
-          @click="deletePatient(item.dni)">
-          delete
-        </v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-flex class="nodata">No hay pacientes registrados</v-flex>
-      </template>
+        <template v-if="user.hierarchy in [0,1]" v-slot:item.action="{ item }">
+          <v-icon
+            class="mr-2"
+            @click="editPatientDialog(item)">
+            edit
+          </v-icon>
+          <v-icon
+            v-if="user.hierarchy == 0"
+            @click="deletePatient(item.dni)">
+            delete
+          </v-icon>
+        </template>
+        <template v-else-if="user.hierarchy == 2" v-slot:item.action="{ item }">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <span v-on="on">No disponibles</span>
+            </template>
+            <span>Usuario con jerarquia limitada</span>
+          </v-tooltip>
+        </template> 
+        <template v-slot:no-data>
+          <v-flex class="nodata">No hay pacientes registrados</v-flex>
+        </template>
     </v-data-table>
   </div>
 </template>
@@ -180,6 +189,7 @@ export default {
         { text: 'Genero', value: 'gender' },
         { text: 'N° de Historia', value: 'history_number' },
         { text: 'Acciones', value: 'action', sortable: false }
+        
       ],
       menu: false,
       patientForm: {

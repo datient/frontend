@@ -3,7 +3,11 @@
     <v-container fluid>
       <v-layout>
         <v-flex xs12>
-          <v-card elevation="0" class="mx-auto scroll" max-width="100%" height="400">
+          <v-card
+            class="mx-auto scroll"
+            elevation="0"
+            height="400"
+            max-width="100%">
             <v-list>
               <v-list-item v-for="plan in plan.plans" :key="plan.id">
                 <v-list-item-content>
@@ -14,21 +18,21 @@
                         <v-list-item-title >{{ plan.title }}</v-list-item-title>
                         <v-list-item-subtitle> {{ plan.description }}</v-list-item-subtitle>
                       </v-col>
-                      <v-col cols="12" sm="10" md="1">
+                      <template v-if="user.hierarchy in [0,1]" cols="12" sm="10" md="1">
                         <v-icon
                           class="mr-2"
                           absolute
                           right
                           @click="editPlanDialog(plan)">
                           edit
-                        </v-icon>                    
+                        </v-icon>      
                         <v-icon
                           absolute
                           right
                           @click="deletePlan(plan.id)">
                           delete
                         </v-icon> 
-                      </v-col>
+                      </template>
                     </v-row>
                     </v-container>
                   <v-divider/>
@@ -43,11 +47,13 @@
       v-model="planDialog"
       max-width="800">
       <template v-slot:activator="{ on }">
-        <v-btn
-          color="primary"
-          v-on="on">
-          Crear plan futuro
-        </v-btn>
+        <div v-if="user.hierarchy in [0,1]">
+          <v-btn
+            color="primary"
+            v-on="on">
+            Crear plan futuro
+          </v-btn>
+        </div>
       </template>
       <v-card>
         <v-card-title>
@@ -77,7 +83,7 @@
           <v-btn
             color="primary"
             text
-            @click="createPlan">
+            @click="savePlan">
             {{ formButton }}
           </v-btn>
         </v-card-actions>
@@ -94,7 +100,7 @@ export default {
   name: 'FuturePlan',
   props: ['dni'],
   computed: {
-    ...mapState(['plan']),
+    ...mapState(['plan', 'user']),
     formButton() {
       return this.index === -1 ? 'Crear' : 'Editar'
     },
@@ -151,15 +157,24 @@ export default {
         .then(() => this.$router.go())
     },
     editPlanDialog(plan) {
+      this.planForm['id'] = plan['id']
       this.index = 1
       this.planDialog = true
       this.planForm = Object.assign({}, plan)
     },
-    editPlan(planId) {
+    editPlan() {
       this.$store
-        .dispatch('plan/editPlan', { planId })
-        .then(() => this.$router.go())
-    }
+      .dispatch('plan/editPlan', {
+          planId: this.planForm['id'],
+          title: this.planForm['title'],
+          description: this.planForm['description'],
+          patientDni: this.dni
+        })
+      .then(() => this.$router.go())
+    },
+      savePlan() {
+        return this.index === -1 ? this.createPlan() : this.editPlan() 
+      }
   }
 }
 </script>

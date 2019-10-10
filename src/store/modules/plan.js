@@ -24,11 +24,9 @@ const actions = {
         }
       })
       .then(res => {
-        console.log(res.data)
         resolve(res.data)
       })
       .catch(err => {
-        console.log(err.response.data)
         reject(err.response.data)
       })
     })
@@ -48,16 +46,16 @@ const actions = {
       })
     })
   },
-  editPlan({ rootState }, { planId }) {
+  editPlan({ rootState }, { planId, title, description, patientDni }) {
     return new Promise((resolve, reject) => {
       axios({
         method: 'put',
         url: `http://127.0.0.1:8000/api/plans/${planId}/` ,
         headers: { 'Authorization': `JWT ${rootState.user.token}` },
         data: {
-          title: plans.title,
-          description: plans.description,
-          patientDni: plans.patientDni
+          title: title,
+          description: description,
+          patient: patientDni
         },
       })
       .then(res => {
@@ -67,7 +65,7 @@ const actions = {
         reject(err.response.data)
       })
     })
-  },
+  },  
   obtainPlans({ commit, rootState }, { patientDni }) {
     return new Promise((resolve, reject) => {
       axios({

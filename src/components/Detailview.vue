@@ -22,15 +22,28 @@
           <v-tab-item>
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
-                <v-flex lg12>
-                  <v-icon>crop_landscape</v-icon>
-                  DNI:
-                  {{ patient.dni }}
+                <v-flex lg3 style="margin-right: -181px;">
+                  <v-icon>hotel</v-icon>
+                  Cama actual:
+                </v-flex>
+                <router-link v-if="hospitalization.bed"
+                  :to="{ name: 'bed', params: { id: hospitalization.bed.id }}">
+                  <v-flex>
+                  {{ hospitalization.bed.name }}
+                  </v-flex>
+                </router-link>
+                <v-flex lg9 v-if="hospitalization.error">
+                  No se encuentra internado en este momento
                 </v-flex>
                 <v-flex lg12>
                   <v-icon>person</v-icon>
                   Nombre completo:
                   {{ patient.first_name }} {{ patient.last_name }}
+                </v-flex>
+                <v-flex lg12>
+                  <v-icon>crop_landscape</v-icon>
+                  DNI:
+                  {{ patient.dni }}
                 </v-flex>
                 <v-flex lg3>
                   <v-icon>calendar_today</v-icon>
@@ -67,19 +80,6 @@
           <v-tab-item>
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
-                <v-flex lg3 style="margin-right: -181px;">
-                  <v-icon>hotel</v-icon>
-                  Cama actual:
-                </v-flex>
-                <router-link v-if="hospitalization.bed"
-                  :to="{ name: 'bed', params: { id: hospitalization.bed.id }}">
-                  <v-flex>
-                  {{ hospitalization.bed.name }}
-                  </v-flex>
-                </router-link>
-                <v-flex lg9 v-if="hospitalization.error">
-                  No se encuentra internado en este momento
-                </v-flex>
                 <v-flex lg11>
                   <v-icon>calendar_today</v-icon>
                   Fecha de ingreso: {{ hospitalization.entry_at }}
@@ -97,9 +97,11 @@
                     <v-flex lg11>
                       <v-dialog v-if = "!progress.progress[0].has_left" v-model="dialog" width="800">
                         <template v-slot:activator="{ on }">
-                          <v-btn fab dark small color="indigo" v-on="on">
-                            <v-icon dark>post_add</v-icon>
-                          </v-btn>  
+                          <div v-if="user.hierarchy in [0,1]">
+                            <v-btn fab dark small color="indigo" v-on="on">
+                              <v-icon dark>post_add</v-icon>
+                            </v-btn>  
+                          </div>
                         </template>
                         <v-card>
                           <v-card-title class="headline" primary-title>Nuevo Progreso</v-card-title>
@@ -189,15 +191,16 @@
                       <v-expansion-panel-content>
                         <v-card>
                           <v-card-text>
-                            <v-layout>
-                              <v-spacer/>
-                              <v-file-input chips multiple 
-                                clear-icon="clear" 
-                                v-model="files" 
-                                :rules="[value => value.length >= 1 || 'No se han seleccionado imagenes.']"
-                                label="Seleccionar imagen"/>
+                            <div v-if="user.hierarchy in[ 0,1]">
+                              <v-layout>
+                                <v-spacer/>
+                                <v-file-input chips multiple 
+                                  clear-icon="clear" 
+                                  v-model="files" 
+                                  :rules="[value => value.length >= 1 || 'No se han seleccionado imagenes.']"
+                                  label="Seleccionar imagen"/>
                                 <v-btn xs12 fab dark color="indigo" @click="agregar">
-                                  <v-icon dark>add_photo_alternate</v-icon>
+                                <v-icon dark>add_photo_alternate</v-icon>
                                 </v-btn>
                                 <v-snackbar
                                   v-model="snackbar"
@@ -211,8 +214,9 @@
                                     @click="snackbar = false">
                                     Cerrar
                                   </v-btn>
-                                </v-snackbar>
+                                </v-snackbar>                            
                             </v-layout>
+                            </div>
                             <v-layout wrap>
                             <v-flex xs3 class="ig"
                               v-for="study in studies.studies"

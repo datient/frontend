@@ -21,9 +21,11 @@
                 v-model="dialog"
                 width="800">
                 <template v-slot:activator="{ on }">
-                  <v-btn fab color="primary" v-on="on" id="btn_add">
-                    <v-icon>add</v-icon>
-                  </v-btn>
+                   <div v-if="user.hierarchy == 0 || user.hierarchy == 1">
+                    <v-btn fab color="primary" v-on="on" id="btn_add">
+                      <v-icon>add</v-icon>
+                    </v-btn>
+                   </div>
                 </template>
                 <v-card>
                   <v-card-title>
@@ -107,7 +109,9 @@
         </div>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
-            <v-btn v-on="on" id="btn_discharge">Dar de alta</v-btn>
+            <div v-if="user.hierarchy in [0,1]">
+              <v-btn v-on="on" id="btn_discharge">Dar de alta</v-btn>
+            </div>         
           </template>
           <v-card>
             <v-card-title>
