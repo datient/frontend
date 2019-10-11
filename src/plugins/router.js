@@ -7,6 +7,7 @@ import Home from '../components/Home'
 import Patients from '../components/Patients'
 import Register from '../components/Register'
 import Room from '../components/Room'
+import Statistics from '../components/Statistics'
 import Login from '../components/Login'
 
 Vue.use(VueRouter)
@@ -21,6 +22,7 @@ const routes = [
       { path: '/bed/:id', name: 'bed', component: Bed, meta: { title: 'Cama' } },
       { path: '/detailview/:id', name: 'detailview', component: Detailview, meta: { title: 'Vista detallada' } },
       { path: '/patients', name: 'patients', component: Patients, meta: { title: 'Pacientes' } },
+      { path: '/statistics', name: 'statistics', component: Statistics, meta: { title: 'Estadisticas' } },
     ]
   },
   { path: '/login', name: 'login', component: Login, meta: { title: 'Login' } },

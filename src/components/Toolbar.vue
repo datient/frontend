@@ -78,6 +78,7 @@ export default {
       drawerItems: [
         { title: 'Home', icon: 'home', route: 'home', id: 'btn_home' },
         { title: 'Pacientes', icon: 'person', route: 'patients', id: 'btn_patients' },
+        { title: 'Estadisticas', icon: 'pie_chart', route: 'statistics', id: 'btn_statistics' },
       ],
       item: 0,
     }

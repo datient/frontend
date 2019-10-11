@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import statistics from './modules/statistics'
 import studies from './modules/studies'
 import hospitalization from './modules/hospitalization'
 import patient from './modules/patient'
@@ -13,6 +14,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    statistics,
     studies,
     hospitalization,
     patient,
