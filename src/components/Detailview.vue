@@ -32,16 +32,12 @@
                   Nombre completo:
                   {{ patient.first_name }} {{ patient.last_name }}
                 </v-flex>
-<<<<<<< Updated upstream
-                <v-flex lg3>
-=======
                 <v-flex lg12>
                   <v-icon>crop_landscape</v-icon>
                   DNI:
                   {{ patient.dni }}
                 </v-flex>
                 <v-flex lg4>
->>>>>>> Stashed changes
                   <v-icon>calendar_today</v-icon>
                   Fecha de Nacimiento:
                   {{ patient.birth_date }}
