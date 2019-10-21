@@ -23,11 +23,6 @@
             <v-container fluid grid-list-sm>
               <v-layout class="grid" wrap>
                 <v-flex lg12>
-                  <v-icon>crop_landscape</v-icon>
-                  DNI:
-                  {{ patient.dni }}
-                </v-flex>
-                <v-flex lg12>
                   <v-icon>person</v-icon>
                   Nombre completo:
                   {{ patient.first_name }} {{ patient.last_name }}
