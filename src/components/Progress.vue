@@ -2,19 +2,6 @@
   <div>
     <v-container fluid grid-list-sm>
       <v-layout class="grid" wrap>
-        <v-flex lg3 style="margin-right: -181px;">
-          <v-icon>hotel</v-icon>
-          Cama actual:
-        </v-flex>
-        <router-link v-if="hospitalization.bed"
-          :to="{ name: 'bed', params: { id: hospitalization.bed.id }}">
-          <v-flex>
-          {{ hospitalization.bed.name }}
-          </v-flex>
-        </router-link>
-        <v-flex lg9 v-if="hospitalization.error">
-          No se encuentra internado en este momento
-        </v-flex>
         <v-flex lg11>
           <v-icon>calendar_today</v-icon>
           Fecha de ingreso: {{ hospitalization.entry_at }}

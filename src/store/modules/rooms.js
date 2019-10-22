@@ -21,9 +21,9 @@ const actions = {
       .then(res => {
         res['data'].forEach(room => {
           room['is_available'] = false
-          commit('setRooms', res.data)
-          resolve(res.data)
         })
+        commit('setRooms', res.data)
+        resolve(res.data)
       })
       .catch(err => {
         reject(err.response.data)
@@ -38,7 +38,7 @@ const actions = {
           room['is_available'] = true
         }
       })
-  })
+    })
   }
 }
 

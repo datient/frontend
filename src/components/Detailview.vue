@@ -76,6 +76,7 @@
                 </v-flex>
                 <v-flex lg12>
                   <v-btn
+                    v-if="user.hierarchy in [0]"
                     color="primary"
                     text
                     @click="openPrintView">
@@ -128,20 +129,16 @@ export default {
     Studies,
   },
   computed: {
-    ...mapState(['studies', 'patient', 'user'])
+    ...mapState(['hospitalization', 'studies', 'patient', 'user'])
   },
   mounted() {
     let token = this.user.token
     let dni = this.dni
     this.$store.dispatch('patient/obtainPatient', { token, dni })
-    this.getHospitalization()
+    this.$store
+      .dispatch('hospitalization/obtainHospitalizationPatient', { token, dni: this.dni })
   },
   methods: {
-    getHospitalization() {
-      let dni = this.dni
-      let token = this.user.token
-      this.$store.dispatch('hospitalization/obtainHospitalizationPatient', { token, dni })
-    },
     selectTab() {
       let tab = this.tab;
       this.$store.commit('studies/setIndexTab', tab)

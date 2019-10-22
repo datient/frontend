@@ -20,10 +20,9 @@ const mutations = {
     state.error = error
   },
   setHospitalization(state, info) {
-    state.entry_at = info.entry_at
+    info.entry_at !== null ? state.entry_at = new Date(info.entry_at).toLocaleString() : state.entry_at = '-'      
     state.done_at = info.done_at
-    state.boarding_days = info.boarding_days
-    state.entry_at= new Date(info.entry_at).toLocaleString()
+    info.boarding_days !== null ? state.boarding_days = info.boarding_days : state.boarding_days = 0
   },
 }
 
@@ -49,26 +48,31 @@ const actions = {
     })
   },
   obtainHospitalizationPatient({ commit }, { token, dni }) {
-    axios({
-      method: 'get',
-      url: `http://127.0.0.1:8000/api/hospitalization/${dni}/patient_filter/`,
-      headers: { 'Authorization': `JWT ${token}` },
-    })
-    .then(res => {
-      let bedId = res.data.bed
+    return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
+        url: `http://127.0.0.1:8000/api/hospitalization/${dni}/patient_filter/`,
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
-        commit('setBed', res.data)
-        commit('setError', null)
+        let bedId = res.data.bed
+        commit('setHospitalization', res.data) 
+        axios({
+          method: 'get',
+          url: `http://127.0.0.1:8000/api/bed/${bedId}/`,
+          headers: { 'Authorization': `JWT ${token}` },
+        })
+        .then(res => {
+          commit('setBed', res.data)
+          commit('setError', null)
+        })
+        resolve(res.data)
       })
-    })
-    .catch(err => {
-      commit('setError', err.response.data.detail)
-      commit('setBed', null)
+      .catch(err => {
+        commit('setHospitalization', { entry_at: null, done_at: null, boarding_days: null }) 
+        commit('setError', err.response.data.detail)
+        commit('setBed', null)
+      })
     })
   },
   obtainHospitalization({ commit, dispatch }, { token, bedId }) {

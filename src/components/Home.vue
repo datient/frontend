@@ -42,7 +42,7 @@ import { mapState } from 'vuex'
 export default {
   name: 'Home',
   computed: {
-    ...mapState(['rooms', 'user'])
+    ...mapState(['bed', 'rooms', 'user'])
   },
   mounted() {
     let token = this.user.token

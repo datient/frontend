@@ -24,7 +24,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['rooms/rooms'])
+    ...mapState(['bed', 'rooms/rooms'])
   },
   mounted() {
   },

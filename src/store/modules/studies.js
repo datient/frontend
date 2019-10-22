@@ -55,6 +55,21 @@ const actions = {
       })
     })
   },
+  deletePhoto({ rootState }, {id}) {
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'delete',
+        url:`http://127.0.0.1:8000/api/study/${id}/`, 
+        headers: { 'Authorization': `JWT ${rootState.user.token}`},
+      })
+      .then(res => {
+        resolve(res.data)
+      })
+      .catch(err => {
+        reject(err.response.data)
+      })
+    })
+  },
 }
 
 export default {
