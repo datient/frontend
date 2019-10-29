@@ -84,27 +84,63 @@
           </v-layout>
       </v-container>
       <v-card-text fluid class="bed-text" v-if="patient.dni != null">
-        <h1>Datos Personales</h1>
-        DNI:
-        <router-link
-          :to="{ name: 'detailview', params: { id: patient.dni }}">
-          {{ patient.dni }}
-        </router-link>
-        <br>
-        Nombre completo: {{ patient.first_name }} {{ patient.last_name }}<br>
-        Fecha de nacimiento: {{ patient.birth_date }}<br>
-        Edad: {{ patient.age }}<br>
-        Género: {{ patient.gender }}<br>
-        Número de historia: {{ patient.history_number }}<br>
-        Fecha de ingreso: {{ hospitalization.entry_at }}
-        Días internado: {{ hospitalization.boarding_days }}<br>
-        Teléfono de contacto 1: {{ patient.contact }}<br>
-        Teléfono de contacto 2: {{ patient.contact2 }}<br>
-        <div v-if="progress.progress !== null">
-          <h1>Último Progreso</h1>
-          <h2>{{ progress.progress[0].diagnosis }}: {{ progress.progress[0].status }}</h2>
-          {{ progress.progress[0].description }}<br>
-        </div>
+          <v-container fluid grid-list-sm>
+              <v-layout class="grid" wrap>
+                <v-flex lg12>
+                  <v-icon>person</v-icon>
+                  Nombre completo:
+                  {{ patient.first_name }} {{ patient.last_name }}
+                </v-flex>
+                <v-flex lg12>
+                  <v-icon>crop_landscape</v-icon>
+                  DNI:
+                  <router-link
+                    :to="{ name: 'detailview', params: { id: patient.dni }}">
+                    {{ patient.dni }}
+                  </router-link>
+                </v-flex>
+                <v-flex lg4>
+                  <v-icon>calendar_today</v-icon>
+                  Fecha de Nacimiento:
+                  {{ patient.birth_date }}
+                  /
+                  Edad: {{ patient.age }}
+                </v-flex>
+                <v-flex lg12>
+                  <v-icon>wc</v-icon>
+                  Sexo:
+                  {{ patient.gender }}
+                </v-flex>
+                <v-flex lg3 v-if="patient.contact">
+                  <v-icon>phone</v-icon>
+                  Telefono de contacto:
+                  {{ patient.contact }}
+                </v-flex>
+                <v-flex lg9 v-if="patient.contact2">
+                  <v-icon>phone</v-icon>
+                  Telefono de contacto 2:
+                  {{ patient.contact2 }}
+                </v-flex>
+                <v-flex lg12>
+                  <v-icon>format_list_numbered</v-icon>
+                  Numero de Historia:
+                  {{ patient.history_number }}
+                </v-flex>
+              </v-layout>
+            </v-container>
+            <v-divider/>
+            <br>
+            <v-flex lg12 v-if="progress.progress !== null">
+              <v-card-title>
+                ULTIMO PROGRESO
+              </v-card-title>
+            </v-flex>
+            <v-flex lg12 v-if="progress.progress !== null">
+              <v-card-text>
+                {{ progress.progress[0].description }}<br>
+                {{ progress.progress[0].diagnosis }}: {{ progress.progress[0].status }}
+              </v-card-text>
+            </v-flex>
         <v-dialog v-model="dischargeDialog" max-width="600px">
           <template v-slot:activator="{ on }">
             <v-btn v-on="on" id="btn_discharge">Dar de alta</v-btn>
