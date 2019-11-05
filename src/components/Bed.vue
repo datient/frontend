@@ -135,7 +135,7 @@
                     {{ hospitalization.entry_at }}
                   </v-flex>
                   <v-flex lg12>
-                    <v-icon>format_list_numbered</v-icon>
+                    <v-icon>timer</v-icon>
                     Dias internado:
                     {{ hospitalization.boarding_days }}
                   </v-flex>
@@ -159,8 +159,23 @@
                       <v-flex lg12>
                         Descripcion: {{ progress.progress[0].description }}
                       </v-flex>
-                      <v-flex lg12>
+                      <v-flex lg3>
                         Estado: {{ progress.progress[0].status }}
+                      </v-flex>
+                      <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Bien'">
+                        <img 
+                          src="../../public/semaforobueno.png"
+                          aspect-ratio="1"/>
+                      </v-flex>
+                      <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Precaucion'">
+                        <img 
+                          src="../../public/semaforoprecaucion.png"
+                          aspect-ratio="1"/>
+                      </v-flex>
+                      <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Peligro'">
+                        <img 
+                          src="../../public/semaforopeligro.png"
+                          aspect-ratio="1"/>
                       </v-flex>
                     </v-layout>
                   </v-container>     
