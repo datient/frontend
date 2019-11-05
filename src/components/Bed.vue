@@ -84,111 +84,128 @@
           </v-layout>
       </v-container>
       <v-card-text fluid class="bed-text" v-if="patient.dni != null">
-          <v-container fluid grid-list-sm>
-              <v-layout class="grid" wrap>
-                <v-flex lg12>
-                  <v-icon>person</v-icon>
-                  Nombre completo:
-                  {{ patient.first_name }} {{ patient.last_name }}
-                </v-flex>
-                <v-flex lg12>
-                  <v-icon>crop_landscape</v-icon>
-                  DNI:
-                  <router-link
-                    :to="{ name: 'detailview', params: { id: patient.dni }}">
-                    {{ patient.dni }}
-                  </router-link>
-                </v-flex>
-                <v-flex lg4>
-                  <v-icon>calendar_today</v-icon>
-                  Fecha de Nacimiento:
-                  {{ patient.birth_date }}
-                  /
-                  Edad: {{ patient.age }}
-                </v-flex>
-                <v-flex lg12>
-                  <v-icon>wc</v-icon>
-                  Sexo:
-                  {{ patient.gender }}
-                </v-flex>
-                <v-flex lg3 v-if="patient.contact">
-                  <v-icon>phone</v-icon>
-                  Telefono de contacto:
-                  {{ patient.contact }}
-                </v-flex>
-                <v-flex lg9 v-if="patient.contact2">
-                  <v-icon>phone</v-icon>
-                  Telefono de contacto 2:
-                  {{ patient.contact2 }}
-                </v-flex>
-                <v-flex lg12>
-                  <v-icon>format_list_numbered</v-icon>
-                  Numero de Historia:
-                  {{ patient.history_number }}
-                </v-flex>
-                <v-flex lg12>
-                  <v-icon>calendar_today</v-icon>
-                  Fecha de ingreso:
-                  {{ hospitalization.entry_at }}
-                </v-flex>
-                <v-flex lg12>
-                  <v-icon>format_list_numbered</v-icon>
-                  Dias internado:
-                  {{ hospitalization.boarding_days }}
-                </v-flex>
-              </v-layout>
-            </v-container>
-            <v-divider/>
-            <br>
-            <v-flex lg12 v-if="progress.progress !== null">
-              <v-card-title>
-                ULTIMO PROGRESO
-              </v-card-title>
-            </v-flex>
-            <v-flex lg12 v-if="progress.progress !== null">
-              <v-card-text>
-                {{ progress.progress[0].description }}<br>
-                {{ progress.progress[0].diagnosis }}<br>
-                {{ progress.progress[0].status }}
-              </v-card-text>
-            </v-flex>
-        <v-dialog v-model="dischargeDialog" max-width="600px">
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on" id="btn_discharge">Dar de alta</v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="headline">Dar de alta</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-form ref="form">
-                  <v-text-field
-                    v-model="form.diagnosis"
-                    :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
-                    id="txt_diagnosis"
-                    label="Diagnóstico de egreso"
-                    required/>
-                  <v-text-field
-                    v-model="form.description"
-                    id="txt_description"
-                    label="Descripción"/>
-                  <v-select
-                    v-model="form.status"
-                    :items="statusItems"
-                    :rules="[v => [0, 1 , 2].includes(v) || 'Este campo no puede estar en blanco.']"
-                    label="Estado"
-                    required/>
-                </v-form>
+        <v-container>
+          <v-row>
+            <v-col>
+              <v-container fluid grid-list-sm>
+                <v-layout class="grid" wrap>
+                  <v-flex lg12>
+                    <v-icon>person</v-icon>
+                    Nombre completo:
+                    {{ patient.first_name }} {{ patient.last_name }}
+                  </v-flex>
+                  <v-flex lg12>
+                    <v-icon>crop_landscape</v-icon>
+                    DNI:
+                    <router-link
+                      :to="{ name: 'detailview', params: { id: patient.dni }}">
+                      {{ patient.dni }}
+                    </router-link>
+                  </v-flex>
+                  <v-flex lg8>
+                    <v-icon>calendar_today</v-icon>
+                    Fecha de Nacimiento:
+                    {{ patient.birth_date }}
+                    /
+                    Edad: {{ patient.age }}
+                  </v-flex>
+                  <v-flex lg12>
+                    <v-icon>wc</v-icon>
+                    Sexo:
+                    {{ patient.gender }}
+                  </v-flex>
+                  <v-flex lg12 v-if="patient.contact">
+                    <v-icon>phone</v-icon>
+                    Telefono de contacto:
+                    {{ patient.contact }}
+                  </v-flex>
+                  <v-flex lg12 v-if="patient.contact2">
+                    <v-icon>phone</v-icon>
+                    Telefono de contacto 2:
+                    {{ patient.contact2 }}
+                  </v-flex>
+                  <v-flex lg12>
+                    <v-icon>format_list_numbered</v-icon>
+                    Numero de Historia:
+                    {{ patient.history_number }}
+                  </v-flex>
+                  <v-flex lg12>
+                    <v-icon>calendar_today</v-icon>
+                    Fecha de ingreso:
+                    {{ hospitalization.entry_at }}
+                  </v-flex>
+                  <v-flex lg12>
+                    <v-icon>format_list_numbered</v-icon>
+                    Dias internado:
+                    {{ hospitalization.boarding_days }}
+                  </v-flex>
+                </v-layout>
               </v-container>
-            </v-card-text>
-            <v-card-actions>
-              <v-spacer/>
-              <v-btn color="primary" text @click="dischargeDialog = false">Cancelar</v-btn>
-              <v-btn color="primary" text id="btn_send_discharge" @click="dischargePatinent">Enviar</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+            </v-col>
+            <v-divider vertical/>
+            <v-col>
+              <v-flex lg12 v-if="progress.progress !== null">
+                <v-card-title fluid class="diag-title">
+                  Ultimo Progreso
+                </v-card-title>
+              </v-flex>
+              <v-flex lg12 v-if="progress.progress !== null">
+                <v-card-text fluid class="bed-text">
+                  <v-container fluid grid-list-sm>
+                    <v-layout class="grid" wrap>
+                      <v-flex lg12>
+                        Diagnostico: {{ progress.progress[0].diagnosis }}
+                      </v-flex>
+                      <v-flex lg12>
+                        Descripcion: {{ progress.progress[0].description }}
+                      </v-flex>
+                      <v-flex lg12>
+                        Estado: {{ progress.progress[0].status }}
+                      </v-flex>
+                    </v-layout>
+                  </v-container>     
+                </v-card-text>
+              </v-flex>
+            <v-dialog v-model="dischargeDialog" max-width="600px">
+              <template v-slot:activator="{ on }">
+                <v-btn v-on="on" id="btn_discharge" color="primary">Dar de alta</v-btn>
+              </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Dar de alta</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-form ref="form">
+                        <v-text-field
+                          v-model="form.diagnosis"
+                          :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                          id="txt_diagnosis"
+                          label="Diagnóstico de egreso"
+                          required/>
+                        <v-text-field
+                          v-model="form.description"
+                          id="txt_description"
+                          label="Descripción"/>
+                        <v-select
+                          v-model="form.status"
+                          :items="statusItems"
+                          :rules="[v => [0, 1 , 2].includes(v) || 'Este campo no puede estar en blanco.']"
+                          label="Estado"
+                          required/>
+                      </v-form>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer/>
+                    <v-btn color="primary" text @click="dischargeDialog = false">Cancelar</v-btn>
+                    <v-btn color="primary" text id="btn_send_discharge" @click="dischargePatinent">Enviar</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-col>
+          </v-row>
+        </v-container>
       </v-card-text>
     </v-card>
   </div>
@@ -302,6 +319,9 @@ export default {
 .bed-text{
   font-size: 1rem !important;
   padding: 1rem 2rem 1rem 2rem !important;
+}
+.diag-title{
+  font-size: large;
 }
 .bed-text h1{
   margin: 1rem 0 1rem 0;
