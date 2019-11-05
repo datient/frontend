@@ -126,6 +126,16 @@
                   Numero de Historia:
                   {{ patient.history_number }}
                 </v-flex>
+                <v-flex lg12>
+                  <v-icon>calendar_today</v-icon>
+                  Fecha de ingreso:
+                  {{ hospitalization.entry_at }}
+                </v-flex>
+                <v-flex lg12>
+                  <v-icon>format_list_numbered</v-icon>
+                  Dias internado:
+                  {{ hospitalization.boarding_days }}
+                </v-flex>
               </v-layout>
             </v-container>
             <v-divider/>
@@ -138,7 +148,8 @@
             <v-flex lg12 v-if="progress.progress !== null">
               <v-card-text>
                 {{ progress.progress[0].description }}<br>
-                {{ progress.progress[0].diagnosis }}: {{ progress.progress[0].status }}
+                {{ progress.progress[0].diagnosis }}<br>
+                {{ progress.progress[0].status }}
               </v-card-text>
             </v-flex>
         <v-dialog v-model="dischargeDialog" max-width="600px">
