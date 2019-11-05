@@ -166,7 +166,7 @@
                   </v-container>     
                 </v-card-text>
               </v-flex>
-            <v-dialog v-model="dischargeDialog" max-width="600px">
+            <v-dialog class="pa-md-2 mx-lg-auto" v-model="dischargeDialog" max-width="600px">
               <template v-slot:activator="{ on }">
                 <v-btn v-on="on" id="btn_discharge" color="primary">Dar de alta</v-btn>
               </template>
