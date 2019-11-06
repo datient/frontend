@@ -159,22 +159,25 @@
                       <v-flex lg12>
                         Descripcion: {{ progress.progress[0].description }}
                       </v-flex>
-                      <v-flex lg3>
+                      <v-flex lg3 style="align-self: center;">
                         Estado: {{ progress.progress[0].status }}
                       </v-flex>
                       <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Bien'">
-                        <img 
+                        <img
                           src="../../public/semaforobueno.png"
+                          class="semaforoImg"
                           aspect-ratio="1"/>
                       </v-flex>
                       <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Precaucion'">
                         <img 
                           src="../../public/semaforoprecaucion.png"
+                          class="semaforoImg"
                           aspect-ratio="1"/>
                       </v-flex>
                       <v-flex lg6 class="semaforo" v-if="this.progress.progress[0].status === 'Peligro'">
                         <img 
                           src="../../public/semaforopeligro.png"
+                          class="semaforoImg"
                           aspect-ratio="1"/>
                       </v-flex>
                     </v-layout>
@@ -330,6 +333,12 @@ export default {
 .cardBed{
   color: white;
   border-radius: 10px;
+}
+.semaforo{
+  display: flex;
+}
+.semaforoImg{
+  width: 40%;
 }
 .bed-text{
   font-size: 1rem !important;
