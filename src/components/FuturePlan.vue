@@ -6,7 +6,7 @@
           <v-card
             class="mx-auto scroll"
             elevation="0"
-            height="400"
+            height="309"
             max-width="100%">
             <v-list>
               <v-list-item v-for="plan in plan.plans" :key="plan.id">
@@ -164,14 +164,16 @@ export default {
       this.planForm = Object.assign({}, plan)
     },
     editPlan() {
-      this.$store
-        .dispatch('plan/editPlan', {
-          planId: this.planForm['id'],
-          title: this.planForm['title'],
-          description: this.planForm['description'],
-          patientDni: this.dni
-        })
-      .then(() => this.$router.go())
+      if (this.$refs.form.validate()){
+        this.$store
+          .dispatch('plan/editPlan', {
+            planId: this.planForm['id'],
+            title: this.planForm['title'],
+            description: this.planForm['description'],
+            patientDni: this.dni
+          })
+        .then(() => this.$router.go())
+      }
     },
     savePlan() {
       return this.index === -1 ? this.createPlan() : this.editPlan() 

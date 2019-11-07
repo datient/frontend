@@ -74,17 +74,17 @@
                   Numero de Historia:
                   {{ patient.history_number }}
                 </v-flex>
-                <v-flex lg12>
-                  <v-btn
-                    v-if="user.hierarchy in [0]"
-                    color="primary"
-                    text
-                    @click="openPrintView">
-                    Imprimir
-                  </v-btn>
-                </v-flex>
               </v-layout>
             </v-container>
+            <v-flex lg12 style="margin-top:40px">
+              <v-btn
+                v-if="user.hierarchy in [0]"
+                color="primary"
+                text
+                @click="openPrintView">
+                Imprimir
+              </v-btn>
+            </v-flex>
           </v-tab-item>
           <v-tab-item>
             <Progress :dni="dni"/>
@@ -156,6 +156,7 @@ export default {
 }
 .cardDetailview {
   border-radius: 10px;
+  height:532px !important;
 }
 .fixtitle{
   margin-left: 10px;

@@ -72,7 +72,7 @@
             flat
             class="mx-auto scroll" 
             max-width="100%" 
-            height="330"
+            height="245"
             three-line
             v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
               <v-list-item v-for="progress in progress.progress"
@@ -81,10 +81,10 @@
                   <v-list-item-content>
                     <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
                     <v-layout style="margin: auto 0px;"> 
-                      <v-flex lg2 style="margin-left: -2px;">
+                      <v-flex lg4 style="margin-left: -2px;">
                         <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
                       </v-flex>
-                      <v-flex lg10>
+                      <v-flex lg8>
                         <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
                         <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
                       </v-flex>
