@@ -49,10 +49,8 @@
                   <v-icon>calendar_today</v-icon>
                   Fecha de Nacimiento:
                   {{ patient.birth_date }}
-                </v-flex>
-                <v-flex lg4>
-                  Edad:
-                  {{ patient.age }}
+                  /
+                  Edad: {{ patient.age }}
                 </v-flex>
                 <v-flex lg12>
                   <v-icon>wc</v-icon>
