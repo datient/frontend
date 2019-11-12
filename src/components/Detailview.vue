@@ -45,7 +45,7 @@
                   DNI:
                   {{ patient.dni }}
                 </v-flex>
-                <v-flex lg3>
+                <v-flex lg12>
                   <v-icon>calendar_today</v-icon>
                   Fecha de Nacimiento:
                   {{ patient.birth_date }}

@@ -19,9 +19,11 @@
             <v-flex lg11>
               <v-dialog v-if = "!progress.progress[0].has_left" v-model="dialog" width="800">
                 <template v-slot:activator="{ on }">
-                  <v-btn fab dark small color="indigo" v-on="on">
-                    <v-icon dark>post_add</v-icon>
-                  </v-btn>  
+                  <div v-if="user.hierarchy in [0,1]">
+                    <v-btn fab dark small color="indigo" v-on="on">
+                      <v-icon dark>post_add</v-icon>
+                    </v-btn>  
+                  </div>
                 </template>
                 <v-card>
                   <v-card-title class="headline" primary-title>Nuevo Progreso</v-card-title>
@@ -123,7 +125,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['hospitalization', 'progress'])
+    ...mapState(['user','hospitalization', 'progress'])
   },
   methods: {
     saveProgress() {
