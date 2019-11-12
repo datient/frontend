@@ -19,119 +19,124 @@
         </template>
         <v-card>
           <v-card-title class="headline" primary-title>{{ title }}</v-card-title>
-          <v-card-text>
-            <v-container class="form" grid-list-md>
-              <v-layout wrap>
-                <v-flex xs12 md6>
-                  <v-text-field
-                    v-model="patientForm.first_name"
-                    label="Nombre"
-                    prepend-icon="person"
-                    id="first_name"
-                    :error-messages="errorFN"
-                    type="text"/>
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-text-field
-                    v-model="patientForm.last_name"
-                    label="Apellido"
-                    id="last_name"
-                    :error-messages="errorLN"
-                    type="text"/>
-                </v-flex>
-                <v-flex xs12 md7>
-                  <v-menu
-                    v-model="menu"
-                    :close-on-content-click="false"
-                    :nudge-right="40"
-                    transition="scale-transition"
-                    offset-y
-                    full-width
-                    min-width="290">
-                    <template v-slot:activator="{ on }">
+            <v-card-text>
+              <v-form ref="form" v-model="valid">
+                <v-container class="form" grid-list-md>
+                  <v-layout wrap>
+                    <v-flex xs12 md6>
                       <v-text-field
-                        v-model="patientForm.birth_date"
-                        label="Fecha de nacimiento"
-                        id="birth_date"
-                        :error-messages="errorBirth"
-                        prepend-icon="calendar_today"
-                        readonly
-                        v-on="on"/>
-                    </template>
-                    <v-date-picker v-model="patientForm.birth_date" 
-                      min="1900-01-01"
-                      :max="new Date().toISOString().substr(0, 10)"
-                      locale="es - AR"
-                      @input="menu = false"/>
-                  </v-menu>
-                </v-flex>
-                <v-flex xs12 md5>
-                  <v-text-field
-                    v-model="patientForm.dni"
-                    label="DNI"
-                    prepend-icon="crop_landscape"
-                    id="dni"
-                    :readonly= "dniReadonly"
-                    :error-messages="errorDni"
-                    type="number"/>
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-text-field
-                    v-model="patientForm.history_number"
-                    label="Numero de historia"
-                    prepend-icon="edit"
-                    id="history_number"
-                    type="number"/>
-                </v-flex>
-                <v-flex xs12 md6>
-                  <v-select
-                    v-model="patientForm.gender"
-                    :items="['Masculino', 'Femenino']"
-                    label="Genero"
-                    append-icon="keyboard_arrow_down"
-                    id="gender"
-                    prepend-icon="wc"/>
-                </v-flex>
-                <v-flex xs6 md6>
-                  <v-text-field
-                  v-model="patientForm.contact"
-                  label="Numero de contacto"
-                  prepend-icon="phone"
-                  type="number"
-                  hint="Introduzca solo numeros"
-                  id="contact"/>
-                </v-flex>
-                <v-flex xs6 md6>
-                  <v-text-field
-                  v-model="patientForm.contact2"
-                  label="Numero de contacto 2"
-                  type="number"
-                  prepend-icon="phone"
-                  hint="Introduzca solo numeros"
-                  id="contact2"/>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-card-actions class=card_actions>
-            <v-spacer/>
-            <v-btn
-              color="primary"
-              id="btn_cancel"
-              text
-              @click="dialog = false">
-              Cancelar
-            </v-btn>
-            <v-btn
-              color="primary"
-              id="btn_submit"
-              text
-              @click="savePatient">
-               {{ submit }}
-            </v-btn>
-          </v-card-actions>
+                        v-model="patientForm.first_name"
+                        label="Nombre"
+                        prepend-icon="person"
+                        id="first_name"
+                        :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                        type="text"/>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-text-field
+                        v-model="patientForm.last_name"
+                        label="Apellido"
+                        id="last_name"
+                        :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                        type="text"/>
+                    </v-flex>
+                    <v-flex xs12 md7>
+                      <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        full-width
+                        min-width="290">
+                        <template v-slot:activator="{ on }">
+                          <v-text-field
+                            v-model="patientForm.birth_date"
+                            label="Fecha de nacimiento"
+                            id="birth_date"
+                            :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                            prepend-icon="calendar_today"
+                            readonly
+                            v-on="on"/>
+                        </template>
+                        <v-date-picker v-model="patientForm.birth_date" 
+                          min="1900-01-01"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          locale="es - AR"
+                          @input="menu = false"/>
+                      </v-menu>
+                    </v-flex>
+                    <v-flex xs12 md5>
+                      <v-text-field
+                        v-model="patientForm.dni"
+                        label="DNI"
+                        prepend-icon="crop_landscape"
+                        id="dni"
+                        :readonly= "dniReadonly"
+                        :error-messages= "dniError"
+                        type="number"/>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-text-field
+                        v-model="patientForm.history_number"
+                        label="Numero de historia"
+                        prepend-icon="edit"
+                        id="history_number"
+                        type="number"/>
+                    </v-flex>
+                    <v-flex xs12 md6>
+                      <v-select
+                        v-model="patientForm.gender"
+                        :items="['Masculino', 'Femenino']"
+                        label="Genero"
+                        append-icon="keyboard_arrow_down"
+                        id="gender"
+                        :rules="[v => !!v || 'Este campo no puede estar en blanco.']"
+                        prepend-icon="wc"
+                        required/>
+                    </v-flex>
+                    <v-flex xs6 md6>
+                      <v-text-field
+                      v-model="patientForm.contact"
+                      label="Numero de contacto"
+                      prepend-icon="phone"
+                      type="number"
+                      hint="Introduzca solo numeros"
+                      id="contact"/>
+                    </v-flex>
+                    <v-flex xs6 md6>
+                      <v-text-field
+                      v-model="patientForm.contact2"
+                      label="Numero de contacto 2"
+                      type="number"
+                      prepend-icon="phone"
+                      hint="Introduzca solo numeros"
+                      id="contact2"/>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-form>
+            </v-card-text>
+            <v-card-actions class=card_actions>
+              <v-spacer/>
+              <v-btn
+                color="primary"
+                id="btn_cancel"
+                text
+                @click="dialog = false">
+                Cancelar
+              </v-btn>
+              <v-btn
+                color="primary"
+                id="btn_submit"
+                text
+                type="submit"
+                @click="savePatient">
+                {{ submit }}
+              </v-btn>
+            </v-card-actions>
         </v-card>
-      </v-dialog>    
+      </v-dialog> 
     </v-toolbar>
     <v-data-table
       hide-default-footer
@@ -191,6 +196,7 @@ export default {
         { text: 'Acciones', value: 'action', sortable: false }
         
       ],
+      valid: true,
       menu: false,
       patientForm: {
         dni: null,
@@ -209,9 +215,6 @@ export default {
         gender: null
       },
       index: -1,
-      errorFN: null,
-      errorLN: null,
-      errorBirth: null,
       errorDni: null,
       search: '',
     };
@@ -229,6 +232,9 @@ export default {
     },
     dniReadonly() {
       return this.index === 1 ? true : false  
+    },
+    dniError() {
+      return this.index === 1 ? null : this.errorDni
     }
   },
   watch: {
@@ -241,18 +247,19 @@ export default {
     this.$store.dispatch('patient/obtainPatients', token)
   },
   methods: {
-    createPatient() {
+    createPatient() { 
       let token = this.user.token
       let patient = this.patientForm
+      if (this.$refs.form.validate()) {
+        this.$store
+          .dispatch('patient/createPatient', { token, patient })
+          .then(() => {
+            this.$router.go()
+          })
+      }
       this.$store
         .dispatch('patient/createPatient', { token, patient })
-        .then(() => {
-          this.$router.go()
-        })
         .catch(err => {
-          this.errorFN = err["first_name"]
-          this.errorLN = err["last_name"]
-          this.errorBirth = err["birth_date"]
           this.errorDni = err["dni"]
         })
     },
@@ -264,17 +271,13 @@ export default {
     editPatient() {
       let token = this.user.token
       let patient = this.patientForm
-      this.$store
-        .dispatch('patient/editPatient', { token, patient })
-        .then(() => {
-          this.$router.go()
-        })
-        .catch(err => {
-          this.errorFN = err["first_name"]
-          this.errorLN = err["last_name"]
-          this.errorBirth = err["birth_date"]
-          this.errorDni = err["dni"]
-        }) 
+      if (this.$refs.form.validate()) {
+        this.$store
+          .dispatch('patient/editPatient', { token, patient })
+          .then(() => {
+            this.$router.go()
+          })
+      }
     },
     savePatient() {
       this.index === -1 ? this.createPatient() : this.editPatient()

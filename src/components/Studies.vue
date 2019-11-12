@@ -13,35 +13,42 @@
                   <v-card-text>
                     <v-layout>
                       <v-spacer/>
-                      <v-file-input
-                        v-if="user.hierarchy in [0,1]"
-                        v-model="files" 
-                        :rules="filesRules"
-                        chips
-                        multiple 
-                        clear-icon="clear"
-                        label="Seleccionar imagen"/>
-                      <v-btn
-                        v-if="user.hierarchy in [0,1]"
-                        fab
-                        dark
-                        color="primary"
-                        @click="createStudy">
-                        <v-icon>add_photo_alternate</v-icon>
-                      </v-btn>
-                      <v-snackbar
-                        v-model="snackbar"
-                        color="error"
-                        :right="true"
-                        :timeout="timeout">
-                        {{ error }}
+                      <v-flex lg5>
+                        <v-form ref="form" v-model="valid">
+                          <v-file-input
+                            v-if="user.hierarchy in [0,1]"
+                            v-model="files" 
+                            :rules="filesRules"
+                            chips
+                            multiple 
+                            clear-icon="clear"
+                            label="Seleccionar imagen"/>
+                        </v-form>
+                      </v-flex>
+                      <v-flex lg1>
                         <v-btn
+                          v-if="user.hierarchy in [0,1]"
+                          fab
                           dark
-                          text
-                          @click="snackbar = false">
-                          Cerrar
+                          type="submit"
+                          color="primary"
+                          @click="createStudy">
+                          <v-icon>add_photo_alternate</v-icon>
                         </v-btn>
-                      </v-snackbar>
+                        <v-snackbar
+                          v-model="snackbar"
+                          color="error"
+                          :right="true"
+                          :timeout="timeout">
+                          {{ error }}
+                          <v-btn
+                            dark
+                            text
+                            @click="snackbar = false">
+                            Cerrar
+                          </v-btn>
+                        </v-snackbar>
+                      </v-flex>
                     </v-layout>
                     <v-layout wrap>
                     <v-flex xs3 class="ig"
@@ -120,7 +127,8 @@ export default {
       snackbar: null,
       timeout: 6000,
       error: null,
-      fullscreen: false
+      fullscreen: false,
+      valid: true
     }
   },
   computed: {
@@ -132,16 +140,18 @@ export default {
   },
   methods: {
     createStudy() {
-      this.$store
-        .dispatch('studies/createComplementaryStudy', {
-          dni: this.dni,
-          files: this.files
-        })
-        .then(() => this.$router.go())
-        .catch(err => {
-          this.error = err
-          this.snackbar = true
-        })
+      if (this.$refs.form.validate()) {
+        this.$store
+          .dispatch('studies/createComplementaryStudy', {
+            dni: this.dni,
+            files: this.files
+          })
+          .then(() => this.$router.go())
+          .catch(err => {
+            this.error = err
+            this.snackbar = true
+          })
+      }
     },
     deletePhoto(id){
       this.$store
