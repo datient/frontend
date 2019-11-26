@@ -70,34 +70,66 @@
               </v-dialog>                    
             </v-flex>
           </v-row>
-          <v-list
-            flat
-            class="mx-auto scroll" 
-            max-width="100%" 
-            height="245"
-            three-line
-            v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
-              <v-list-item v-for="progress in progress.progress"
-                :key="progress.id">
-                <template>
-                  <v-list-item-content>
-                    <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
-                    <v-layout style="margin: auto 0px;"> 
-                      <v-flex lg4 style="margin-left: -2px;">
-                        <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
-                      </v-flex>
-                      <v-flex lg8>
-                        <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
-                        <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
-                      </v-flex>
-                    </v-layout>
-                    <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
-                    <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
-                    <v-divider></v-divider>
-                  </v-list-item-content>
-                </template>
-              </v-list-item>
-          </v-list>
+          <div v-if="user.hierarchy == 0 || user.hierarchy == 1">
+            <v-list
+              flat
+              class="mx-auto scroll" 
+              max-width="100%" 
+              height="228"
+              three-line
+              v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
+                <v-list-item v-for="progress in progress.progress"
+                  :key="progress.id">
+                  <template>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
+                      <v-layout style="margin: auto 0px;"> 
+                        <v-flex lg4 style="margin-left: -2px;">
+                          <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                        </v-flex>
+                        <v-flex lg8>
+                          <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
+                          <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
+                        </v-flex>
+                      </v-layout>
+                      <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
+                      <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
+                      <v-divider></v-divider>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+            </v-list>
+          </div>
+          <div v-if="user.hierarchy == 2">
+            <v-list
+              flat
+              class="mx-auto scroll" 
+              max-width="100%" 
+              height="245"
+              three-line
+              v-if="progress.progress !== null && progress.progress[0].diagnosis !== null">
+                <v-list-item v-for="progress in progress.progress"
+                  :key="progress.id">
+                  <template>
+                    <v-list-item-content>
+                      <v-list-item-title>{{ progress.created_at }}</v-list-item-title>
+                      <v-layout style="margin: auto 0px;"> 
+                        <v-flex lg4 style="margin-left: -2px;">
+                          <v-list-item-title>{{ progress.diagnosis }}</v-list-item-title>
+                        </v-flex>
+                        <v-flex lg8>
+                          <v-list-item-title v-if = "progress.has_left"> ( Dado de alta ) </v-list-item-title>
+                          <v-list-item-title v-if = "progress.income"> ( Hospitalizado ) </v-list-item-title>
+                        </v-flex>
+                      </v-layout>
+                      <v-list-item-subtitle>{{ progress.description }}</v-list-item-subtitle>
+                      <v-list-item-subtitle> {{ progress.status }}</v-list-item-subtitle>
+                      <v-divider></v-divider>
+                    </v-list-item-content>
+                  </template>
+                </v-list-item>
+            </v-list>
+          </div>
           <v-flex v-if="progress.progress[0].diagnosis === null">No hay progresos registrados</v-flex>
         </v-flex>
       </v-layout>
