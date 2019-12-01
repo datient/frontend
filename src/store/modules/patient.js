@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../plugins/axios.js'
 
 const state = {
   dni: null,
@@ -48,7 +48,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/patient/',
+        url: '/api/patient/',
         headers: { 'Authorization': `JWT ${token}` },
         data: {
           dni: patient.dni,
@@ -73,7 +73,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: `http://127.0.0.1:8000/api/hospitalization/`,
+        url: `/api/hospitalization/`,
         headers: { 'Authorization': `JWT ${token}` },
         data: {
           bed: bedId,
@@ -94,7 +94,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'put',
-        url: `http://127.0.0.1:8000/api/patient/${patient.dni}/` ,
+        url: `/api/patient/${patient.dni}/` ,
         headers: { 'Authorization': `JWT ${token}` },
         data: {
           dni: patient.dni,
@@ -119,7 +119,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'delete',
-        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+        url: `/api/patient/${dni}/`,
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
@@ -134,7 +134,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/api/patient/${dni}/`,
+        url: `/api/patient/${dni}/`,
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {
@@ -163,7 +163,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: 'http://127.0.0.1:8000/api/patient/',
+        url: '/api/patient/',
         headers: { 'Authorization': `JWT ${token}` },
       })
       .then(res => {

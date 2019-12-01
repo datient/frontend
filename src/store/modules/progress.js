@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../plugins/axios.js'
 
 const state = {
   progress: null,
@@ -37,7 +37,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/api/progress/',
+        url: '/api/progress/',
         headers: { 'Authorization': `JWT ${rootState.user.token}` },
         data: {
           diagnosis: progress['diagnosis'],
@@ -60,7 +60,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/api/patient/${patientDni}/`,
+        url: `/api/patient/${patientDni}/`,
         headers: { 'Authorization': `JWT ${rootState.user.token}` },
       })
       .then(res => {

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../plugins/axios.js'
 
 const state = {
   studies: null,
@@ -23,7 +23,7 @@ const actions = {
         formData.append('patient', dni)
         axios({
           method: 'post',
-          url: `http://127.0.0.1:8000/api/study/`,
+          url: `/api/study/`,
           headers: {
             'Authorization': `JWT ${rootState.user.token}`,
             'Content-Type' : 'multipart/form-data'
@@ -43,7 +43,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/api/patient/${patientDni}/`,
+        url: `/api/patient/${patientDni}/`,
         headers: { 'Authorization': `JWT ${rootState.user.token}` },
       })
       .then(res => {
@@ -59,7 +59,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'delete',
-        url:`http://127.0.0.1:8000/api/study/${id}/`, 
+        url:`/api/study/${id}/`, 
         headers: { 'Authorization': `JWT ${rootState.user.token}`},
       })
       .then(res => {

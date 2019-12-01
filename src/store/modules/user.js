@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../plugins/axios.js'
 
 const state = {
   token: null,
@@ -35,7 +35,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/accounts/register/',
+        url: '/accounts/register/',
         headers: { 'Content-Type': 'application/json' },
         data: {
           'email': user['email'],
@@ -61,7 +61,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8000/token/',
+        url: '/token/',
         headers: { 'Content-Type': 'application/json' },
         data: {
           'email': email,

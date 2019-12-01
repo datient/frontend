@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../../plugins/axios.js'
 
 const state = {
   id: null,
@@ -20,7 +20,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8000/api/bed/${id}/`,
+        url: `/api/bed/${id}/`,
         headers: { 'Authorization': `JWT ${rootState.user.token}` },
       })
       .then(res => {
