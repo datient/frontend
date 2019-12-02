@@ -15,7 +15,11 @@
               <v-flex lg4 v-if="room.is_available">
                 <v-icon color="#4caf50">check_circle</v-icon>
                 Camas disponibles
-              </v-flex>  
+              </v-flex> 
+              <v-flex lg4 v-if="room.is_available != true"> 
+                <v-icon color="#d50000">cancel</v-icon>
+                Camas ocupadas
+              </v-flex> 
             </v-expansion-panel-header>
             <v-expansion-panel-content>
               <v-list v-for="(bed, i) in room.beds" :key="i">
@@ -27,7 +31,7 @@
                   {{ bed.name }}
                 </v-btn>
                 <v-icon color="#4caf50" v-if="bed.is_available">check_circle</v-icon>
-              </v-list>
+                <v-icon color="#d50000" v-if="bed.is_available != true">cancel</v-icon>              </v-list>
             </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
